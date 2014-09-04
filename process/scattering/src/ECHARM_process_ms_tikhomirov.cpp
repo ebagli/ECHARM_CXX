@@ -14,6 +14,7 @@
 
 ECHARM_process_ms_tikhomirov::ECHARM_process_ms_tikhomirov(){
     fTotalProbThetaSS = 0.2;
+    fName = "ms_tikhomirov";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

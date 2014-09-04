@@ -27,3 +27,6 @@ inline void SavePos() {fPosPre->Set(fPos);}
 
 inline double GetAngX() {return fMom->GetX()/fMom->GetZ();}
 inline double GetAngY() {return fMom->GetY()/fMom->GetZ();}
+
+inline double GetAngXPre() {return fMomPre->GetX()/fMomPre->GetZ();}
+inline double GetAngYPre() {return fMomPre->GetY()/fMomPre->GetZ();}

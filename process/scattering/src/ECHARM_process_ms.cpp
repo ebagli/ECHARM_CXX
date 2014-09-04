@@ -9,7 +9,8 @@
 #include "ECHARM_process_ms.hh"
 #include "ECHARM_distribution_gauss.hh"
 
-ECHARM_process_ms::ECHARM_process_ms(){
+ECHARM_process_ms::ECHARM_process_ms():
+ECHARM_process("ms"){
     fDistr = new ECHARM_distribution_gauss(0.,0.);
     fConst = double(13.6) * MeV;
 }

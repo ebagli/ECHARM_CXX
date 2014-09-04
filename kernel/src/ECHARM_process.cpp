@@ -8,7 +8,8 @@
 
 #include "ECHARM_process.hh"
 
-ECHARM_process::ECHARM_process(){
+ECHARM_process::ECHARM_process(std::string name){
+    fName = name;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -24,6 +25,11 @@ void ECHARM_process::DoOnStrip(ECHARM_strip*,ECHARM_particle*){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_process::DoOnParticle(ECHARM_strip*,ECHARM_particle*){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_process::DoAfterInteraction(ECHARM_strip*,ECHARM_particle*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

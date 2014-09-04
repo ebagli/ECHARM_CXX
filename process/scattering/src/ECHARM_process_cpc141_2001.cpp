@@ -13,6 +13,7 @@
 #include "ECHARM_process_cpc141_2001.hh"
 
 ECHARM_process_cpc141_2001::ECHARM_process_cpc141_2001(){
+    fName = "cpc141_2001";  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

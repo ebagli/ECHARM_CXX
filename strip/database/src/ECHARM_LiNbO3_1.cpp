@@ -20,6 +20,16 @@
 ECHARM_LiNbO3_1::ECHARM_LiNbO3_1(){
     
     fCrystal = new ECHARM_crystal_LiNbO3();
+
+    int vMillerX[3] = {3,0,0};
+    int vMillerY[3] = {0,3,0};
+    int vMillerZ[3] = {0,0,1};
+    
+    fCrystal->GetMiller()->SetX(vMillerX);
+    fCrystal->GetMiller()->SetY(vMillerY);
+    fCrystal->GetMiller()->SetZ(vMillerZ);
+    
+    fCrystal->ComputeParameters();
     
     ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
     ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,2048);

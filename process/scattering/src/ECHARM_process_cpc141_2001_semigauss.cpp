@@ -12,6 +12,7 @@
 #include "ECHARM_process_cpc141_2001_semigauss.hh"
 
 ECHARM_process_cpc141_2001_semigauss::ECHARM_process_cpc141_2001_semigauss(){
+    fName = "cpc141_2001_semigauss";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

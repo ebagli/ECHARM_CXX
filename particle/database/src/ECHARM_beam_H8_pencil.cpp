@@ -10,7 +10,6 @@
 #include "ECHARM_distribution_box.hh"
 
 ECHARM_beam_H8_pencil::ECHARM_beam_H8_pencil(double angx_zero,double angx_sigma = 0.){
-    fParticle = new ECHARM_particle(0.,0.);
 
     ECHARM_particle* proton = new ECHARM_particle(+1,cProtonMass);
     

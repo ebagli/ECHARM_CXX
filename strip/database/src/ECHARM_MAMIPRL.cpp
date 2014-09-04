@@ -1,12 +1,12 @@
 //
-//  ECHARM_ST45.cpp
+//  ECHARM_MAMIPRL.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#include "ECHARM_ST45.hh"
+#include "ECHARM_MAMIPRL.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
 #include "ECHARM_EC_rec_atd_pl.hh"
@@ -17,18 +17,18 @@
 #include "ECHARM_EC_intrp.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_ST45::ECHARM_ST45(){
+ECHARM_MAMIPRL::ECHARM_MAMIPRL(){
     
     fCrystal = new ECHARM_crystal_Si();
     
-    int vMillerX[3] = {2,-2,0};
-    int vMillerY[3] = {1,1,-2};
-    int vMillerZ[3] = {1,1,1};
+    int vMillerX[3] = {1,1,1};
+    int vMillerY[3] = {2,-2,0};
+    int vMillerZ[3] = {1,1,-2};
     
     fCrystal->GetMiller()->SetX(vMillerX);
     fCrystal->GetMiller()->SetY(vMillerY);
     fCrystal->GetMiller()->SetZ(vMillerZ);
-
+    
     fCrystal->ComputeParameters();
     
     ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
@@ -62,13 +62,13 @@ ECHARM_ST45::ECHARM_ST45(){
     SetEFY(efy_intrp);
     SetEFZ(efz_intrp);
         
-    fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,2. * millimeter);;
-    fBRconst = new ECHARM_3vec(13.91 * meter,0.,0.);
+    fDim = new ECHARM_3vec(10. * millimeter,10. * millimeter,30.5 * micrometer);;
+    fBRconst = new ECHARM_3vec(33.5 * millimeter,0.,0.);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_ST45::~ECHARM_ST45(){
+ECHARM_MAMIPRL::~ECHARM_MAMIPRL(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

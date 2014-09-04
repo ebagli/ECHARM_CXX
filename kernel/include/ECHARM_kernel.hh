@@ -33,7 +33,9 @@ public:
     int DoOnStrip();
     
     int DoOnParticle();
-    
+
+    int DoAfterInteraction();
+
     int Init();
     
     bool Interaction();
@@ -44,6 +46,7 @@ protected:
     std::vector<ECHARM_process*> fProcesses;
     
     double fTimeStep;
+    bool bPartIsIn;
     
     double fTimeTimeStepMax;
     double fTimeTimeStepMin;

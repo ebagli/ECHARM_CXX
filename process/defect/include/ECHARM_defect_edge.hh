@@ -9,13 +9,12 @@
 #ifndef _ECHARM_defect_edge_h
 #define _ECHARM_defect_edge_h
 
-#include "ECHARM_process.hh"
-#include "ECHARM_distribution_box.hh"
+#include "ECHARM_defect.hh"
 
 class ECHARM_defect_edge: public ECHARM_defect
 {
 public:
-    ECHARM_defect_edge(double,bool);
+    ECHARM_defect_edge(double,double,bool);
     virtual ~ECHARM_defect_edge();
 
     void CompDispl(ECHARM_3vec*,ECHARM_3vec*);

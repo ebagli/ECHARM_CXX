@@ -11,7 +11,6 @@
 #include "ECHARM_distribution_gauss.hh"
 
 ECHARM_beam_H8_2012::ECHARM_beam_H8_2012(){
-    fParticle = new ECHARM_particle(0.,0.);
 
     ECHARM_particle* proton = new ECHARM_particle(+1,cProtonMass);
     

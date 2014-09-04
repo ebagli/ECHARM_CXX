@@ -12,6 +12,7 @@
 #include "ECHARM_process_cpc141_2001_doublegauss.hh"
 
 ECHARM_process_cpc141_2001_doublegauss::ECHARM_process_cpc141_2001_doublegauss(){
+    fName = "cpc141_2001_doublegauss";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

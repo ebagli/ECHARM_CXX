@@ -15,11 +15,17 @@
 class ECHARM_process
 {
 public:
-    ECHARM_process();
+    ECHARM_process(std::string);
     virtual ~ECHARM_process();
     
     virtual void DoOnStrip(ECHARM_strip*,ECHARM_particle*);
     virtual void DoOnParticle(ECHARM_strip*,ECHARM_particle*);
+    virtual void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*);
     virtual void Init(ECHARM_strip*,ECHARM_particle*);
+    
+    inline std::string GetName() {return fName;};
+    
+protected:
+    std::string fName;
 };
 #endif

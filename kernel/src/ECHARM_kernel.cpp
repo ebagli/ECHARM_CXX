@@ -12,9 +12,10 @@ ECHARM_kernel::ECHARM_kernel(ECHARM_particle* particle, ECHARM_strip* strip){
     fStrip = strip;
     fPart = particle;
     fTimeTimeStepMax = 2. * micrometer;
-    fTimeTimeStepMin = 200. * AA;
+    fTimeTimeStepMin = 20. * AA;
     fTransverseVariationMax = 2.E-2 * AA;
-    
+    bPartIsIn = true;
+
     fPosHalf = new ECHARM_3vec(0.,0.,0.);
     fMomHalf = new ECHARM_3vec(0.,0.,0.);
 
@@ -45,7 +46,7 @@ void ECHARM_kernel::Print(){
 
 bool ECHARM_kernel::Interaction(){
     
-    bool bPartIsIn = true;
+    bPartIsIn = true;
     fTimeStepTotal = 0.;
     fBRperStepTotal->Zero();
 
@@ -57,18 +58,18 @@ bool ECHARM_kernel::Interaction(){
 #endif
 
     do {
-        fPart->SavePos();
-        
-        fPart->SaveMom();
-        
         bPartIsIn = fStrip->IsIn(fPart->GetPos());
         
         bPartIsIn = UpdateStep();
         
+        fPart->SavePos();
+
         DoOnStrip();
             
         DoStep();
-            
+        
+        fPart->SaveMom();
+
         DoOnParticle();
 
 #ifdef ROOT_
@@ -81,6 +82,8 @@ bool ECHARM_kernel::Interaction(){
 
     } while(bPartIsIn);
     
+    DoAfterInteraction();
+
     fBRperStepTotal->ConstantMoltiplication(1./fTimeStepTotal);
     for(int vIndex=0;vIndex<3;vIndex++){
         if(fBRperStepTotal->Get(vIndex)!=0.){
@@ -117,6 +120,19 @@ int ECHARM_kernel::DoOnParticle(){
         myProcess != fProcesses.end();
         myProcess++){
         (*myProcess)->DoOnParticle(fStrip,fPart);
+    }
+    return 0;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+int ECHARM_kernel::DoAfterInteraction(){
+    std::vector<ECHARM_process*>::iterator myProcess;
+    
+    for(myProcess = fProcesses.begin();
+        myProcess != fProcesses.end();
+        myProcess++){
+        (*myProcess)->DoAfterInteraction(fStrip,fPart);
     }
     return 0;
 }

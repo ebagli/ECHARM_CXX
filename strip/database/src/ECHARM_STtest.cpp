@@ -20,6 +20,16 @@
 ECHARM_STtest::ECHARM_STtest(double length,double BR){
     
     fCrystal = new ECHARM_crystal_Si();
+
+    int vMillerX[3] = {2,-2,0};
+    int vMillerY[3] = {1,1,-2};
+    int vMillerZ[3] = {1,1,1};
+    
+    fCrystal->GetMiller()->SetX(vMillerX);
+    fCrystal->GetMiller()->SetY(vMillerY);
+    fCrystal->GetMiller()->SetZ(vMillerZ);
+    
+    fCrystal->ComputeParameters();
     
     ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
     ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,2048);

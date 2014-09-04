@@ -8,10 +8,13 @@
 
 #include "ECHARM_defect.hh"
 #include "TH2D.h"
-ECHARM_defect::ECHARM_defect(double num,bool sudden = true){
+ECHARM_defect::ECHARM_defect(double num,double prob,bool sudden = true):
+ECHARM_process("defect"){
     
     bSudden = sudden;
     fDefNum = num;
+    fProb = prob;
+    
     fArea = 1.;
     bVecStored = false;
     
@@ -35,7 +38,7 @@ ECHARM_defect::ECHARM_defect(double num,bool sudden = true){
     fBurger = new ECHARM_3vec(0.,0.,0.);
     fDispl = new ECHARM_3vec(0.,0.,0.);
     fBR = new ECHARM_3vec(0.,0.,0.);
-    fLimitsHalf = new ECHARM_3vec(0.05 * millimeter,0.05 * millimeter,0.05 * millimeter);
+    fLimitsHalf = new ECHARM_3vec(0.01 * millimeter,0.01 * millimeter,0.01 * millimeter);
     
     fPosTemp = new ECHARM_3vec(0.,0.,0.);
     fPosTempPre = new ECHARM_3vec(0.,0.,0.);
@@ -50,28 +53,36 @@ ECHARM_defect::~ECHARM_defect(){
 
 void ECHARM_defect::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part){
     
-    for(int i0 = 0;i0 < fDefNum;i0++){
-
-        fPosTemp->Set(part->GetPos());
-        fPosTemp->Add(fDefCenter.at(i0),-1.);
-
-        if(fabs(fPosTemp->GetX()) < (fLimitsHalf->GetX()) &&
-           fabs(fPosTemp->GetY()) < (fLimitsHalf->GetY()) &&
-           fabs(fPosTemp->GetZ()) < (fLimitsHalf->GetZ())){
+    if(bSudden==false){
+        for(int i0 = 0;i0 < fDefNum;i0++){
             
-            fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-            fPosTemp->Add(fLimitsHalf);
+            double vRandom = 0.;
+            if(fProb < 1.){
+                vRandom = drand48();
+            }
             
-            fBR->SetX(fVecBRX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-            fBR->SetY(fVecBRY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-            fBR->SetZ(fVecBRZ->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-            
-            fBR->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-            fBR->SetZ(0.);
-        }
-        
-        if(bSudden==false){
-            strip->GetBR()->AddInverse(fBR);
+            if(vRandom<fProb){
+                fPosTemp->Set(part->GetPos());
+                fPosTemp->Add(fDefCenter.at(i0),-1.);
+                fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
+                
+                if((fabs(fPosTemp->GetX()) < fLimitsHalf->GetX()) &&
+                   (fabs(fPosTemp->GetY()) < fLimitsHalf->GetY()) &&
+                   (fabs(fPosTemp->GetZ()) < fLimitsHalf->GetZ())){
+                    
+                    fPosTemp->Add(fLimitsHalf);
+                    
+                    fBR->SetX(fVecBRX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
+                    fBR->SetY(fVecBRY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
+                    fBR->SetZ(fVecBRZ->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
+                    
+                    fBR->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
+                    fBR->SetZ(0.);
+                    
+                    
+                    strip->GetBR()->AddInverse(fBR);
+                }
+            }
         }
     }
 }
@@ -80,33 +91,43 @@ void ECHARM_defect::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part){
 
 void ECHARM_defect::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part){
     
-    for(int i0 = 0;i0 < fDefNum;i0++){
-        
-        fPosTemp->Set(part->GetPos());
-        fPosTemp->Add(fDefCenter.at(i0),-1.);
-        
-        fPosTempPre->Set(part->GetPosPre());
-        fPosTempPre->Add(fDefCenter.at(i0),-1.);
-        
-        if((fPosTemp->GetModule2()) < (fLimitsHalf->GetModule2()) &&
-           (fPosTempPre->GetModule2()) < (fLimitsHalf->GetModule2())){
+    if(bSudden==true){
+        for(int i0 = 0;i0 < fDefNum;i0++){
+            double vRandom = 0.;
+            if(fProb < 1.){
+                vRandom = drand48();
+            }
             
-            fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-            fPosTemp->Add(fLimitsHalf);
-
-            fPosTempPre->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-            fPosTempPre->Add(fLimitsHalf);
-
-            fDispl->SetX(fVecDisplX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplX->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-            fDispl->SetY(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-            fDispl->SetZ(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-            
-            fDispl->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-            fDispl->SetZ(0.);
-        }
-        
-        if(bSudden==true){
-            part->GetPos()->Add(fDispl);
+            if(vRandom<fProb){
+                fPosTemp->Set(part->GetPos());
+                fPosTemp->Add(fDefCenter.at(i0),-1.);
+                fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
+                
+                fPosTempPre->Set(part->GetPosPre());
+                fPosTempPre->Add(fDefCenter.at(i0),-1.);
+                fPosTempPre->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
+                
+                if((fabs(fPosTemp->GetX()) < fLimitsHalf->GetX()) &&
+                   (fabs(fPosTemp->GetY()) < fLimitsHalf->GetY()) &&
+                   (fabs(fPosTemp->GetZ()) < fLimitsHalf->GetZ()) &&
+                   (fabs(fPosTempPre->GetX()) < fLimitsHalf->GetX()) &&
+                   (fabs(fPosTempPre->GetY()) < fLimitsHalf->GetY()) &&
+                   (fabs(fPosTempPre->GetZ()) < fLimitsHalf->GetZ())){
+                    
+                    fPosTemp->Add(fLimitsHalf);
+                    fPosTempPre->Add(fLimitsHalf);
+                    
+                    fDispl->SetX(fVecDisplX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplX->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
+                    fDispl->SetY(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
+                    fDispl->SetZ(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
+                    
+                    fDispl->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
+                    fDispl->SetZ(0.);
+                    
+                    part->GetPos()->Add(fDispl);
+                }
+                
+            }
         }
     }
 }
@@ -127,8 +148,8 @@ void ECHARM_defect::Init(ECHARM_strip* strip,ECHARM_particle* part){
         fDefCenter.at(i0)->SetX(fBoxX->GenerateNumber());
         fDefCenter.at(i0)->SetY(fBoxY->GenerateNumber());
         fDefCenter.at(i0)->SetZ(fBoxZ->GenerateNumber());
-        fDefAnglesPhi.at(i0) = drand48() * c2Pi;
-        fDefAnglesTheta.at(i0) = acos(2.* drand48() - 1.);
+        //fDefAnglesPhi.at(i0) = drand48() * c2Pi;
+        //fDefAnglesTheta.at(i0) = acos(2.* drand48() - 1.);
     }
 }
 
@@ -201,7 +222,7 @@ void ECHARM_defect::CompDispl(ECHARM_3vec*,ECHARM_3vec*){
     fDispl->SetX(0.);
     fDispl->SetY(0.);
     fDispl->SetZ(0.);
-
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

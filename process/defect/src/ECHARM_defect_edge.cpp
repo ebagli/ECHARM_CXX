@@ -8,8 +8,9 @@
 
 #include "ECHARM_defect_edge.hh"
 
-ECHARM_defect_edge::ECHARM_defect_edge(double num,bool sudden = true):
-ECHARM_defect(num,sudden){
+ECHARM_defect_edge::ECHARM_defect_edge(double num,double prob = 1., bool sudden = true):
+ECHARM_defect(num,prob,sudden){
+    fName = "defect_edge";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

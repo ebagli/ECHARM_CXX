@@ -8,8 +8,9 @@
 
 #include "ECHARM_defect_screw.hh"
 
-ECHARM_defect_screw::ECHARM_defect_screw(double num,bool sudden = true):
-ECHARM_defect(num,sudden){
+ECHARM_defect_screw::ECHARM_defect_screw(double num,double prob = 1.,bool sudden = true):
+ECHARM_defect(num,prob,sudden){
+    fName = "defect_screw";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -23,27 +24,21 @@ void ECHARM_defect_screw::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double x = partpos->GetX() - defpos->GetX();
     double z = partpos->GetZ() - defpos->GetZ();
     
+    fDispl->SetX(0.);
+    fDispl->SetZ(0.);
+
     double dy = 0.0;
-    double dx = 0.0;
-    double dz = 0.0;
-    
-    if(dx==0.) dx=std::numeric_limits<double>::min();
-    if(dy==0.) dy=std::numeric_limits<double>::min();
     
     if(x==0. &&
        z==0.){
-        fDispl->SetX(0.);
+        fDispl->SetY(0.);
     }
-    else{
-        double xz2 = x * x + z * z;
-        
+    else{        
         dy = atan2( x , z ) ;
         dy *= ( fBurger->GetModule() );
         dy /= ( 2. * cPi );
         
-        fDispl->SetX(dx);
         fDispl->SetY(dy);
-        fDispl->SetZ(dz);
     }
     
 }
@@ -65,7 +60,6 @@ void ECHARM_defect_screw::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         // (1 + (d/dz (b/(2*l)(arctan(z/x))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x))))
         double xz2 = x*x + z*z;
         double b = fBurger->GetModule();
-        double p = fPoissonRatio;
         
         double Rx1 = b*b+x*x;
         Rx1 /= fSquare(2.*cPi*xz2);

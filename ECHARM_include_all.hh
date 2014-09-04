@@ -3,22 +3,18 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+
+// general
 #include "ECHARM_constants.hh"
+
+#include "ECHARM_3vec.hh"
+#include "ECHARM_3vec.cpp"
 
 #include "ECHARM_intrp.hh"
 #include "ECHARM_intrp.cpp"
 
 #include "ECHARM_periodicvector.hh"
 #include "ECHARM_periodicvector.cpp"
-
-#include "ECHARM_strip.hh"
-#include "ECHARM_strip.cpp"
-
-#include "ECHARM_particle.hh"
-#include "ECHARM_particle.cpp"
-
-#include "ECHARM_beam.hh"
-#include "ECHARM_beam.cpp"
 
 #include "ECHARM_distribution.hh"
 #include "ECHARM_distribution.cpp"
@@ -31,13 +27,16 @@
 
 
 
+// particle & beam
+#include "ECHARM_particle.hh"
+#include "ECHARM_particle.cpp"
+
+#include "ECHARM_beam.hh"
+#include "ECHARM_beam.cpp"
 
 
 
-
-
-
-
+// crystal & strip
 #include "ECHARM_atom.hh"
 #include "ECHARM_atom.cpp"
 #include "ECHARM_atom_spheric.hh"
@@ -50,8 +49,6 @@
 #include "ECHARM_atom_xray.cpp"
 
 
-#include "ECHARM_3vec.hh"
-#include "ECHARM_3vec.cpp"
 #include "ECHARM_miller.hh"
 #include "ECHARM_miller.cpp"
 #include "ECHARM_miller_orto.hh"
@@ -76,6 +73,12 @@
 #include "ECHARM_crystal.hh"
 #include "ECHARM_crystal.cpp"
 
+#include "ECHARM_strip.hh"
+#include "ECHARM_strip.cpp"
+
+
+
+// crystal database
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_crystal_Si.cpp"
 
@@ -83,10 +86,7 @@
 #include "ECHARM_crystal_LiNbO3.cpp"
 
 
-
-
-
-
+// electrical characteristics
 #include "ECHARM_EC.hh"
 #include "ECHARM_EC.cpp"
 
@@ -155,7 +155,7 @@
 
 
 
-
+// kernel & processes
 #include "ECHARM_kernel.hh"
 #include "ECHARM_kernel.cpp"
 
@@ -176,3 +176,51 @@
 
 #include "ECHARM_process_ms_tikhomirov.hh"
 #include "ECHARM_process_ms_tikhomirov.cpp"
+
+#include "ECHARM_defect.hh"
+#include "ECHARM_defect.cpp"
+
+#include "ECHARM_defect_edge.hh"
+#include "ECHARM_defect_edge.cpp"
+
+#include "ECHARM_defect_screw.hh"
+#include "ECHARM_defect_screw.cpp"
+
+#include "ECHARM_defect_stacking_fault.hh"
+#include "ECHARM_defect_stacking_fault.cpp"
+
+#include "ECHARM_radiation.hh"
+#include "ECHARM_radiation.cpp"
+
+
+
+
+
+// strip database
+#include "ECHARM_ST45.hh"
+#include "ECHARM_ST45.cpp"
+
+#include "ECHARM_STtest.hh"
+#include "ECHARM_STtest.cpp"
+
+#include "ECHARM_SiAM.hh"
+#include "ECHARM_SiAM.cpp"
+
+#include "ECHARM_LiNbO3_1.hh"
+#include "ECHARM_LiNbO3_1.cpp"
+
+#include "ECHARM_FIG5_PRE52_2045.hh"
+#include "ECHARM_FIG5_PRE52_2045.cpp"
+
+// beam database
+#include "ECHARM_beam_H8_2012.hh"
+#include "ECHARM_beam_H8_2012.cpp"
+
+#include "ECHARM_beam_H8_pencil.hh"
+#include "ECHARM_beam_H8_pencil.cpp"
+
+#include "ECHARM_beam_MAMI855.hh"
+#include "ECHARM_beam_MAMI855.cpp"
+
+#include "ECHARM_MAMIPRL.hh"
+#include "ECHARM_MAMIPRL.cpp"

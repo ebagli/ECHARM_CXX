@@ -15,7 +15,7 @@
 class ECHARM_defect: public ECHARM_process
 {
 public:
-    ECHARM_defect(double,bool);
+    ECHARM_defect(double,double,bool);
     virtual ~ECHARM_defect();
     
     void DoOnStrip(ECHARM_strip*,ECHARM_particle*);
@@ -42,6 +42,8 @@ private:
 
     int fDefNum;
     double fArea;
+    double fProb;
+    
     std::vector<ECHARM_3vec*> fDefCenter;
     std::vector<double> fDefAnglesPhi;
     std::vector<double> fDefAnglesTheta;

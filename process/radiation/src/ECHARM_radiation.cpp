@@ -8,32 +8,33 @@
 
 #include "ECHARM_radiation.hh"
 #include "TH2D.h"
-ECHARM_radiation::ECHARM_radiation(int vEnBin,double vEnMin,double vEnStep,int anglexbins = 30 ,int angleybins = 15):
+ECHARM_radiation::ECHARM_radiation(int anglexbins ,int angleybins):
 ECHARM_process("radiation"){
     fAngColl = 0.002318303;
     fStepMaxLength = 10. * meter;
     
     fAngXbins = anglexbins;
     fAngYbins = angleybins;
-    fEnBins = vEnBin;
+
+    bSliceTraj = false;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+ECHARM_radiation::ECHARM_radiation():
+    ECHARM_process("radiation"){
+    fAngColl = 0.002318303;
+    fStepMaxLength = 10. * meter;
     
-    fEnMin = vEnMin;
-    fEnStep = vEnStep;
-    fEnMax = vEnMin + vEnStep*vEnBin;
+    fAngXbins = 15;
+    fAngYbins = 30;
     
-    for(int i0=0;i0<fEnBins;i0++){
-        fRadEmProb.push_back(0.);
-    }
+    bSliceTraj = false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ECHARM_radiation::~ECHARM_radiation(){
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_radiation::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -49,65 +50,67 @@ void ECHARM_radiation::PrintTrajToFile(std::string filename){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_radiation::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part){
+void ECHARM_radiation::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save* info){
     
     if(fStepNum<MAX_STEP_NUM){
         fStep[fStepNum]=(part->GetStepLength());
         
         fVelX[fStepNum]=(part->GetAngX());
         if(strip->IsBentX()){
-            fVelX[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetX());
+            //fVelX[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetX());
         }
         fVelY[fStepNum]=(part->GetAngY());
         
         if(strip->IsBentY()){
-            fVelY[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetY());
+            //fVelY[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetY());
         }
         
         fAccX[fStepNum]=(part->GetZ() * 0.5 * (strip->GetEFX()->Get(part->GetPosPre()) + strip->GetEFX()->Get(part->GetPos()))/part->GetMom()->GetZ());
+        if(strip->IsBentX()){
+            //fAccX[fStepNum] += ( 0.5 * part->GetMomVel() * part->GetPos()->GetZ() / strip->GetBR()->GetX());
+        }
+
         fAccY[fStepNum]=(part->GetZ() * 0.5 * (strip->GetEFY()->Get(part->GetPosPre()) + strip->GetEFY()->Get(part->GetPos()))/part->GetMom()->GetZ());
-        
+        if(strip->IsBentY()){
+            //fAccY[fStepNum] += ( 0.5 * part->GetMomVel() * part->GetPos()->GetZ() / strip->GetBR()->GetY());
+        }
+
         fVelPreSctX[fStepNum]=(0.);
         fVelPreSctY[fStepNum]=(0.);
-
+        
         fVelPreSctX[fStepNum]=(part->GetAngXPre());
         if(strip->IsBentX()){
-            fVelPreSctX[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetX());
+            //fVelPreSctX[fStepNum]+= (part->GetPosPre()->GetZ() / strip->GetBR()->GetX());
         }
         fVelPreSctY[fStepNum]=(part->GetAngYPre());
         
         if(strip->IsBentY()){
-            fVelPreSctY[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetY());
+            //fVelPreSctY[fStepNum]+= (part->GetPosPre()->GetZ() / strip->GetBR()->GetY());
         }
-
+        
         
         fStepNum++;
     }
     else{
-        DoAfterInteraction(strip,part);
-        Init(strip,part);
+        if(bSliceTraj){
+            for(unsigned int i0=0;i0<(info->GetRadEmEnProb()).size();i0++){
+                info->SetRadEmEnProb(i0,ComputeRadEmProb(strip,part,info->GetRadEmEn().at(i0)));
+            }
+        }
+        else{
+            DoAfterInteraction(strip,part,info);
+        }
+        
+        fStepNum = 0;
     }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_radiation::DoAfterInteraction(ECHARM_strip* strip,ECHARM_particle* part){
-    
-    PrintTrajToFile("traj.txt");
-    for(int i0=0;i0<fEnBins;i0++){
-        double vEn = fEnMin + fEnStep*i0;
-        fRadEmProb.at(i0) = ComputeRadEmProb(strip,part,vEn);
+void ECHARM_radiation::DoAfterInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save* info){
+    for(unsigned int i0=0;i0<(info->GetRadEmEnProb()).size();i0++){
+        info->AddRadEmEnProb(i0,ComputeRadEmProb(strip,part,info->GetRadEmEn().at(i0)));
     }
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_radiation::Init(ECHARM_strip* strip,ECHARM_particle* part){
-    
-    for(int i0=0;i0<fEnBins;i0++){
-        fRadEmProb.at(i0) = 0.;
-    }
-    fStepNum = 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -128,7 +131,7 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
     double vOmPL = 0.;
     
     if(part->GetMom()->GetZ() == 855. * MeV){
-        //vOmPL = 0.052 * MeV / vGamma ;
+        vOmPL = 52. * KeV / vGamma ;
     }
     
     double vPhCoeff = 1. / (vGamma * vGamma);
@@ -177,9 +180,6 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
                 double fa2 = vOmPrime*(axt*vxno+ayt*vyno);
                 double dzmod = 2.*sin(vPhBef*dz/2)/vPhBef;
                 
-                //dzmod = 0.;
-                
-                
                 double skJ=1/vPhAft-1/vPhBef;
                 skJ -= (fa2/(vPhBef*vPhBef))*dzmod;
                 
@@ -199,18 +199,18 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
                 
             }
             
-            double I2 = ssx*ssx+scx*scx+ssy*ssy+scy*scy; //MeV^-2
-            double J2 = ss*ss+sc*sc; //MeV^-2
+            double I2 = ssx*ssx+scx*scx+ssy*ssy+scy*scy; // eV^-2
+            double J2 = ss*ss+sc*sc; // eV^-2
             
             vResult += ((I2*I2Coeff)+(J2*J2Coeff));
         }
         
     }
     
-    vResult *= (fAngColl*fAngColl*cPi); // angle
+    vResult *= (fAngColl*fAngColl*cPi);
     vResult /= fAngXbins;
     vResult /= fAngYbins;
-    vResult /= (8.*(cPi*cPi)); // angle
+    vResult /= (8.*(cPi*cPi));
     vResult *= cFineStructureConstant;
     
     return vResult;

@@ -17,7 +17,7 @@ public:
     ECHARM_defect_edge(double,double,bool);
     virtual ~ECHARM_defect_edge();
 
-    void CompDispl(ECHARM_3vec*,ECHARM_3vec*);
+    void ComputeDispl(ECHARM_3vec*,ECHARM_3vec*);
     void ComputeBR(ECHARM_3vec*,ECHARM_3vec*);
 };
 #endif

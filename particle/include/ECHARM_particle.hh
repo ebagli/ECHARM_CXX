@@ -16,15 +16,6 @@
 #include "ECHARM_constants.hh"
 #include "ECHARM_3vec.hh"
 
-struct ECHARM_Particle_Save{
-    double posx;
-    double posy;
-    double posz;
-    double angx;
-    double angy;
-    double momz;
-};
-
 class ECHARM_particle
 {
 public:
@@ -43,16 +34,19 @@ public:
     double GetStepLength();
 
     void Print();
-    void PrintToStruct(ECHARM_Particle_Save&);
     
-private:  
-    double fZ;            
+private:
+    double fZ;
     double fMass;             
     ECHARM_3vec *fPos;
     ECHARM_3vec *fMom;
     
     ECHARM_3vec* fPosPre;
     ECHARM_3vec* fMomPre;
+
+    double fStepLengthSinceLastProgress;
+    double fAtDSinceLastProgress;
+    double fElDSinceLastProgress;
 
 #include "ECHARM_particle.hxx"
 };

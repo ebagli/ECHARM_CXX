@@ -11,60 +11,60 @@
 
 #include "ECHARM_3vec.hh"
 #include "ECHARM_strip.hh"
-#include "ECHARM_particle.hh"
+#include "ECHARM_beam.hh"
 #include "ECHARM_process.hh"
 
 class ECHARM_kernel
 {
 public:
-    ECHARM_kernel(ECHARM_particle*,ECHARM_strip*);
+    ECHARM_kernel(ECHARM_strip*);
     virtual ~ECHARM_kernel();
     
     double GetTransverseVariationMax();
     bool SetTransverseVariationMax(double);
-
-    void Print();
-    
-    virtual bool UpdateStep();
-    
-    virtual int DoStep();
-    virtual int DoStraightStep();
+        
+    bool UpdateStep();
+    int DoStep();
     
     int DoOnStrip();
-    
     int DoOnParticle();
 
+    int DoBeforeInteraction();
+    int Interaction();
     int DoAfterInteraction();
 
     int Init();
-    
-    bool Interaction();
+    int End();
+    int Print();
 
 protected:
-    ECHARM_strip* fStrip;
+    bool bSavePartIn;
+    bool bSavePartOut;
+    
     ECHARM_particle* fPart;
+    ECHARM_info_save* fInfo;
+
+    ECHARM_strip* fStrip;
     std::vector<ECHARM_process*> fProcesses;
     
-    double fTimeStep;
-    bool bPartIsIn;
     
     double fTimeTimeStepMax;
     double fTimeTimeStepMin;
     double fTransverseVariationMax;
    
+    bool bSaveTrajStatus;
+    double bSaveTrajStep;
+    double bSaveTrajStepTemp;
+
     // Temporary variables
 protected:
     ECHARM_3vec* fMomHalf;
     ECHARM_3vec* fPosHalf;
-    ECHARM_3vec* fBRperStepTotal;
-    double fTimeStepTotal;
 
-#ifdef ROOT_
-    bool bSaveTrajStatus;
-    ECHARM_Particle_Save fTimeStepSave;
-    double fBRstepSave;
-    TTree* fTree;
-#endif
+    double fTimeStep;
+    double fTimeStepTotal;
+    bool bPartIsIn;
+
     
 #include "ECHARM_kernel.hxx"
 };

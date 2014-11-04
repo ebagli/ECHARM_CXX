@@ -17,7 +17,7 @@ public:
     ECHARM_process_cpc141_2001();
     virtual ~ECHARM_process_cpc141_2001();
         
-    virtual void Init(ECHARM_strip*,ECHARM_particle*);
+    virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
 
     double ComputeE(ECHARM_strip*,ECHARM_particle*,double);

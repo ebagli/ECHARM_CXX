@@ -20,7 +20,7 @@ ECHARM_defect_edge::~ECHARM_defect_edge(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect_edge::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
+void ECHARM_defect_edge::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double x = partpos->GetX() - defpos->GetX();
     double z = partpos->GetZ() - defpos->GetZ();
     
@@ -40,12 +40,12 @@ void ECHARM_defect_edge::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         
         dx = atan2(x , z ) ;
         dx += ( z * x / xz2 / 2.0 / ( 1.0 - fPoissonRatio ) );
-        dx *= ( fBurger->GetModule() );
+        dx *= ( fBurger );
         dx /= ( 2. * cPi );
         
         dz = ( ( 1.0 - 2.0 * fPoissonRatio) * log(xz2));
         dz += ( ( x * x - z * z ) / xz2 );
-        dz *= ( fBurger->GetModule() );
+        dz *= ( fBurger );
         dz /= ( 8. * cPi );
         dz /= ( 1. - fPoissonRatio );
         
@@ -72,7 +72,7 @@ void ECHARM_defect_edge::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     else{
         // (1 + (d/dz (b/(2*l)(arctan(z/x)+1/(2*(1-P))*x*z/(x*x+z*z))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x)+1/(2*(1-P))*x*z/(x*x+z*z))))
         double xz2 = x*x + z*z;
-        double b = fBurger->GetModule();
+        double b = fBurger;
         double p = fPoissonRatio;
         
         double Rx1 = fSquare( ( 3. - 2. * p ) * x * x + (1. - 2. * p) * z * z );

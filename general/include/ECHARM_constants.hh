@@ -25,6 +25,7 @@
 #define cLightVelocity 1.
 #define cPlanckConstant 197.326968E-9 //Planck constant over 2 pi times c in MeV fm == 197.326 968
 #define cBoltzmanConstant 8.617343E-5 //Boltzmann constant in eV/K 
+#define perCent 1.E-2
 
 ///////////////////// UNITS 
 ////// ENERGY
@@ -74,5 +75,16 @@
 #define fSquareRoot(x) sqrt(x)
 
 #define DEBUG 0
+
+///////////////////////////////////////////////
+
+struct ECHARM_Particle_Save{
+    double posx;
+    double posy;
+    double posz;
+    double angx;
+    double angy;
+    double momz;
+};
 
 #endif

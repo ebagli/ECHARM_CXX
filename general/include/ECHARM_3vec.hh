@@ -28,7 +28,8 @@ public:
 
     virtual ~ECHARM_3vec();
     
-
+    bool IsInCube(ECHARM_3vec*);
+    
     double ScalarProduct(ECHARM_3vec*);
     double GetPhi();
     double GetTheta();
@@ -46,9 +47,10 @@ public:
     void Add(ECHARM_3vec*,double);
     void AddInverse(ECHARM_3vec*,double);
 
+    void Rotate(double,double,double);
     void Rotate(double,double);
-    void RotateInv(double,double);
-    
+    void Rotate(double);
+
     void Zero();
     virtual void Update() {;};
     

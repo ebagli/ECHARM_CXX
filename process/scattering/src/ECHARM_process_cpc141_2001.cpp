@@ -39,7 +39,7 @@ double ECHARM_process_cpc141_2001::ComputeThetaSS(ECHARM_strip* strip,ECHARM_par
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_process_cpc141_2001::Init(ECHARM_strip* strip,ECHARM_particle* part){
+void ECHARM_process_cpc141_2001::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
     fA = ComputeThetaMin(strip,part);
     fB = ComputeThetaMax(strip,part);
     fE = ComputeE(strip,part,strip->GetDim()->GetZ());

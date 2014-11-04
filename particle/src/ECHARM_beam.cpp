@@ -8,6 +8,7 @@
 
 #include "ECHARM_beam.hh"
 #include "ECHARM_distribution_box.hh"
+#include "ECHARM_distribution_const.hh"
 
 ECHARM_beam::ECHARM_beam(){
     fParticle = new ECHARM_particle(0.,0.);
@@ -20,7 +21,7 @@ ECHARM_beam::ECHARM_beam(){
     
     fDistrPositionX =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionY =  new ECHARM_distribution_box(0.,0.);
-    fDistrPositionZ =  new ECHARM_distribution_box(0.,0.);
+    fDistrPositionZ =  new ECHARM_distribution_const(0.);
     
 }
 
@@ -40,7 +41,7 @@ ECHARM_beam::ECHARM_beam(ECHARM_particle* particle,double perc = 1.){
     
     fDistrPositionX =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionY =  new ECHARM_distribution_box(0.,0.);
-    fDistrPositionZ =  new ECHARM_distribution_box(0.,0.);
+    fDistrPositionZ =  new ECHARM_distribution_const(0.);
     
 }
 
@@ -87,7 +88,6 @@ void ECHARM_beam::DistrPosFromStrip(ECHARM_strip* strip){
     fDistrPositionY->SetPar(1,strip->GetCrystal()->GetPeriodY()*0.5);
 
     fDistrPositionZ->SetPar(0,-strip->GetDim()->GetZ()*0.5);
-    fDistrPositionZ->SetPar(1,0.);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

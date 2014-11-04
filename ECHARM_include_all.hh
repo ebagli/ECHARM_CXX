@@ -25,6 +25,20 @@
 #include "ECHARM_distribution_box.hh"
 #include "ECHARM_distribution_box.cpp"
 
+#include "ECHARM_distribution_const.hh"
+#include "ECHARM_distribution_const.cpp"
+
+#ifdef ROOT_
+#include "ECHARM_ROOT_save.hh"
+#include "ECHARM_ROOT_save.cpp"
+#endif
+
+#include "ECHARM_info_save.hh"
+#include "ECHARM_info_save.cpp"
+
+#include "ECHARM_manager.hh"
+#include "ECHARM_manager.cpp"
+
 
 
 // particle & beam
@@ -35,37 +49,15 @@
 #include "ECHARM_beam.cpp"
 
 
-
 // crystal & strip
 #include "ECHARM_atom.hh"
 #include "ECHARM_atom.cpp"
-#include "ECHARM_atom_spheric.hh"
-#include "ECHARM_atom_spheric.cpp"
-#include "ECHARM_atom_moliere.hh"
-#include "ECHARM_atom_moliere.cpp"
-#include "ECHARM_atom_lindhard.hh"
-#include "ECHARM_atom_lindhard.cpp"
-#include "ECHARM_atom_xray.hh"
-#include "ECHARM_atom_xray.cpp"
-
 
 #include "ECHARM_miller.hh"
 #include "ECHARM_miller.cpp"
-#include "ECHARM_miller_orto.hh"
-#include "ECHARM_miller_orto.cpp"
-#include "ECHARM_miller_cubic.hh"
-#include "ECHARM_miller_cubic.cpp"
 
 #include "ECHARM_lattice.hh"
 #include "ECHARM_lattice.cpp"
-#include "ECHARM_lattice_bcc.hh"
-#include "ECHARM_lattice_bcc.cpp"
-#include "ECHARM_lattice_cubic.hh"
-#include "ECHARM_lattice_cubic.cpp"
-#include "ECHARM_lattice_fcc.hh"
-#include "ECHARM_lattice_fcc.cpp"
-#include "ECHARM_lattice_diamond.hh"
-#include "ECHARM_lattice_diamond.cpp"
 
 #include "ECHARM_cell.hh"
 #include "ECHARM_cell.cpp"
@@ -75,15 +67,6 @@
 
 #include "ECHARM_strip.hh"
 #include "ECHARM_strip.cpp"
-
-
-
-// crystal database
-#include "ECHARM_crystal_Si.hh"
-#include "ECHARM_crystal_Si.cpp"
-
-#include "ECHARM_crystal_LiNbO3.hh"
-#include "ECHARM_crystal_LiNbO3.cpp"
 
 
 // electrical characteristics
@@ -154,7 +137,6 @@
 #include "ECHARM_EC_rec_efz_ax.cpp"
 
 
-
 // kernel & processes
 #include "ECHARM_kernel.hh"
 #include "ECHARM_kernel.cpp"
@@ -177,6 +159,12 @@
 #include "ECHARM_process_ms_tikhomirov.hh"
 #include "ECHARM_process_ms_tikhomirov.cpp"
 
+#include "ECHARM_process_ss.hh"
+#include "ECHARM_process_ss.cpp"
+
+#include "ECHARM_displacement.hh"
+#include "ECHARM_displacement.cpp"
+
 #include "ECHARM_defect.hh"
 #include "ECHARM_defect.cpp"
 
@@ -192,11 +180,58 @@
 #include "ECHARM_radiation.hh"
 #include "ECHARM_radiation.cpp"
 
+#include "ECHARM_undulator.hh"
+#include "ECHARM_undulator.cpp"
+
+#include "ECHARM_process_bethe_bloch.hh"
+#include "ECHARM_process_bethe_bloch.cpp"
 
 
 
+
+// miller database
+#include "ECHARM_miller_orto.hh"
+#include "ECHARM_miller_orto.cpp"
+
+#include "ECHARM_miller_cubic.hh"
+#include "ECHARM_miller_cubic.cpp"
+
+// atom database
+#include "ECHARM_atom_spheric.hh"
+#include "ECHARM_atom_spheric.cpp"
+
+#include "ECHARM_atom_moliere.hh"
+#include "ECHARM_atom_moliere.cpp"
+
+#include "ECHARM_atom_lindhard.hh"
+#include "ECHARM_atom_lindhard.cpp"
+
+#include "ECHARM_atom_xray.hh"
+#include "ECHARM_atom_xray.cpp"
+
+// lattice database
+#include "ECHARM_lattice_single.hh"
+#include "ECHARM_lattice_single.cpp"
+
+#include "ECHARM_lattice_bcc.hh"
+#include "ECHARM_lattice_bcc.cpp"
+
+#include "ECHARM_lattice_cubic.hh"
+#include "ECHARM_lattice_cubic.cpp"
+
+#include "ECHARM_lattice_fcc.hh"
+#include "ECHARM_lattice_fcc.cpp"
+
+#include "ECHARM_lattice_diamond.hh"
+#include "ECHARM_lattice_diamond.cpp"
 
 // strip database
+#include "ECHARM_Vacuum.hh"
+#include "ECHARM_Vacuum.cpp"
+
+#include "ECHARM_STLHC.hh"
+#include "ECHARM_STLHC.cpp"
+
 #include "ECHARM_ST45.hh"
 #include "ECHARM_ST45.cpp"
 
@@ -212,15 +247,67 @@
 #include "ECHARM_FIG5_PRE52_2045.hh"
 #include "ECHARM_FIG5_PRE52_2045.cpp"
 
+#include "ECHARM_QM30_33.hh"
+#include "ECHARM_QM30_33.cpp"
+
+#include "ECHARM_QM60_150.hh"
+#include "ECHARM_QM60_150.cpp"
+
+#include "ECHARM_FIG14_NIMB266_3835_111.hh"
+#include "ECHARM_FIG14_NIMB266_3835_111.cpp"
+
+#include "ECHARM_FIG14_NIMB266_3835_110.hh"
+#include "ECHARM_FIG14_NIMB266_3835_110.cpp"
+
+#include "ECHARM_FIG14_NIMB266_3835_100.hh"
+#include "ECHARM_FIG14_NIMB266_3835_100.cpp"
+
+#include "ECHARM_UNDO_UGG2014.hh"
+#include "ECHARM_UNDO_UGG2014.cpp"
+
+#include "ECHARM_NiCOMECER.hh"
+#include "ECHARM_NiCOMECER.cpp"
+
+// crystal database
+#include "ECHARM_crystal_Si.hh"
+#include "ECHARM_crystal_Si.cpp"
+
+#include "ECHARM_crystal_LiNbO3.hh"
+#include "ECHARM_crystal_LiNbO3.cpp"
+
+#include "ECHARM_crystal_SiGe.hh"
+#include "ECHARM_crystal_SiGe.cpp"
+
+#include "ECHARM_crystal_Ge.hh"
+#include "ECHARM_crystal_Ge.cpp"
+
+#include "ECHARM_crystal_Ni.hh"
+#include "ECHARM_crystal_Ni.cpp"
+
+#include "ECHARM_crystal_Vacuum.hh"
+#include "ECHARM_crystal_Vacuum.cpp"
+
 // beam database
+#include "ECHARM_beam_H8_2012_UA9.hh"
+#include "ECHARM_beam_H8_2012_UA9.cpp"
+
 #include "ECHARM_beam_H8_2012.hh"
 #include "ECHARM_beam_H8_2012.cpp"
 
 #include "ECHARM_beam_H8_pencil.hh"
 #include "ECHARM_beam_H8_pencil.cpp"
 
+#include "ECHARM_beam_COMECER.hh"
+#include "ECHARM_beam_COMECER.cpp"
+
 #include "ECHARM_beam_MAMI855.hh"
 #include "ECHARM_beam_MAMI855.cpp"
 
-#include "ECHARM_MAMIPRL.hh"
-#include "ECHARM_MAMIPRL.cpp"
+#include "ECHARM_beam_MAMI600.hh"
+#include "ECHARM_beam_MAMI600.cpp"
+
+#include "ECHARM_beam_SLAC.hh"
+#include "ECHARM_beam_SLAC.cpp"
+
+#include "ECHARM_beam_FACET.hh"
+#include "ECHARM_beam_FACET.cpp"

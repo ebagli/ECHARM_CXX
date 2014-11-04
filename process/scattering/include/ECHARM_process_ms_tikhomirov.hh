@@ -17,7 +17,7 @@ public:
     ECHARM_process_ms_tikhomirov();
     virtual ~ECHARM_process_ms_tikhomirov();
         
-    virtual void Init(ECHARM_strip*,ECHARM_particle*);
+    virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
 
     double ComputeTheta2(ECHARM_strip*,ECHARM_particle*,double);
@@ -29,7 +29,11 @@ public:
     double ComputeThetaMin(ECHARM_strip*,ECHARM_particle*);
     double ComputeThetaMax(ECHARM_strip*,ECHARM_particle*);
 
+    inline void SetTotalProbThetaSS(double sigmass) {fTotalProbThetaSS = sigmass;}
+    void UpdateConstants(ECHARM_strip*,ECHARM_particle*);
+    
 protected:
+    double fEnergyStored;
     double fThetaMin;
     double fThetaMax;
     double fTotalProbThetaSS;

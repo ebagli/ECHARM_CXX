@@ -9,39 +9,16 @@
 #include "ECHARM_defect.hh"
 #include "TH2D.h"
 ECHARM_defect::ECHARM_defect(double num,double prob,bool sudden = true):
-ECHARM_process("defect"){
+ECHARM_displacement(num,prob,sudden){
     
-    bSudden = sudden;
-    fDefNum = num;
-    fProb = prob;
-    
-    fArea = 1.;
-    bVecStored = false;
-    
-    if(num < 1){
-        fDefNum = 1;
-        fArea = fSquareRoot(1./num);
-    }
-    
-    fBoxX = new ECHARM_distribution_box(0.,0.);
-    fBoxY = new ECHARM_distribution_box(0.,0.);
-    fBoxZ = new ECHARM_distribution_box(0.,0.);
-    
-    for(int i=0;i<fDefNum;i++){
-        fDefCenter.push_back(new ECHARM_3vec(0.,0.,0.));
-        fDefAnglesPhi.push_back(0.);
-        fDefAnglesTheta.push_back(0.);
-    }
-    
+    SetName("defect");
+    bRandomPosition = true;
     fPoissonRatio = 0.42;
+    fBurger = 1. * AA;
     
-    fBurger = new ECHARM_3vec(0.,0.,0.);
-    fDispl = new ECHARM_3vec(0.,0.,0.);
-    fBR = new ECHARM_3vec(0.,0.,0.);
-    fLimitsHalf = new ECHARM_3vec(0.01 * millimeter,0.01 * millimeter,0.01 * millimeter);
-    
-    fPosTemp = new ECHARM_3vec(0.,0.,0.);
-    fPosTempPre = new ECHARM_3vec(0.,0.,0.);
+    fLimitsHalf->SetX(2. * micrometer);
+    fLimitsHalf->SetY(2. * micrometer);
+    fLimitsHalf->SetZ(2. * micrometer);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -51,174 +28,39 @@ ECHARM_defect::~ECHARM_defect(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part){
-    
-    if(bSudden==false){
-        for(int i0 = 0;i0 < fDefNum;i0++){
-            
-            double vRandom = 0.;
-            if(fProb < 1.){
-                vRandom = drand48();
-            }
-            
-            if(vRandom<fProb){
-                fPosTemp->Set(part->GetPos());
-                fPosTemp->Add(fDefCenter.at(i0),-1.);
-                fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-                
-                if((fabs(fPosTemp->GetX()) < fLimitsHalf->GetX()) &&
-                   (fabs(fPosTemp->GetY()) < fLimitsHalf->GetY()) &&
-                   (fabs(fPosTemp->GetZ()) < fLimitsHalf->GetZ())){
-                    
-                    fPosTemp->Add(fLimitsHalf);
-                    
-                    fBR->SetX(fVecBRX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-                    fBR->SetY(fVecBRY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-                    fBR->SetZ(fVecBRZ->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()));
-                    
-                    fBR->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-                    fBR->SetZ(0.);
-                    
-                    
-                    strip->GetBR()->AddInverse(fBR);
-                }
-            }
+void ECHARM_defect::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
+    for(int i0 = 0;i0 < fNum;i0++){
+        if(bRandomPosition == true){
+            fCenter.at(i0)->SetX(fBoxX->GenerateNumber());
+            fCenter.at(i0)->SetY(fBoxY->GenerateNumber());
+            fCenter.at(i0)->SetZ(fBoxZ->GenerateNumber());
+        }
+        if(bRandomAngle == true){
+            fAngPhi.at(i0) = drand48() * c2Pi;
+            fAngTheta.at(i0) = acos(2.* drand48() - 1.);
         }
     }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part){
-    
-    if(bSudden==true){
-        for(int i0 = 0;i0 < fDefNum;i0++){
-            double vRandom = 0.;
-            if(fProb < 1.){
-                vRandom = drand48();
-            }
-            
-            if(vRandom<fProb){
-                fPosTemp->Set(part->GetPos());
-                fPosTemp->Add(fDefCenter.at(i0),-1.);
-                fPosTemp->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-                
-                fPosTempPre->Set(part->GetPosPre());
-                fPosTempPre->Add(fDefCenter.at(i0),-1.);
-                fPosTempPre->Rotate(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-                
-                if((fabs(fPosTemp->GetX()) < fLimitsHalf->GetX()) &&
-                   (fabs(fPosTemp->GetY()) < fLimitsHalf->GetY()) &&
-                   (fabs(fPosTemp->GetZ()) < fLimitsHalf->GetZ()) &&
-                   (fabs(fPosTempPre->GetX()) < fLimitsHalf->GetX()) &&
-                   (fabs(fPosTempPre->GetY()) < fLimitsHalf->GetY()) &&
-                   (fabs(fPosTempPre->GetZ()) < fLimitsHalf->GetZ())){
-                    
-                    fPosTemp->Add(fLimitsHalf);
-                    fPosTempPre->Add(fLimitsHalf);
-                    
-                    fDispl->SetX(fVecDisplX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplX->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-                    fDispl->SetY(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-                    fDispl->SetZ(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
-                    
-                    fDispl->RotateInv(fDefAnglesPhi.at(i0),fDefAnglesTheta.at(i0));
-                    fDispl->SetZ(0.);
-                    
-                    part->GetPos()->Add(fDispl);
-                }
-                
-            }
-        }
-    }
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_defect::Init(ECHARM_strip* strip,ECHARM_particle* part){
+void ECHARM_defect::Init(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
     if(bVecStored==false){
         fBoxX->SetPar(1,1.*centimeter*fArea*0.5);
-        fBoxY->SetPar(1,1.*centimeter*fArea*0.5);
+        fBoxY->SetPar(1,0.);
         fBoxZ->SetPar(1,strip->GetDim()->GetZ()*0.5);
         
-        fBurger->Set(strip->GetCrystal()->GetPeriodX(),0.,0.);
+        if(fBurger==0.){
+            fBurger = strip->GetCrystal()->GetPeriodX();
+        }
+        
         Store();
     }
-    
-    for(int i0 = 0;i0 < fDefNum;i0++){
-        fDefCenter.at(i0)->SetX(fBoxX->GenerateNumber());
-        fDefCenter.at(i0)->SetY(fBoxY->GenerateNumber());
-        fDefCenter.at(i0)->SetZ(fBoxZ->GenerateNumber());
-        //fDefAnglesPhi.at(i0) = drand48() * c2Pi;
-        //fDefAnglesTheta.at(i0) = acos(2.* drand48() - 1.);
-    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::Store(){
-    std::vector<double> vecBRX;
-    std::vector<double> vecBRY;
-    std::vector<double> vecBRZ;
-    std::vector<double> vecDisplX;
-    std::vector<double> vecDisplY;
-    std::vector<double> vecDisplZ;
-    
-    int fNumSteps[3];
-    fNumSteps[0] = 256;
-    fNumSteps[1] = 256;
-    fNumSteps[2] = 1;
-    
-    double fLimitsHalfVecBR[3];
-    fLimitsHalfVecBR[0] = fLimitsHalf->GetX()*2.;
-    fLimitsHalfVecBR[1] = fLimitsHalf->GetY()*2.;
-    fLimitsHalfVecBR[2] = fLimitsHalf->GetZ()*2.;
-    
-    double fStep[3];
-    fStep[0] = 2.*fLimitsHalf->Get(0)/fNumSteps[0];
-    fStep[1] = 2.*fLimitsHalf->Get(1)/fNumSteps[1];
-    fStep[2] = 1;
-    
-    fVecBRX = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    fVecBRY = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    fVecBRZ = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    
-    fVecDisplX = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    fVecDisplY = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    fVecDisplZ = new ECHARM_periodicvector(fNumSteps,fLimitsHalfVecBR);
-    
-    ECHARM_3vec* zero = new ECHARM_3vec(0.,0.,0.);
-    
-    for(int i1=0;i1<fNumSteps[1];i1++){
-        fPosTemp->SetZ(double(i1) * fStep[1] - fLimitsHalf->Get(1));
-        for(int i0=0;i0<fNumSteps[0];i0++){
-            fPosTemp->SetX(double(i0) * fStep[0] - fLimitsHalf->Get(0));
-            
-            ComputeBR(fPosTemp,zero);
-            vecBRX.push_back(fBR->GetX());
-            vecBRY.push_back(fBR->GetY());
-            vecBRZ.push_back(fBR->GetZ());
-            
-            CompDispl(fPosTemp,zero);
-            vecDisplX.push_back(fDispl->GetX());
-            vecDisplY.push_back(fDispl->GetY());
-            vecDisplZ.push_back(fDispl->GetZ());
-        }
-    }
-    
-    fVecBRX->Set(vecBRX);
-    fVecBRY->Set(vecBRY);
-    fVecBRZ->Set(vecBRZ);
-    
-    fVecDisplX->Set(vecDisplX);
-    fVecDisplY->Set(vecDisplY);
-    fVecDisplZ->Set(vecDisplZ);
-    
-    bVecStored = true;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_defect::CompDispl(ECHARM_3vec*,ECHARM_3vec*){
+void ECHARM_defect::ComputeDispl(ECHARM_3vec*,ECHARM_3vec*){
     fDispl->SetX(0.);
     fDispl->SetY(0.);
     fDispl->SetZ(0.);
@@ -234,3 +76,39 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec*,ECHARM_3vec*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_defect::ComputeAnglesFromBurgerAndLineDirections(ECHARM_3vec* burger,ECHARM_3vec* line){
+    
+    ECHARM_3vec* xaxis = burger->NormalizeVectorTo();
+    ECHARM_3vec* yaxis = line->NormalizeVectorTo();
+    ECHARM_3vec* zaxis = burger->VectorProductTo(line);
+    zaxis->NormalizeVector();
+    
+    double theta = 0.;
+    double phi = 0.;
+    double psi = 0.;
+    
+    if(fabs(xaxis->GetZ()) != 1.){
+        theta = -asin(xaxis->GetZ());
+        double costheta = cos(theta);
+        
+        psi = atan2(yaxis->GetZ()/costheta,zaxis->GetZ()/costheta);
+        phi = atan2(xaxis->GetY()/costheta,xaxis->GetX()/costheta);
+    }
+    else{
+        phi = 0.;
+        if(xaxis->GetZ() == -1.){
+            theta = cPiHalf;
+            psi = atan2(+yaxis->GetX(),+zaxis->GetX());
+        }
+        else{
+            theta = -cPiHalf;
+            psi = atan2(-yaxis->GetX(),-yaxis->GetX());
+        }
+    }
+  
+    SetAng(phi,theta,psi);
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

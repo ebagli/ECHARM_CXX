@@ -26,7 +26,8 @@ double ECHARM_process_cpc141_2001_doublegauss::ComputeThetaScattering(ECHARM_str
     
     double vV = drand48();
     
-    double vLength = part->GetStepLength() * ComputeLengthMod(strip,part);
+    double vLength = part->GetStepLength();
+    
     ComputeStdDev(strip,part,vLength);
 
     if(vV < fE){
@@ -35,6 +36,8 @@ double ECHARM_process_cpc141_2001_doublegauss::ComputeThetaScattering(ECHARM_str
     else{
     }
 
+    fStdDev *= ComputeAvgDen(strip,part);
+
     return ComputeThetaMS(strip,part);
 
 }
@@ -42,7 +45,7 @@ double ECHARM_process_cpc141_2001_doublegauss::ComputeThetaScattering(ECHARM_str
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_cpc141_2001_doublegauss::ComputeStdDevMod(ECHARM_strip* strip,ECHARM_particle* part){
-    double vE = ComputeE(strip,part,ComputeLengthMod(strip,part));
+    double vE = ComputeE(strip,part,ComputeAvgDen(strip,part));
     fStdDev = fSquareRoot((1. - (1.-vE)*fStdDev*fStdDev) / vE);
     return fStdDev;
 }

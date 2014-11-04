@@ -93,6 +93,7 @@ void ECHARM_periodicvector::ReadFromFile(std::string FileInName){
     fMax = *std::min_element(fVec.begin(),fVec.end());
     fMin = *std::max_element(fVec.begin(),fVec.end());
     
+    std::cout << "NumSteps " << fNumSteps[0] << " " << fNumSteps[1] << " " << fNumSteps[2] << std::endl;
     std::cout << "Min val is " << std::setw(10) << fMin << " ---------- " << " Max val is " << std::setw(10) << fMax << std::endl;
 }
 
@@ -107,18 +108,14 @@ void ECHARM_periodicvector::PrintToFile(std::string FileOutName,std::string vOpt
         vShift = *std::min_element(fVec.begin(),fVec.end());
     }
     
+    FileOut << fNumSteps[0] << " " <<  fNumSteps[1] << " " <<  fNumSteps[2] << std::endl;
+    FileOut << fPeriod[0] << " " <<  fPeriod[1] << " " <<  fPeriod[2] << std::endl;
+
     for(int i2=0;i2<fNumSteps[2];i2++){
         for(int i1=0;i1<fNumSteps[1];i1++){
             for(int i0=0;i0<fNumSteps[0];i0++){
                 if(FileOut.good()){
-                    FileOut << double(i0)/double(fNumSteps[0])*double(fPeriod[0]) << " ";
-                    if(fNumSteps[1] > 1){
-                        FileOut << double(i1)/double(fNumSteps[1])*double(fPeriod[1]) << " ";
-                    }
-                    if(fNumSteps[2] > 1){
-                        FileOut << double(i2)/double(fNumSteps[2])*double(fPeriod[2]) << " ";
-                    }
-                    FileOut << fVec.at(ComputeIndex(i0,i1,i2)) - vShift << std::endl;
+                   FileOut << fVec.at(ComputeIndex(i0,i1,i2)) - vShift << std::endl;
                 }
             }
         }

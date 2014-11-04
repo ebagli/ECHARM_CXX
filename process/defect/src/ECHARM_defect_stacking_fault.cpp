@@ -20,10 +20,10 @@ ECHARM_defect_stacking_fault::~ECHARM_defect_stacking_fault(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect_stacking_fault::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
-    double z = partpos->GetZ()-defpos->GetZ();
-    if(z>0.){
-        fDispl->SetX(fBurger->GetModule() * 0.5);
+void ECHARM_defect_stacking_fault::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
+    double z = partpos->GetZ() - defpos->GetZ();
+    if(z>=0.){
+        fDispl->SetX(fBurger * 0.5);
     }
     else{
         fDispl->SetX(0.);

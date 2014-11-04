@@ -20,7 +20,7 @@ ECHARM_defect_screw::~ECHARM_defect_screw(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect_screw::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
+void ECHARM_defect_screw::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double x = partpos->GetX() - defpos->GetX();
     double z = partpos->GetZ() - defpos->GetZ();
     
@@ -35,7 +35,7 @@ void ECHARM_defect_screw::CompDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     }
     else{        
         dy = atan2( x , z ) ;
-        dy *= ( fBurger->GetModule() );
+        dy *= ( fBurger );
         dy /= ( 2. * cPi );
         
         fDispl->SetY(dy);
@@ -59,7 +59,7 @@ void ECHARM_defect_screw::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     else{
         // (1 + (d/dz (b/(2*l)(arctan(z/x))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x))))
         double xz2 = x*x + z*z;
-        double b = fBurger->GetModule();
+        double b = fBurger;
         
         double Rx1 = b*b+x*x;
         Rx1 /= fSquare(2.*cPi*xz2);

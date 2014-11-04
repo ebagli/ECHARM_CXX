@@ -30,8 +30,12 @@ double ECHARM_process_cpc141_2001_semigauss::ComputeThetaScattering(ECHARM_strip
         return ComputeThetaSS(strip,part);
     }
     else{
-        double vLength = part->GetStepLength() * ComputeLengthMod(strip,part);
+        double vLength = part->GetStepLength();
+        
         ComputeStdDev(strip,part,vLength);
+
+        fStdDev *= ComputeAvgDen(strip,part);
+
         return ComputeThetaMS(strip,part);
     }
 

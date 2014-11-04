@@ -17,7 +17,7 @@ public:
     ECHARM_defect_screw(double,double,bool);
     virtual ~ECHARM_defect_screw();
 
-    void CompDispl(ECHARM_3vec*,ECHARM_3vec*);
+    void ComputeDispl(ECHARM_3vec*,ECHARM_3vec*);
     void ComputeBR(ECHARM_3vec*,ECHARM_3vec*);
 };
 #endif

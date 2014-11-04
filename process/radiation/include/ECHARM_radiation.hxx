@@ -18,10 +18,5 @@ inline double GetAngXbins() {return fAngXbins;};
 inline void SetAngYbins(double num) {fAngYbins = num;};
 inline double GetAngYbins() {return fAngYbins;};
 
-
-inline int GetEnBins() {return fEnBins;};
-inline double GetEnMin() {return fEnMin;};
-inline double GetEnMax() {return fEnMax;};
-inline double GetEnStep() {return fEnStep;};
-std::vector<double> GetRadProb() {return fRadEmProb;};
-
+inline void SetSliceTraj(bool num) {bSliceTraj = num;};
+inline bool GetSliceTraj() {return bSliceTraj;};

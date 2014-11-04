@@ -53,17 +53,6 @@ void ECHARM_particle::Print(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_particle::PrintToStruct(ECHARM_Particle_Save& part){
-    part.posx = fPos->GetX() / AA;
-    part.posy = fPos->GetY() / AA;
-    part.posz = fPos->GetZ() / millimeter;
-    part.angx = GetAngX() / microrad;
-    part.angy = GetAngY() / microrad;
-    part.momz = fMom->GetZ() / GeV;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 double ECHARM_particle::GetKineticEnergy() {
     return (0.5 * fMass * fSquare(GetBeta()));
 }

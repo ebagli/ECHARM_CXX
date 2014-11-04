@@ -15,13 +15,12 @@
 class ECHARM_radiation: public ECHARM_process
 {
 public:
-    ECHARM_radiation(int,double,double,int,int);
+    ECHARM_radiation();
+    ECHARM_radiation(int,int);
     virtual ~ECHARM_radiation();
     
-    void DoOnStrip(ECHARM_strip*,ECHARM_particle*);
-    void DoOnParticle(ECHARM_strip*,ECHARM_particle*);
-    void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*);
-    void Init(ECHARM_strip*,ECHARM_particle*);
+    void DoOnParticle(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
+    void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
     void Store();
     void PrintTrajToFile(std::string);
@@ -34,12 +33,8 @@ private:
     int fAngXbins;
     int fAngYbins;
 
-    int fEnBins;
-    double fEnMin;
-    double fEnMax;
-    double fEnStep;
-    std::vector<double> fRadEmProb;
-
+    bool bSliceTraj;
+    
     int fStepNum;
     double fStep[MAX_STEP_NUM];
     double fVelX[MAX_STEP_NUM];

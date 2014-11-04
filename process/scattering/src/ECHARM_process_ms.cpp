@@ -22,12 +22,12 @@ ECHARM_process_ms::~ECHARM_process_ms(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_process_ms::DoOnStrip(ECHARM_strip*,ECHARM_particle*){
+void ECHARM_process_ms::DoOnStrip(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_process_ms::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part){
+void ECHARM_process_ms::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
     double vMom = part->GetMomMod();
 
     double vTheta = ComputeThetaScattering(strip,part);
@@ -37,15 +37,15 @@ void ECHARM_process_ms::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part){
     
     part->GetMom()->AddX( VMomVar * cos(vPhi) );
     part->GetMom()->AddY( VMomVar * sin(vPhi) );
-
-    part->GetMom()->ScaleModule(vMom);
+    part->GetMom()->SubtractZ( VMomVar);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_ms::ComputeThetaScattering(ECHARM_strip* strip,ECHARM_particle* part){
-    double vLength = part->GetStepLength() * ComputeLengthMod(strip,part);
+    double vLength = part->GetStepLength();
     ComputeStdDev(strip,part,vLength);
+    fStdDev *= ComputeAvgDen(strip,part);
     return ComputeThetaMS(strip,part);
 }
 
@@ -90,14 +90,7 @@ double ECHARM_process_ms::ComputeStdDev(ECHARM_strip* strip,ECHARM_particle* par
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_process_ms::Init(ECHARM_strip* strip,ECHARM_particle* part){
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-double ECHARM_process_ms::ComputeLengthMod(ECHARM_strip* strip,ECHARM_particle* part){
-    double vLengthMod = (strip->GetAtD()->Get(part->GetPos()) + strip->GetAtD()->Get(part->GetPosPre()))*0.5;
-    return vLengthMod;
+void ECHARM_process_ms::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

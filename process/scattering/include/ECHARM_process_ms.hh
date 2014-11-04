@@ -18,16 +18,16 @@ public:
     ECHARM_process_ms();
     virtual ~ECHARM_process_ms();
     
-    void DoOnStrip(ECHARM_strip*,ECHARM_particle*);
-    void DoOnParticle(ECHARM_strip*,ECHARM_particle*);
+    void DoOnStrip(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
+    void DoOnParticle(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
-    virtual void Init(ECHARM_strip*,ECHARM_particle*);
+    virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
 
 
-    double ComputeStdDev(ECHARM_strip*,ECHARM_particle*,double);
+    virtual double ComputeStdDev(ECHARM_strip*,ECHARM_particle*,double);
     double ComputeThetaMS(ECHARM_strip*,ECHARM_particle*);
-    double ComputeLengthMod(ECHARM_strip*,ECHARM_particle*);
+
     virtual double ComputeThetaMin(ECHARM_strip*,ECHARM_particle*);
     virtual double ComputeThetaMax(ECHARM_strip*,ECHARM_particle*);
 

@@ -7,6 +7,9 @@
 //
 
 public:
+inline ECHARM_info_save* GetInfo() {return fInfo;};
+inline void SetInfo(ECHARM_info_save* info) {fInfo = info;};
+
 inline ECHARM_strip* GetStrip() {return fStrip;};
 inline void SetStrip(ECHARM_strip* strip) {fStrip = strip;};
 
@@ -16,11 +19,19 @@ inline void SetParticle(ECHARM_particle* particle) {fPart = particle;};
 inline double GetTimeStepMin() {return fTimeTimeStepMin;};
 inline void SetTimeStepMin(double step) {fTimeTimeStepMin = step;};
 
+inline double GetTimeStepTotal() {return fTimeStepTotal;};
+
 inline double GetStep() {return fTimeStep;};
 inline void SetStep(double step) {fTimeStep = step;};
 
-inline void AddProcess(ECHARM_process* process) {fProcesses.push_back(process);};
-#ifdef ROOT_
 inline bool GetSaveTrajStatus() {return bSaveTrajStatus;};
 inline void SetSaveTrajStatus(bool aBool) {bSaveTrajStatus = aBool;};
-#endif
+
+inline void AddProcess(ECHARM_process* process) {fProcesses.push_back(process);};
+inline std::vector<ECHARM_process*> GetProcesses() {return fProcesses;};
+
+inline void SavePartIn(bool aBool) {bSavePartIn = aBool;};
+inline void SavePartOut(bool aBool) {bSavePartOut = aBool;};
+
+inline void SetParticle();
+inline void SetStrip();

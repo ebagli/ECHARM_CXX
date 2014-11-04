@@ -13,7 +13,8 @@
 #include "ECHARM_process_ms_tikhomirov.hh"
 
 ECHARM_process_ms_tikhomirov::ECHARM_process_ms_tikhomirov(){
-    fTotalProbThetaSS = 0.2;
+    fEnergyStored = 0.;
+    fTotalProbThetaSS = 0.3;
     fName = "ms_tikhomirov";
 }
 
@@ -26,32 +27,34 @@ ECHARM_process_ms_tikhomirov::~ECHARM_process_ms_tikhomirov(){
 
 double ECHARM_process_ms_tikhomirov::ComputeThetaScattering(ECHARM_strip* strip,ECHARM_particle* part){
     
-    double vLength = part->GetStepLength() * ComputeLengthMod(strip,part);
-    
-    ComputeStdDev(strip,part,vLength);
-
-    double vThetaMS = ComputeThetaMS(strip,part);
+    double vLength = part->GetStepLength();
     
     double vTheta = 0.;
-    double vStep = vLength;
-
+    double vStep = vLength / ComputeAvgDen(strip,part);
+    
     bool bExit = true;
-
+    
     do{
         bExit = true;
         double vRand = drand48();
         double vZss = -log(vRand) * vStep / fTotalProbThetaSS;
         
         if(vZss < vStep){
-            double vTheta2 = ComputeTheta2(strip,part,vStep * ComputeLengthMod(strip,part));
+            double vTheta2 = ComputeTheta2(strip,part,vLength * ComputeAvgDen(strip,part));
             vTheta += ComputeThetaSS(strip,part,vTheta2);
             vStep -= vZss;
             bExit = false;
         }
-
+        
     }while(bExit==false);
     
-    vTheta += vThetaMS;
+    if(vTheta == 0.){
+        ComputeStdDev(strip,part,vLength);
+        fStdDev *= ComputeAvgDen(strip,part);
+        vTheta +=  ComputeThetaMS(strip,part);
+    }
+    
+    fEnergyStored = part->GetMomMod();
     
     return vTheta;
 }
@@ -65,15 +68,25 @@ double ECHARM_process_ms_tikhomirov::ComputeThetaSS(ECHARM_strip* strip,ECHARM_p
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_process_ms_tikhomirov::Init(ECHARM_strip* strip,ECHARM_particle* part){
-    fThetaMin = ComputeThetaMin(strip,part);
-    fThetaMax = ComputeThetaMax(strip,part);
-    fXS_SSconstant = ComputeXS_SSconstant(strip,part);
+void ECHARM_process_ms_tikhomirov::UpdateConstants(ECHARM_strip* strip,ECHARM_particle* part){
+    if(fEnergyStored != part->GetMomMod()){
+        fThetaMin = ComputeThetaMin(strip,part);
+        fThetaMax = ComputeThetaMax(strip,part);
+        fXS_SSconstant = ComputeXS_SSconstant(strip,part);
+        fEnergyStored = part->GetMomMod();
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_process_ms_tikhomirov::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
+    UpdateConstants(strip,part);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_ms_tikhomirov::ComputeTheta2(ECHARM_strip* strip,ECHARM_particle* part,double length){
+    UpdateConstants(strip,part);
     double vInvTheta2 = fTotalProbThetaSS / (length * fXS_SSconstant * strip->GetCrystal()->GetNucleiDensity());
     vInvTheta2 += 1./fSquare(fThetaMax);
     return fSquareRoot(1./vInvTheta2);
@@ -90,7 +103,8 @@ double ECHARM_process_ms_tikhomirov::ComputeXS_SSconstant(ECHARM_strip* strip,EC
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_ms_tikhomirov::ComputeXS_SS(ECHARM_strip* strip,ECHARM_particle* part,double theta2){
-    double vTotal = 1./fSquare(theta2)-1./fSquare(fThetaMax);
+    UpdateConstants(strip,part);
+    double vTotal = (fSquare(fThetaMax) - fSquare(theta2))/(fSquare(theta2)*fSquare(fThetaMax));
     return (vTotal*fXS_SSconstant);
 }
 

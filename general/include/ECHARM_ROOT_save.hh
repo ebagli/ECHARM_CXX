@@ -28,18 +28,10 @@
 #include "TTree.h"
 #include "TGraph.h"
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <cfloat>
-#include <limits>
-#include "ECHARM_constants.hh"
-#include "ECHARM_info_save.hh"
 
-#define MAX_EN_BIN 1024
+#include "ECHARM_file_save.hh"
 
-class ECHARM_ROOT_save
+class ECHARM_ROOT_save: public ECHARM_file_save
 {
 public:
     ECHARM_ROOT_save(std::string);
@@ -47,37 +39,17 @@ public:
     
 public:
     void Save(ECHARM_info_save *info);
+
+    void Open();
     void Analysis();
     void Close();
     
 private:
+    //ROOT
     TFile *vRootFile;
     
-    //IN OUT
     TTree *fTree;
-    
-    ECHARM_Particle_Save partIn;
-    ECHARM_Particle_Save partOut;
-    double atd;
-    double eld;
-
-    int enBin;
-    double enVec[MAX_EN_BIN];
-    double enVecX[MAX_EN_BIN];
-
-    //TRAJ
     TTree *fTreeTraj;
-    
-    ECHARM_Particle_Save partStep;
-
-    double brstep;
-    double displx;
-    double disply;
-    double displz;
-
-    
-#include "ECHARM_ROOT_save.hxx"
-    
 };
 
 #endif

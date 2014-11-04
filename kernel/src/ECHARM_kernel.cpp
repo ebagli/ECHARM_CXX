@@ -5,15 +5,17 @@
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifdef _ECHARM_kernel_h
 
 #include "ECHARM_kernel.hh"
 
 ECHARM_kernel::ECHARM_kernel(ECHARM_strip* strip){
     fStrip = strip;
     
-    fTimeTimeStepMin = 1.E2 * AA;
-    SetTransverseVariationMax(2.E-2 * AA);
+    fTimeStepMin = 2.E2 * AA;
+    fTransverseVariationMax = 2.E-2 * AA;
     bPartIsIn = true;
+    bHasBeenInChanneling = false;
     
     fPosHalf = new ECHARM_3vec(0.,0.,0.);
     fMomHalf = new ECHARM_3vec(0.,0.,0.);
@@ -50,9 +52,11 @@ int ECHARM_kernel::DoBeforeInteraction(){
     fInfo->GetDispl()->Zero();
     fInfo->GetBR()->Zero();
     
+    bHasBeenInChanneling = false;
     bPartIsIn = true;
     fTimeStepTotal = 0.;
     bSaveTrajStepTemp = 0.;
+    UpdateTransverseVariationMax(fTransverseVariationMax);
     
     fPart->ResetStepLengthSinceLastProcess();
     fPart->ResetAtDSinceLastProcess();
@@ -70,6 +74,10 @@ int ECHARM_kernel::Interaction(){
     }
     
     DoBeforeInteraction();
+    
+    fInfo->SetChInitial(IsInChanneling());
+    fInfo->SetMass(fPart->GetMass()/MeV);
+    fInfo->SetCharge(fPart->GetZ());
     
     do {
         bPartIsIn = fStrip->IsIn(fPart->GetPos());
@@ -92,6 +100,9 @@ int ECHARM_kernel::Interaction(){
                     bSaveTrajStepTemp += bSaveTrajStep;
                 }
             }
+        
+        CheckChannelingCondition();
+        
     } while(bPartIsIn);
     
     DoAfterInteraction();
@@ -121,9 +132,7 @@ int ECHARM_kernel::DoAfterInteraction(){
             fPart->GetMom()->Add(vIndex, fStrip->GetDim()->GetZ() * fPart->GetMomVel() / fInfo->GetBR()->Get(vIndex));
         }
     }
-    
-    fPart->GetPos()->Add(fInfo->GetDispl());
-    
+        
     return 0;
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -199,6 +208,8 @@ int ECHARM_kernel::DoOnParticle(){
 int ECHARM_kernel::DoOnStrip(){
     std::vector<ECHARM_process*>::iterator myProcess;
     
+    fPart->GetPos()->Add(fInfo->GetDispl(),-1.);
+
     fPart->SavePos();
     
     fStrip->ResetBR();
@@ -273,12 +284,12 @@ bool ECHARM_kernel::UpdateStep(){
         
         fTimeStep = fabs(fTransverseVariationMax * fPart->GetBeta() * fPart->GetMomMod() / fSquareRoot(xy2));
         
-        if(fTimeStep < fTimeTimeStepMin) fTimeStep = fTimeTimeStepMin;
+        if(fTimeStep < fTimeStepMin) fTimeStep = fTimeStepMin;
         
-        if(fTimeStep > fTimeTimeStepMax) fTimeStep = fTimeTimeStepMax;
+        if(fTimeStep > fTimeStepMax) fTimeStep = fTimeStepMax;
     }
     else{
-        fTimeStep = fTimeTimeStepMin;
+        fTimeStep = fTimeStepMin;
     }
     
     if((fPart->GetPos()->GetZ() + fTimeStep) > (GetStrip()->GetDim()->GetZ() * 0.5)){
@@ -289,8 +300,49 @@ bool ECHARM_kernel::UpdateStep(){
     fPart->UpdateStepLengthSinceLastProcess();
     fPart->UpdateAtDSinceLastProcess(fStrip->GetAtD()->Get(fPart->GetPos())*fTimeStep);
     fPart->UpdateElDSinceLastProcess(fStrip->GetElD()->Get(fPart->GetPos())*fTimeStep);
-
+    
     return true;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_kernel::CheckChannelingCondition(){
+    bool bIsInChanneling = IsInChanneling();
+    if(!bHasBeenInChanneling && bIsInChanneling){
+        bHasBeenInChanneling = true;
+        fInfo->AddChTimes();
+    }
+    else if(bHasBeenInChanneling && !bIsInChanneling){
+        bHasBeenInChanneling = false;
+        fInfo->AddDechTimes();
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+bool ECHARM_kernel::IsInChanneling(){
+    double vPot = fPart->GetZ() * fStrip->GetPot()->Get(fPart->GetPos());
+    double vKEn = 0.5 * fPart->GetMomVel() * fSquare(fPart->GetAngX());
+    
+    double vEn = vKEn + vPot;
+    
+    double vPotMax = fPart->GetZ() * fStrip->GetPot()->ComputeMax();
+    if(fPart->GetZ() < 0){
+        vPotMax = fPart->GetZ() * fStrip->GetPot()->ComputeMin();
+    }
+    
+    if(fStrip->IsBentX()){
+        vPotMax -= (fPart->GetMomVel() / fStrip->GetBR()->GetX() * fStrip->GetCrystal()->GetPeriodX() );
+    }
+    if(fStrip->IsBentY()){
+        vPotMax -= (fPart->GetMomVel() / fStrip->GetBR()->GetY() * fStrip->GetCrystal()->GetPeriodY() );
+    }
+
+    if(vEn<vPotMax){
+        return true;
+    }
+    
+    return false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -298,20 +350,22 @@ bool ECHARM_kernel::UpdateStep(){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-bool ECHARM_kernel::SetTransverseVariationMax(double transvarmax){
+bool ECHARM_kernel::UpdateTransverseVariationMax(double transvarmax){
     fTransverseVariationMax = transvarmax;
     
-    double maxEF = fStrip->GetEFX()->GetMax() - fStrip->GetEFX()->GetMin();
-    double maxEFY = fStrip->GetEFX()->GetMax() - fStrip->GetEFX()->GetMin();
+    double maxEFX = fStrip->GetEFX()->ComputeMax() - fStrip->GetEFX()->ComputeMin();
+    double maxEFY = fStrip->GetEFY()->ComputeMax() - fStrip->GetEFY()->ComputeMin();
+    
+    double maxEF = maxEFX;
     if(maxEFY > maxEF){
         maxEF = maxEFY;
     }
     
     if(maxEF != 0.){
-        fTimeTimeStepMax = fSquareRoot( transvarmax * fPart->GetBeta() * fPart->GetMomMod() / maxEF );
+        fTimeStepMax = fSquareRoot( transvarmax * fPart->GetBeta() * fPart->GetMomMod() / maxEF );
     }
     else{
-        fTimeTimeStepMax = fTimeTimeStepMin * 20.;
+        fTimeStepMax = fTimeStepMin * 20.;
     }
     
     return true;
@@ -319,8 +373,4 @@ bool ECHARM_kernel::SetTransverseVariationMax(double transvarmax){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-double ECHARM_kernel::GetTransverseVariationMax(){
-    return fSquare( fTimeTimeStepMax / (fPart->GetBeta() * fPart->GetMomMod()) * fStrip->GetEFX()->GetMax());
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

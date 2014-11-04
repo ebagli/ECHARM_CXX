@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_beam_FACET_h
 
 #include "ECHARM_beam_FACET.hh"
 #include "ECHARM_distribution_gauss.hh"
@@ -30,3 +31,4 @@ ECHARM_beam_FACET::~ECHARM_beam_FACET(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

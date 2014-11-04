@@ -16,8 +16,11 @@ inline void SetStrip(ECHARM_strip* strip) {fStrip = strip;};
 inline ECHARM_particle* GetParticle() {return fPart;};
 inline void SetParticle(ECHARM_particle* particle) {fPart = particle;};
 
-inline double GetTimeStepMin() {return fTimeTimeStepMin;};
-inline void SetTimeStepMin(double step) {fTimeTimeStepMin = step;};
+inline double GetTimeStepMin() {return fTimeStepMin;};
+inline void SetTimeStepMin(double step) {fTimeStepMin = step;};
+
+inline double GetTransverseVariationMax() {return fTransverseVariationMax;};
+inline void SetTransverseVariationMax(double step) {fTransverseVariationMax = step;};
 
 inline double GetTimeStepTotal() {return fTimeStepTotal;};
 

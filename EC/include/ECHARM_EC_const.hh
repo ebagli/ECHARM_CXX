@@ -20,8 +20,8 @@ public:
 public:
     double Get(double,double,double) {return fConst;};
     
-    void ComputeMax() {fMax = fConst;};
-    void ComputeMin() {fMin = fConst;};
+    double ComputeMax() {return fConst;};
+    double ComputeMin() {return fConst;};
 private:
     double fConst;
 };

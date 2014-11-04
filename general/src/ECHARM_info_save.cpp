@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_info_save_h
 
 #include "ECHARM_info_save.hh"
 
@@ -44,6 +45,13 @@ void ECHARM_info_save::Reset(){
     fAvgAtD = 0.;
     fAvgElD = 0.;
 
+    fChInitial = 0;
+    fChTimes = 0;
+    fDechTimes = 0;
+    
+    fMass = 0.;
+    fCharge = 0.;
+    
     fEmittedPhEn.clear();
 
     for(unsigned int i0=0;i0<fRadEmProb.size();i0++){
@@ -95,3 +103,4 @@ void ECHARM_info_save::SavePartStruct(ECHARM_particle* part,ECHARM_Particle_Save
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_NiCOMECER_h
+
 #include "ECHARM_NiCOMECER.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -16,6 +18,7 @@
 #include "ECHARM_EC_rec_efz_pl.hh"
 #include "ECHARM_EC_intrp.hh"
 #include "ECHARM_EC_const.hh"
+#include "ECHARM_EC_direct.hh"
 #include "ECHARM_3vec.hh"
 
 ECHARM_NiCOMECER::ECHARM_NiCOMECER(double length){
@@ -40,7 +43,7 @@ ECHARM_NiCOMECER::ECHARM_NiCOMECER(double length){
     ECHARM_EC_const* efz = new ECHARM_EC_const("efz",fCrystal,0.);
     
     
-    ifstream fileIn;
+    std::ifstream fileIn;
     
     fileIn.open("Ni111pot.txt");
     std::cout << "Ni111pot.txt" << std::endl;
@@ -106,26 +109,14 @@ ECHARM_NiCOMECER::ECHARM_NiCOMECER(double length){
     }
     
     
-    
-    SetPot(pot_intrp);
+    ECHARM_EC_direct* pot_direct = new ECHARM_EC_direct("pot",fCrystal,3);
+
+    SetPot(pot_direct);
     SetAtD(atd_intrp);
     SetElD(eld_intrp);
     SetEFX(efx_intrp);
     SetEFY(efy_intrp);
     SetEFZ(efz);
-    
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
     
     fDim = new ECHARM_3vec(1. * millimeter,1. * millimeter,length);;
     fBRconst = new ECHARM_3vec(0.,0.,0.);
@@ -139,3 +130,4 @@ ECHARM_NiCOMECER::~ECHARM_NiCOMECER(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_atom_spheric_h
 
 #include "ECHARM_atom_spheric.hh"
 
@@ -49,3 +50,4 @@ double ECHARM_atom_spheric::ComputeFFDerivate(double Vec)
     return vResult ;}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_particle_h
 
 #include "ECHARM_particle.hh"
 
@@ -98,3 +99,5 @@ double ECHARM_particle::GetStepLength(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

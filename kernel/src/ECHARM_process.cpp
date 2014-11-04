@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_process_h
+
 #include "ECHARM_process.hh"
 
 ECHARM_process::ECHARM_process(std::string name){
@@ -95,4 +97,4 @@ double ECHARM_process::ComputeAvgDen(ECHARM_strip* strip,ECHARM_particle* part){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
+#endif

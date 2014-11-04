@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_atom_moliere_h
 
 #include "ECHARM_atom_moliere.hh"
 
@@ -70,3 +71,4 @@ double ECHARM_atom_moliere::ComputeFFDerivate(double Vec){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

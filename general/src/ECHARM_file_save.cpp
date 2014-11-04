@@ -1,55 +1,47 @@
 //
-//  ECHARM_ROOT_save.cpp
+//  ECHARM_file_save.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
-#ifdef _ECHARM_ROOT_save_h
+#ifdef _ECHARM_file_save_h
 
-#include "ECHARM_ROOT_save.hh"
+#include "ECHARM_file_save.hh"
 
-ECHARM_ROOT_save::ECHARM_ROOT_save(std::string name){
-    
-    vRootFile = new TFile(name.c_str(),"RECREATE");
-    
-    fTree = new TTree("sim","DYNECHARM Simulation");
-    
-    fTree->Branch("partIn",&partIn,"posXin/D:posYin/D:posZin/D:angXin/D:angYin/D:momZin/D");
-    fTree->Branch("partOut",&partOut,"posXout/D:posYout/D:posZout/D:angXout/D:angYout/D:momZout/D");
-    fTree->Branch("enBin", &enBin, "enBin/I");
-    fTree->Branch("enVec",&enVec,"enVec[enBin]/D");
-    fTree->Branch("enVecX",&enVecX,"enVecX[enBin]/D");
-    fTree->Branch("atd",&atd,"atd/D");
-    fTree->Branch("eld",&eld,"eld/D");
-    
-    fTreeTraj = new TTree("traj","DYNECHARM Simulation");
-    fTreeTraj->Branch("step",&partStep,"posX/D:posY/D:posZ/D:angX/D:angY/D:momZ/D");
-    fTreeTraj->Branch("atd",&atd,"atd/D");
-    fTreeTraj->Branch("eld",&eld,"eld/D");
-    fTreeTraj->Branch("strip",&brstep,"br/D");
-    fTreeTraj->Branch("displX",&displx,"displX/D");
-    fTreeTraj->Branch("displY",&disply,"displY/D");
-    fTreeTraj->Branch("displZ",&displz,"displZ/D");
-
+ECHARM_file_save::ECHARM_file_save(std::string name){
+    fFilename = name;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_ROOT_save::~ECHARM_ROOT_save(){
+ECHARM_file_save::~ECHARM_file_save(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_ROOT_save::Save(ECHARM_info_save* info){
+void ECHARM_file_save::UpdateInfo(ECHARM_info_save* info){
+    
+    partNum = info->GetPartNum();
+    
+    charge = info->GetCharge();
+    mass = info->GetMass();
     
     atd= info->GetAvgAtD();
     eld= info->GetAvgElD();
+    
+    displx = info->GetDispl()->GetX();
+    disply = info->GetDispl()->GetY();
+    displz = info->GetDispl()->GetZ();
 
+    dchTimes = info->GetDechTimes();
+    chTimes = info->GetChTimes();
+    chIn = info->GetChInitial();
+    
     partIn = info->GetPartIn();
     partOut = info->GetPartOut();
     
-    enBin = info->GetRadEmEnProb().size();
+    enBin = int(info->GetRadEmEnProb().size());
     
     for(int i0=0;i0<enBin;i0++){
         enVec[i0] = info->GetRadEmEnProb().at(i0);
@@ -59,8 +51,11 @@ void ECHARM_ROOT_save::Save(ECHARM_info_save* info){
         enVec[i0] = 0.;
         enVecX[i0] = 0.;
     }
-    
-    for(unsigned int i0=0;i0<info->GetAtD().size();i0++){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_file_save::UpdateInfoTraj(ECHARM_info_save* info,int i0){
         partStep = info->GetPartVec().at(i0);
         atd = info->GetAtD().at(i0);
         eld = info->GetElD().at(i0);
@@ -68,50 +63,71 @@ void ECHARM_ROOT_save::Save(ECHARM_info_save* info){
         displx = 0.;
         disply = 0.;
         displz = 0.;
-        fTreeTraj->Fill();
-    }
-    
-    fTree->Fill();
-    //fTree->AutoSave();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_ROOT_save::Analysis(){
-    
-    long part_num = fTree->GetEntries();
-    
-    double vX[enBin];
-    double vY[enBin];
-    
-    for(int i0=0;i0<enBin;i0++){
-        vY[i0] = enVec[i0] * MeV / part_num;
-        vX[i0] = enVecX[i0] / MeV;
-    }
-
-    TGraph* hRad = new TGraph(enBin,vX,vY);
-    hRad->GetXaxis()->SetTitle("Photon Energy [MeV]");
-    hRad->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
-    hRad->Write("hRad");
-
-    for(int i0=0;i0<enBin;i0++){
-        vY[i0] = enVec[i0] * enVecX[i0] / part_num;
-        vX[i0] = enVecX[i0] / MeV;
-    }
-    
-    TGraph* hRadE = new TGraph(enBin,vX,vY);
-    hRadE->GetXaxis()->SetTitle("Photon Energy [MeV]");
-    hRadE->GetYaxis()->SetTitle("Radiation Emission Probability");
-    hRadE->Write("hRadE");
+void ECHARM_file_save::Open(){
+    std::cout << "Opening Out File... " << fFilename;
+    fFileOut.open(fFilename.c_str());
+    std::cout << " ...Opened" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_ROOT_save::Close(){
+void ECHARM_file_save::Save(ECHARM_info_save* info){
+    UpdateInfo(info);
+
+    for(unsigned int i0=0;i0<info->GetAtD().size();i0++){
+        UpdateInfoTraj(info,i0);
+    }
     
-    vRootFile->Write(); // write ROOT file
-    vRootFile->Close(); // close ROOT file
+    fFileOut << partIn.angx << " " << partIn.angy << " " << partOut.angx  << " " << partOut.angy << std::endl;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_file_save::Analysis(){
+
+    std::ifstream vFileHistoIn;
+    vFileHistoIn.open(fFilename.c_str());
+
+    double angXin,angYin,angXout,angYout;
     
+    int vBinNumber = 512;
+    double vBinMin = -1024.;
+    double vBinMax = +1024.;
+    double vBinStep = (vBinMax-vBinMin)/double(vBinNumber);
+    int vBinContent[vBinNumber];
+    
+    int vBin;
+    for(int i=0;i<vBinNumber;i++){
+        vBinContent[i] = 0;
+    }
+    
+    while(vFileHistoIn >> angXin){
+        vFileHistoIn >> angYin >> angXout >> angYout;
+        vBin = int((-(angXout-angXin)-vBinMin)/(vBinStep));
+        vBinContent[vBin]++;
+    }
+    vFileHistoIn.close();
+
+    std::ofstream vFileHistoOut;
+    std::string vFilename;
+    vFilename = fFilename + ".histo.txt";
+    vFileHistoOut.open(vFilename.c_str());
+    for(int i=0;i<vBinNumber;i++){
+        vFileHistoOut << (vBinMin + vBinStep * (i + 1.5))/1000. << " " << vBinContent[i] << std::endl;
+    }
+    vFileHistoOut.close();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_file_save::Close(){
+    std::cout << "Closing Out File... " << fFilename;
+    fFileOut.close();
+    std::cout << " ...Closed" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

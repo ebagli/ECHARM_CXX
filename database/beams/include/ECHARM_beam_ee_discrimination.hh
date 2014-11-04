@@ -1,23 +1,23 @@
 //
-//  ECHARM_beam_H4_electron_120.h
+//  ECHARM_beam_ee_discrimination.h
 //  
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 //  Short class description:
-//  Class ECHARM_beam_H4_electron_120
+//  Class ECHARM_beam_ee_discrimination
 
-#ifndef _ECHARM_beam_H4_electron_120_h
-#define _ECHARM_beam_H4_electron_120_h
+#ifndef _ECHARM_beam_ee_discrimination_h
+#define _ECHARM_beam_ee_discrimination_h
 
 #include "ECHARM_beam.hh"
 
-class ECHARM_beam_H4_electron_120 : public ECHARM_beam
+class ECHARM_beam_ee_discrimination : public ECHARM_beam
 {
 public:
-    ECHARM_beam_H4_electron_120(double,double);
-    virtual ~ECHARM_beam_H4_electron_120();
+    ECHARM_beam_ee_discrimination(double,double,double,double,double,double );
+    virtual ~ECHARM_beam_ee_discrimination();
 };
 
 #endif

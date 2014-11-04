@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_miller_cubic_h
+
 #include "ECHARM_miller_cubic.hh"
 #include <sstream>
 
@@ -252,3 +254,5 @@ bool ECHARM_miller_cubic::CheckOrthogonality(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

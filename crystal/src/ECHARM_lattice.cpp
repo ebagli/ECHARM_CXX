@@ -5,7 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
-
+#ifdef _ECHARM_lattice_h
 #include "ECHARM_lattice.hh"
 
 ECHARM_lattice::ECHARM_lattice(){
@@ -125,3 +125,4 @@ std::vector<double> ECHARM_lattice::ComputeSF(int vIndex00,int vIndex01,int vInd
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
+#endif

@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_intrp_h
 
 #include "ECHARM_intrp.hh"
 #include <math.h>
@@ -92,7 +93,7 @@ void ECHARM_intrp::GetIndexes(int* index, int& ntot){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
-
+#endif
 
 
 

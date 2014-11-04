@@ -1,14 +1,14 @@
 //
-//  ECHARM_STtest.cpp
+//  ECHARM_QM_CERN_H4_1mm.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifdef _ECHARM_STtest_h
+#ifdef _ECHARM_QM_CERN_H4_1mm_h
 
-#include "ECHARM_STtest.hh"
+#include "ECHARM_QM_CERN_H4_1mm.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
 #include "ECHARM_EC_rec_atd_pl.hh"
@@ -21,7 +21,7 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_STtest::ECHARM_STtest(double length,double BR,double temp = 450.){
+ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * millimeter){
     
     fCrystal = new ECHARM_crystal_Si();
 
@@ -33,7 +33,7 @@ ECHARM_STtest::ECHARM_STtest(double length,double BR,double temp = 450.){
     fCrystal->GetMiller()->SetY(vMillerY);
     fCrystal->GetMiller()->SetZ(vMillerZ);
     
-    fCrystal->SetTemperature(temp);
+    fCrystal->SetTemperature(420.);
     fCrystal->ComputeParameters();
     std::cout << fCrystal->GetAtom(0)->GetThermalVibrationConstant() << std::endl;
     
@@ -63,15 +63,15 @@ ECHARM_STtest::ECHARM_STtest(double length,double BR,double temp = 450.){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fDim = new ECHARM_3vec(1. * millimeter,1. * millimeter,length);;
-    fBRconst = new ECHARM_3vec(BR,0.,0.);
+    fDim = new ECHARM_3vec(10. * millimeter,10. * millimeter,length);;
+    fBRconst = new ECHARM_3vec(BR,0.,0.);//standard 20 m
 
-    SetName("STtest");
+    SetName("ECHARM_QM_CERN_H4_1mms");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_STtest::~ECHARM_STtest(){
+ECHARM_QM_CERN_H4_1mm::~ECHARM_QM_CERN_H4_1mm(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_manager_h
+
 #include "ECHARM_manager.hh"
 
 ECHARM_manager::ECHARM_manager(ECHARM_beam* beam, ECHARM_info_save *info){
@@ -109,3 +111,5 @@ int ECHARM_manager::Print(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_EC_intrp_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_EC_intrp.hh"
@@ -73,7 +76,7 @@ void ECHARM_EC_intrp::Store(ECHARM_EC* vEC){
         }
     }
     fVec->Set(vec);
-    std::cout << fName << " Map Stored" << std::endl;
+    //std::cout << fName << " Map Stored" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -82,3 +85,5 @@ double ECHARM_EC_intrp::Get(double x,double y,double z){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

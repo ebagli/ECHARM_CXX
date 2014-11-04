@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_FIG14_NIMB266_3835_110_h
+
 #include "ECHARM_FIG14_NIMB266_3835_110.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -58,18 +60,6 @@ ECHARM_FIG14_NIMB266_3835_110::ECHARM_FIG14_NIMB266_3835_110(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
     
     fDim = new ECHARM_3vec(2. * millimeter,55. * millimeter,175. * micrometer);;
     fBRconst = new ECHARM_3vec(0.,0.,0.);
@@ -87,3 +77,4 @@ ECHARM_FIG14_NIMB266_3835_110::~ECHARM_FIG14_NIMB266_3835_110(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

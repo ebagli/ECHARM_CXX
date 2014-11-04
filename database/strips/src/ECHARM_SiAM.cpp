@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_SiAM_h
+
 #include "ECHARM_SiAM.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_const.hh"
@@ -29,19 +31,6 @@ ECHARM_SiAM::ECHARM_SiAM(double length){
     SetEFY(efy);
     SetEFZ(efz);
 
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(1. * millimeter,1. * millimeter,length);;
     fBRconst = new ECHARM_3vec(0.,0.,0.);
 
@@ -54,3 +43,5 @@ ECHARM_SiAM::~ECHARM_SiAM(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_LiNbO3_1_h
+
 #include "ECHARM_LiNbO3_1.hh"
 #include "ECHARM_crystal_LiNbO3.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -58,20 +60,7 @@ ECHARM_LiNbO3_1::ECHARM_LiNbO3_1(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
-    fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,1. * millimeter);;
+    fDim = new ECHARM_3vec(0.9 * millimeter,70. * millimeter,1. * millimeter);;
     fBRconst = new ECHARM_3vec(5.46 * meter,0.,0.);
 
     SetName("LiNbO3_1");
@@ -83,3 +72,4 @@ ECHARM_LiNbO3_1::~ECHARM_LiNbO3_1(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

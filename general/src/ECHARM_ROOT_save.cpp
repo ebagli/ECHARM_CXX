@@ -5,12 +5,23 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_ROOT_save_h
 
 #include "ECHARM_ROOT_save.hh"
 
-ECHARM_ROOT_save::ECHARM_ROOT_save(std::string name){
-    
-    vRootFile = new TFile(name.c_str(),"RECREATE");
+ECHARM_ROOT_save::ECHARM_ROOT_save(std::string name):ECHARM_file_save(name){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+ECHARM_ROOT_save::~ECHARM_ROOT_save(){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_ROOT_save::Open(){
+    std::cout << "Opening ROOT File... " << fFilename;
+    vRootFile = new TFile(fFilename.c_str(),"RECREATE");
     
     fTree = new TTree("sim","DYNECHARM Simulation");
     
@@ -21,6 +32,15 @@ ECHARM_ROOT_save::ECHARM_ROOT_save(std::string name){
     fTree->Branch("enVecX",&enVecX,"enVecX[enBin]/D");
     fTree->Branch("atd",&atd,"atd/D");
     fTree->Branch("eld",&eld,"eld/D");
+    fTree->Branch("ch",&chTimes,"ch/I");
+    fTree->Branch("chin",&chIn,"chin/I");
+    fTree->Branch("dch",&dchTimes,"dch/I");
+    fTree->Branch("num",&partNum,"num/I");
+    fTree->Branch("mass",&mass,"mass/D");
+    fTree->Branch("charge",&charge,"charge/D");
+    fTree->Branch("displX",&displx,"displX/D");
+    fTree->Branch("displY",&disply,"displY/D");
+    fTree->Branch("displZ",&displz,"displZ/D");
     
     fTreeTraj = new TTree("traj","DYNECHARM Simulation");
     fTreeTraj->Branch("step",&partStep,"posX/D:posY/D:posZ/D:angX/D:angY/D:momZ/D");
@@ -30,48 +50,21 @@ ECHARM_ROOT_save::ECHARM_ROOT_save(std::string name){
     fTreeTraj->Branch("displX",&displx,"displX/D");
     fTreeTraj->Branch("displY",&disply,"displY/D");
     fTreeTraj->Branch("displZ",&displz,"displZ/D");
-
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-ECHARM_ROOT_save::~ECHARM_ROOT_save(){
+    std::cout << " ...Opened" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_ROOT_save::Save(ECHARM_info_save* info){
     
-    atd= info->GetAvgAtD();
-    eld= info->GetAvgElD();
-
-    partIn = info->GetPartIn();
-    partOut = info->GetPartOut();
-    
-    enBin = info->GetRadEmEnProb().size();
-    
-    for(int i0=0;i0<enBin;i0++){
-        enVec[i0] = info->GetRadEmEnProb().at(i0);
-        enVecX[i0] = info->GetRadEmEn().at(i0);
-    }
-    for(int i0=enBin;i0<MAX_EN_BIN;i0++){
-        enVec[i0] = 0.;
-        enVecX[i0] = 0.;
-    }
+    UpdateInfo(info);
     
     for(unsigned int i0=0;i0<info->GetAtD().size();i0++){
-        partStep = info->GetPartVec().at(i0);
-        atd = info->GetAtD().at(i0);
-        eld = info->GetElD().at(i0);
-        brstep = 0.;
-        displx = 0.;
-        disply = 0.;
-        displz = 0.;
+        UpdateInfoTraj(info,i0);
         fTreeTraj->Fill();
     }
     
     fTree->Fill();
-    //fTree->AutoSave();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -80,37 +73,227 @@ void ECHARM_ROOT_save::Analysis(){
     
     long part_num = fTree->GetEntries();
     
-    double vX[enBin];
-    double vY[enBin];
     
-    for(int i0=0;i0<enBin;i0++){
-        vY[i0] = enVec[i0] * MeV / part_num;
-        vX[i0] = enVecX[i0] / MeV;
+    TBranch* bEnBin = fTree->GetBranch("enBin");
+    int vEnBin;
+    bEnBin->SetAddress(&vEnBin);
+    fTree->GetEntry(0);
+    if(part_num>0){
+        TBranch* bChIn = fTree->GetBranch("chin");
+        int vChIn;
+        bChIn->SetAddress(&vChIn);
+        
+        TBranch* bCh = fTree->GetBranch("ch");
+        int vCh;
+        bCh->SetAddress(&vCh);
+        
+        TBranch* bDch = fTree->GetBranch("dch");
+        int vDch;
+        bDch->SetAddress(&vDch);
+        
+        double vY[vEnBin];
+        double vX[vEnBin];
+        
+        double vYtemp[vEnBin];
+        double vXtemp[vEnBin];
+        
+        TBranch* bEnVec = fTree->GetBranch("enVec");
+        TBranch* bEnVecX = fTree->GetBranch("enVecX");
+        
+        bEnVec->SetAddress(&vYtemp);
+        bEnVecX->SetAddress(&vXtemp);
+        
+        int parttot = 0;
+        
+        // All particles
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] = 0.;
+            vX[i0] = 0.;
+        }
+        
+        for(int i1=0;i1<part_num;i1++){
+            fTree->GetEntry(i1);
+            for(int i0=0;i0<vEnBin;i0++){
+                vY[i0] += vYtemp[i0];
+            }
+        }
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= MeV / part_num;
+            vX[i0] = vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRad = new TGraph(vEnBin,vX,vY);
+        hRad->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRad->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
+        hRad->Write("hRad");
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadE = new TGraph(vEnBin,vX,vY);
+        hRadE->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadE->GetYaxis()->SetTitle("Radiation Emission Probability");
+        hRadE->Write("hRadE");
+        
+        // Channeled particles
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] = 0.;
+            vX[i0] = 0.;
+        }
+        
+        parttot = 0;
+        for(int i1=0;i1<part_num;i1++){
+            fTree->GetEntry(i1);
+            if(vChIn==1 && vDch==0 && vCh==1){
+                for(int i0=0;i0<vEnBin;i0++){
+                    vY[i0] += vYtemp[i0];
+                }
+                parttot++;
+            }
+        }
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= MeV / parttot;
+            vX[i0] = vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadCh = new TGraph(vEnBin,vX,vY);
+        hRadCh->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadCh->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
+        hRadCh->Write("hRadCh");
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadChE = new TGraph(vEnBin,vX,vY);
+        hRadChE->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadChE->GetYaxis()->SetTitle("Radiation Emission Probability");
+        hRadChE->Write("hRadChE");
+        
+        // Rechanneled particles
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] = 0.;
+            vX[i0] = 0.;
+        }
+        
+        parttot = 0;
+        for(int i1=0;i1<part_num;i1++){
+            fTree->GetEntry(i1);
+            if(!(vChIn==1 && vDch==0 && vCh==1)){
+                if((vCh-vDch)==1){
+                    for(int i0=0;i0<vEnBin;i0++){
+                        vY[i0] += vYtemp[i0];
+                    }
+                    parttot++;
+                }
+            }
+        }
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= MeV / parttot;
+            vX[i0] = vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadRech = new TGraph(vEnBin,vX,vY);
+        hRadRech->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadRech->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
+        hRadRech->Write("hRadRech");
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadRechE = new TGraph(vEnBin,vX,vY);
+        hRadRechE->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadRechE->GetYaxis()->SetTitle("Radiation Emission Probability");
+        hRadRechE->Write("hRadRechE");
+        
+        // Channeled + Rechanneled particles
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] = 0.;
+            vX[i0] = 0.;
+        }
+        
+        parttot = 0;
+        for(int i1=0;i1<part_num;i1++){
+            fTree->GetEntry(i1);
+            if((vCh-vDch)==1){
+                for(int i0=0;i0<vEnBin;i0++){
+                    vY[i0] += vYtemp[i0];
+                }
+                parttot++;
+            }
+        }
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= MeV / parttot;
+            vX[i0] = vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadChRech = new TGraph(vEnBin,vX,vY);
+        hRadChRech->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadChRech->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
+        hRadChRech->Write("hRadChRech");
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadChRechE = new TGraph(vEnBin,vX,vY);
+        hRadChRechE->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadChRechE->GetYaxis()->SetTitle("Radiation Emission Probability");
+        hRadChRechE->Write("hRadChRechE");
+        
+        // No Channeled or Rechanneled particles
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] = 0.;
+            vX[i0] = 0.;
+        }
+        
+        parttot = 0;
+        for(int i1=0;i1<part_num;i1++){
+            fTree->GetEntry(i1);
+            if(vCh==0){
+                for(int i0=0;i0<vEnBin;i0++){
+                    vY[i0] += vYtemp[i0];
+                }
+                parttot++;
+            }
+        }
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= MeV / parttot;
+            vX[i0] = vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadNoCh = new TGraph(vEnBin,vX,vY);
+        hRadNoCh->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadNoCh->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
+        hRadNoCh->Write("hRadNoCh");
+        
+        for(int i0=0;i0<vEnBin;i0++){
+            vY[i0] *= vXtemp[i0] / MeV;
+        }
+        
+        TGraph* hRadNoChE = new TGraph(vEnBin,vX,vY);
+        hRadNoChE->GetXaxis()->SetTitle("Photon Energy [MeV]");
+        hRadNoChE->GetYaxis()->SetTitle("Radiation Emission Probability");
+        hRadNoChE->Write("hRadNoChE");
     }
-
-    TGraph* hRad = new TGraph(enBin,vX,vY);
-    hRad->GetXaxis()->SetTitle("Photon Energy [MeV]");
-    hRad->GetYaxis()->SetTitle("Spectral Intensity [1/MeV]");
-    hRad->Write("hRad");
-
-    for(int i0=0;i0<enBin;i0++){
-        vY[i0] = enVec[i0] * enVecX[i0] / part_num;
-        vX[i0] = enVecX[i0] / MeV;
-    }
-    
-    TGraph* hRadE = new TGraph(enBin,vX,vY);
-    hRadE->GetXaxis()->SetTitle("Photon Energy [MeV]");
-    hRadE->GetYaxis()->SetTitle("Radiation Emission Probability");
-    hRadE->Write("hRadE");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_ROOT_save::Close(){
-    
+    std::cout << "Closing ROOT File... " << fFilename;
     vRootFile->Write(); // write ROOT file
     vRootFile->Close(); // close ROOT file
-    
+    std::cout << " ...Closed" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

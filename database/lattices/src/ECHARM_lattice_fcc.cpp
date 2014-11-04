@@ -6,13 +6,15 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifndef _ECHARM_lattice_fcc_h
+#ifdef _ECHARM_lattice_fcc_h
 
 #include "ECHARM_lattice_fcc.hh"
 
 ECHARM_lattice_fcc::ECHARM_lattice_fcc():ECHARM_lattice(){
-    Add(0.5,0.5,0.5);
-    Add(0.,0.,0.);
+    Add(0.0,0.0,0.0);
+    Add(0.5,0.5,0.0);
+    Add(0.0,0.5,0.5);
+    Add(0.5,0.0,0.5);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

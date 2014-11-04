@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_beam_H8_2012_UA9_h
+
 #include "ECHARM_beam_H8_2012_UA9.hh"
 #include "ECHARM_distribution_gauss.hh"
 #include "ECHARM_distribution_const.hh"
@@ -28,3 +30,4 @@ ECHARM_beam_H8_2012_UA9::~ECHARM_beam_H8_2012_UA9(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

@@ -27,3 +27,6 @@ inline ECHARM_periodicvector* GetRBZ() {return fVecBRZ;};
 std::vector<double> GetAngPhi() {return fAngPhi;};
 std::vector<double> GetAngTheta() {return fAngTheta;};
 std::vector<double> GetAngPsi() {return fAngPsi;};
+
+void SetBoxYzero(bool val) {bBoxYzero = val;};
+bool GetBoxYzero() {return bBoxYzero;};

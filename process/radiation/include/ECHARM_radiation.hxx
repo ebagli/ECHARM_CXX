@@ -20,3 +20,9 @@ inline double GetAngYbins() {return fAngYbins;};
 
 inline void SetSliceTraj(bool num) {bSliceTraj = num;};
 inline bool GetSliceTraj() {return bSliceTraj;};
+
+inline void SetInitialAngleX(double num) {fInitialAngleX = num;};
+inline double GetInitialAngleX() {return fInitialAngleX;};
+
+inline void SetInitialAngleY(double num) {fInitialAngleY = num;};
+inline double GetInitialAngleY() {return fInitialAngleY;};

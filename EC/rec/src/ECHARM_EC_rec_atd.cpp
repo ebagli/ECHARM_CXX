@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_EC_rec_atd_h
+
 #include "ECHARM_EC_rec_atd.hh"
 
 ECHARM_EC_rec_atd::ECHARM_EC_rec_atd(ECHARM_crystal* crystal,
@@ -57,4 +59,4 @@ double ECHARM_EC_rec_atd::Get(double x, double y, double z){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+#endif

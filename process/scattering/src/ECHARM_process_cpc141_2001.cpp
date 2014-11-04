@@ -10,6 +10,8 @@
 //  Eq. (16) and (2)
 //
 
+#ifdef _ECHARM_process_cpc141_2001_h
+
 #include "ECHARM_process_cpc141_2001.hh"
 
 ECHARM_process_cpc141_2001::ECHARM_process_cpc141_2001(){
@@ -76,4 +78,4 @@ double ECHARM_process_cpc141_2001::ComputeE(ECHARM_strip* strip,ECHARM_particle*
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
+#endif

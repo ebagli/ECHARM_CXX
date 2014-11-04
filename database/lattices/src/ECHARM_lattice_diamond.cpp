@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_lattice_diamond_h
+
 #include "ECHARM_lattice_diamond.hh"
 
 ECHARM_lattice_diamond::ECHARM_lattice_diamond():ECHARM_lattice(){
@@ -25,3 +27,4 @@ ECHARM_lattice_diamond::~ECHARM_lattice_diamond(){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
+#endif

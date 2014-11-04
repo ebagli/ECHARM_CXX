@@ -28,8 +28,8 @@ public:
 public:
     virtual double Get(double,double,double) {return 0.;};
 
-    virtual void ComputeMax() {fMax = 0.;};
-    virtual void ComputeMin() {fMin = 0.;};
+    virtual double ComputeMax() {return 0.;std::cout << "No Max Computation!!!!" << std::endl;};
+    virtual double ComputeMin() {return 0.;std::cout << "No Min Computation!!!!" << std::endl;};
     
 protected:
     ECHARM_crystal *fCrystal;

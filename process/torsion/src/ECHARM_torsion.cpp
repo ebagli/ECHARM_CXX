@@ -1,70 +1,64 @@
 //
-//  ECHARM_undulator.cpp
+//  ECHARM_torsion.cpp
 //
 //
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#ifdef _ECHARM_undulator_h
+#ifdef _ECHARM_torsion_h
 
-#include "ECHARM_undulator.hh"
-#include "TH2D.h"
-ECHARM_undulator::ECHARM_undulator(double ampl,double period,double phase,bool sudden = false):
-ECHARM_displacement(1,1.,sudden){
+#include "ECHARM_torsion.hh"
+
+ECHARM_torsion::ECHARM_torsion(double torsiony,double sigmay,double torsionx = 0.,double sigmax = 0.):
+ECHARM_process("torsion"){
     
-    fAmplitude = ampl;
-    fPeriod = period;
-    fPhase = phase;
+    fTorsionX = torsionx;
+    fTorsionY = torsiony;
     
-    fNumSteps[0] = 8;
-    fNumSteps[1] = 8192;
-    fNumSteps[2] = 1;
+    fDistrX = new ECHARM_distribution_gauss(0.,sigmax);
+    fDistrY = new ECHARM_distribution_gauss(0.,sigmay);
 
-    fCenter.at(0)->SetX(0.);
-    fCenter.at(0)->SetY(0.);
-    fCenter.at(0)->SetZ(0.);
-
-    SetName("undulator");
+    fX = 0.;
+    fY = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_undulator::~ECHARM_undulator(){
+ECHARM_torsion::~ECHARM_torsion(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_undulator::Init(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
-    if(bVecStored==false){
-        SetLimitStrip(strip);
-        Store();
+void ECHARM_torsion::DoBeforeInteraction(ECHARM_strip*,ECHARM_particle* part,ECHARM_info_save*){
+    if(fDistrX->GetPar(1)!=0.){
+        fX = fDistrX->GenerateNumber();
     }
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_undulator::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec*){
-    
-    fDispl->SetX(fAmplitude * sin(fPhase + partpos->GetZ() / fPeriod * c2Pi));
-    fDispl->SetY(0.);
-    fDispl->SetZ(0.);
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void ECHARM_undulator::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec*){
-    
-    double fx = 0.;
-    
-    if(partpos->GetZ() != 0.){
-        double a1 = 2. * cPi * partpos->GetZ() / fPeriod + fPhase;
-        double a2 = 2. * cPi * fAmplitude / fPeriod;
-        fx = - 1. / sin(a1) / fSquare(a2) * pow ( fSquare( a2 * cos(a1) ) + 1. , 1.5 ) ;
+    if(fDistrY->GetPar(1)!=0.){
+        fY = fDistrY->GenerateNumber();
     }
     
-    fBR->SetX(fx);
-    fBR->SetY(0.);
-    fBR->SetZ(0.);
+    double vMom = part->GetMomMod();
+    
+    double vThetaX = fX * fTorsionX;
+    double vThetaY = fY * fTorsionY;
+        
+    part->GetMom()->AddX( vMom * vThetaX );
+    part->GetMom()->AddY( vMom * vThetaY );
+    part->GetMom()->SubtractZ( vMom * vThetaX + vMom * vThetaY);
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_torsion::DoAfterInteraction(ECHARM_strip*,ECHARM_particle* part,ECHARM_info_save*){
+    double vMom = part->GetMomMod();
+    
+    double vThetaX = fX * fTorsionX;
+    double vThetaY = fY * fTorsionY;
+    
+    part->GetMom()->SubtractX( vMom * vThetaX );
+    part->GetMom()->SubtractY( vMom * vThetaY );
+    part->GetMom()->AddZ( vMom * vThetaX + vMom * vThetaY);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

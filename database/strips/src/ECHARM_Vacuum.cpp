@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_Vacuum_h
+
 #include "ECHARM_Vacuum.hh"
 #include "ECHARM_crystal_Vacuum.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -36,19 +38,6 @@ ECHARM_Vacuum::ECHARM_Vacuum(double molecules_per_cm3,double x,double y, double 
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(x,y,z);;
     fPos = new ECHARM_3vec(x,y,z);;
     fBRconst = new ECHARM_3vec(0.,0.,0.);
@@ -62,3 +51,4 @@ ECHARM_Vacuum::~ECHARM_Vacuum(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

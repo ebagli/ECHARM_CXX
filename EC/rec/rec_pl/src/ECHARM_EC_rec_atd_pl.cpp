@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_EC_rec_atd_pl_h
+
 #include "ECHARM_EC_rec_atd_pl.hh"
 
 ECHARM_EC_rec_atd_pl::ECHARM_EC_rec_atd_pl(ECHARM_crystal* crystal,
@@ -39,3 +41,4 @@ bool ECHARM_EC_rec_atd_pl::GetIndexesEC(double* vIndexEC,int*,int i0,int,int){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

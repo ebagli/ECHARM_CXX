@@ -17,17 +17,20 @@ public:
     ECHARM_defect(double,double,bool);
     virtual ~ECHARM_defect();
     
-    virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual void Init(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual void ComputeDispl(ECHARM_3vec*,ECHARM_3vec*);
     virtual void ComputeBR(ECHARM_3vec*,ECHARM_3vec*);
-    
-    void ComputeAnglesFromBurgerAndLineDirections(ECHARM_3vec*,ECHARM_3vec*);
+    virtual bool IsInHotZone();
+
+    void ComputeAnglesFromBurgerAndLineDirections();
 
 protected:
     double fPoissonRatio;
-    double fBurger;
-    
+    ECHARM_3vec* fBurger;
+    ECHARM_3vec* fLine;
+
+    ECHARM_3vec* fHotLimit;
+
 public:
 #include "ECHARM_defect.hxx"
 };

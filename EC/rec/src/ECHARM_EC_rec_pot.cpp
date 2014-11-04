@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_EC_rec_pot_h
+
 #include "ECHARM_EC_rec_pot.hh"
 
 ECHARM_EC_rec_pot::ECHARM_EC_rec_pot(ECHARM_crystal* crystal,
@@ -59,3 +61,4 @@ double ECHARM_EC_rec_pot::Get(double x, double y, double z){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

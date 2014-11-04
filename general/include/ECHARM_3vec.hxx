@@ -25,6 +25,8 @@ double GetYNormalized() {return fSize[1]/GetModule();};
 double GetZNormalized() {return fSize[2]/GetModule();};
 
 inline void Set(ECHARM_3vec* vec) {fSize[0] = vec->GetX();fSize[1] = vec->GetY();fSize[2] = vec->GetZ();};
+inline void Set(int size[3]) {fSize[0] = size[0];fSize[1] = size[1];fSize[2] = size[2];};
+inline void Set(double size[3]) {fSize[0] = size[0];fSize[1] = size[1];fSize[2] = size[2];};
 inline void Set(int vIndex, double vSize) {fSize[vIndex] = vSize;};
 inline void Set(double X,double Y,double Z) {fSize[0] = X;fSize[1] = Y;fSize[2] = Z;}
 inline void SetX(double X) {fSize[0] = X;};

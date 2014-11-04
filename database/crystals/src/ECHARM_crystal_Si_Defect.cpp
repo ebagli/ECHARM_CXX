@@ -1,21 +1,21 @@
 //
-//  ECHARM_crystal_Si.cpp
+//  ECHARM_crystal_Si_Defect.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifdef _ECHARM_crystal_Si_h
+#ifdef _ECHARM_crystal_Si_Defect_h
 
 #include <cfloat>
 #include <limits>
-#include "ECHARM_crystal_Si.hh"
+#include "ECHARM_crystal_Si_Defect.hh"
 #include "ECHARM_atom_xray.hh"
 #include "ECHARM_miller_cubic.hh"
 #include "ECHARM_lattice_diamond.hh"
 
-ECHARM_crystal_Si::ECHARM_crystal_Si(){
+ECHARM_crystal_Si_Defect::ECHARM_crystal_Si_Defect(double percentage){
     
     SetAtomName("Si");
     double vSiExperimentalCoefficients[12];
@@ -35,8 +35,11 @@ ECHARM_crystal_Si::ECHARM_crystal_Si(){
     vSiExperimentalCoefficients[11] = 56.34208*AA*AA;
     
     ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.,vSiExperimentalCoefficients);
+    ECHARM_atom_moliere *vacuum = new ECHARM_atom_moliere("vacuum",0.,0. * amu,640.,173.);
+
     ECHARM_lattice_diamond *lattice_diamond = new ECHARM_lattice_diamond();
-    AddBase(atom_xray,lattice_diamond);
+    AddBase(atom_xray,lattice_diamond,1.-percentage);
+    AddBase(vacuum,lattice_diamond,percentage);
     
     int vMillerX[3] = {2,-2,0};
     int vMillerY[3] = {1,1,-2};
@@ -58,7 +61,7 @@ ECHARM_crystal_Si::ECHARM_crystal_Si(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_crystal_Si::~ECHARM_crystal_Si(){
+ECHARM_crystal_Si_Defect::~ECHARM_crystal_Si_Defect(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

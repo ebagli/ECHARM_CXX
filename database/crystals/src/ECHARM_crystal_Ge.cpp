@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_crystal_Ge_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal_Ge.hh"
@@ -57,3 +60,5 @@ ECHARM_crystal_Ge::~ECHARM_crystal_Ge(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

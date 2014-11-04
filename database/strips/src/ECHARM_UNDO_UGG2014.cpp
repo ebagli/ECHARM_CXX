@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_UNDO_UGG2014_h
+
 #include "ECHARM_UNDO_UGG2014.hh"
 #include "ECHARM_crystal_SiGe.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -58,19 +60,6 @@ ECHARM_UNDO_UGG2014::ECHARM_UNDO_UGG2014(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(1. * millimeter,1. * millimeter,3. * micrometer);;
     fBRconst = new ECHARM_3vec(0.,0.,0.);
 
@@ -83,3 +72,4 @@ ECHARM_UNDO_UGG2014::~ECHARM_UNDO_UGG2014(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

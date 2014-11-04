@@ -9,5 +9,10 @@
 inline void SetPoissonRatio(double num) {fPoissonRatio = num;};
 inline double GetPoissonRatio() {return fPoissonRatio;};
 
-inline void SetBurger(double vec) {fBurger = vec;};
-inline double GetBurger() {return fBurger;};
+inline void SetBurger(ECHARM_3vec* vec) {fBurger = vec;};
+inline ECHARM_3vec* GetBurger() {return fBurger;};
+
+inline void SetLine(ECHARM_3vec* vec) {fLine = vec;};
+inline ECHARM_3vec* GetLine() {return fLine;};
+
+inline double GetAngleBurgerLine() {return fBurger->ScalarProduct(fLine);};

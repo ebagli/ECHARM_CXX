@@ -5,9 +5,10 @@
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifdef _ECHARM_undulator_h
 
 #include "ECHARM_undulator.hh"
-#include "TH2D.h"
+
 ECHARM_undulator::ECHARM_undulator(double ampl,double period,double phase,bool sudden = false):
 ECHARM_displacement(1,1.,sudden){
     
@@ -67,3 +68,4 @@ void ECHARM_undulator::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

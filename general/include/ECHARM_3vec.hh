@@ -31,8 +31,12 @@ public:
     bool IsInCube(ECHARM_3vec*);
     
     double ScalarProduct(ECHARM_3vec*);
+    double ScalarProduct(double[3]);
     double GetPhi();
     double GetTheta();
+
+    double GetAngle(ECHARM_3vec*);
+    bool IsParallel(ECHARM_3vec*);
     
     ECHARM_3vec* ScaleModuleTo(double);
     ECHARM_3vec* VectorProductTo(ECHARM_3vec*);

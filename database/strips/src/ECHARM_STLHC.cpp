@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_STLHC_h
+
 #include "ECHARM_STLHC.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -30,6 +32,7 @@ ECHARM_STLHC::ECHARM_STLHC(){
     fCrystal->GetMiller()->SetY(vMillerY);
     fCrystal->GetMiller()->SetZ(vMillerZ);
 
+    fCrystal->SetTemperature(420.);
     fCrystal->ComputeParameters();
     
     ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
@@ -58,19 +61,6 @@ ECHARM_STLHC::ECHARM_STLHC(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,5. * millimeter);;
     fBRconst = new ECHARM_3vec(80. * meter,0.,0.);
     
@@ -83,3 +73,4 @@ ECHARM_STLHC::~ECHARM_STLHC(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

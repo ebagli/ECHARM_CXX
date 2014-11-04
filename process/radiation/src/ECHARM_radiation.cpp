@@ -6,8 +6,10 @@
 //  Copyright (c) 2012 __MyCvOmpanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_radiation_h
+
 #include "ECHARM_radiation.hh"
-#include "TH2D.h"
+
 ECHARM_radiation::ECHARM_radiation(int anglexbins ,int angleybins):
 ECHARM_process("radiation"){
     fAngColl = 0.002318303;
@@ -15,6 +17,9 @@ ECHARM_process("radiation"){
     
     fAngXbins = anglexbins;
     fAngYbins = angleybins;
+
+    fInitialAngleX = 0.;
+    fInitialAngleY = 0.;
 
     bSliceTraj = false;
 }
@@ -29,6 +34,9 @@ ECHARM_radiation::ECHARM_radiation():
     fAngXbins = 15;
     fAngYbins = 30;
     
+    fInitialAngleX = 0.;
+    fInitialAngleY = 0.;
+
     bSliceTraj = false;
 }
 
@@ -55,40 +63,37 @@ void ECHARM_radiation::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,EC
     if(fStepNum<MAX_STEP_NUM){
         fStep[fStepNum]=(part->GetStepLength());
         
+        double posZ = part->GetPos()->GetZ() + strip->GetDim()->GetZ()*0.5;
+        
         fVelX[fStepNum]=(part->GetAngX());
         if(strip->IsBentX()){
-            //fVelX[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetX());
+            fVelX[fStepNum] += (posZ / strip->GetBR()->GetX());
         }
         fVelY[fStepNum]=(part->GetAngY());
         
         if(strip->IsBentY()){
-            //fVelY[fStepNum]+= (part->GetPos()->GetZ() / strip->GetBR()->GetY());
+            fVelY[fStepNum] += (posZ / strip->GetBR()->GetY());
         }
         
         fAccX[fStepNum]=(part->GetZ() * 0.5 * (strip->GetEFX()->Get(part->GetPosPre()) + strip->GetEFX()->Get(part->GetPos()))/part->GetMom()->GetZ());
         if(strip->IsBentX()){
-            //fAccX[fStepNum] += ( 0.5 * part->GetMomVel() * part->GetPos()->GetZ() / strip->GetBR()->GetX());
+            //fAccX[fStepNum] += ( 0.5 * part->GetMomVel() * posZ / strip->GetBR()->GetX());
         }
 
         fAccY[fStepNum]=(part->GetZ() * 0.5 * (strip->GetEFY()->Get(part->GetPosPre()) + strip->GetEFY()->Get(part->GetPos()))/part->GetMom()->GetZ());
         if(strip->IsBentY()){
-            //fAccY[fStepNum] += ( 0.5 * part->GetMomVel() * part->GetPos()->GetZ() / strip->GetBR()->GetY());
+            //fAccY[fStepNum] += ( 0.5 * part->GetMomVel() * posZ / strip->GetBR()->GetY());
         }
 
-        fVelPreSctX[fStepNum]=(0.);
-        fVelPreSctY[fStepNum]=(0.);
-        
         fVelPreSctX[fStepNum]=(part->GetAngXPre());
         if(strip->IsBentX()){
-            //fVelPreSctX[fStepNum]+= (part->GetPosPre()->GetZ() / strip->GetBR()->GetX());
+            fVelPreSctX[fStepNum] += (posZ / strip->GetBR()->GetX());
         }
         fVelPreSctY[fStepNum]=(part->GetAngYPre());
         
         if(strip->IsBentY()){
-            //fVelPreSctY[fStepNum]+= (part->GetPosPre()->GetZ() / strip->GetBR()->GetY());
+            fVelPreSctY[fStepNum] += (posZ / strip->GetBR()->GetY());
         }
-        
-        
         fStepNum++;
     }
     else{
@@ -103,6 +108,12 @@ void ECHARM_radiation::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,EC
         
         fStepNum = 0;
     }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_radiation::DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*){
+    fStepNum = 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -128,15 +139,8 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
     double vEnPrime = vEn - vOm;
     double vOmPrime = vEn * vOm / vEnPrime;
     
-    double vOmPL = 0.;
-    
-    if(part->GetMom()->GetZ() == 855. * MeV){
-        vOmPL = 52. * KeV / vGamma ;
-    }
-    
     double vPhCoeff = 1. / (vGamma * vGamma);
-    vPhCoeff += (fSquare(vOmPL) / fSquare(vOm));
-    
+
     double I2Coeff = vOm * (fSquare(vEn)+fSquare(vEnPrime))/(fSquare(vEnPrime));
     double J2Coeff = vPhCoeff * (fSquare(vOm))/(fSquare(vEnPrime));
     
@@ -150,8 +154,15 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
             double phi=drand48()*c2Pi;
             double THx=fAngColl*fSquareRoot(r)*sin(phi);
             double THy=fAngColl*fSquareRoot(r)*cos(phi);
+
+            THx += fInitialAngleX;
+            THy += fInitialAngleY;
+
+            double vPhase=0.;
             
-            double fa=0.;
+            /*
+            double vStepSum = 0.;
+            */
             
             double ss=0.;
             double sc=0.;
@@ -162,6 +173,10 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
             
             for(int i0Step=0;i0Step<fStepNum;i0Step++){
                 double dz = fStep[i0Step]/cPlanckConstant;
+                /*
+                vStepSum += fStep[i0Step];
+                */
+                
                 double axt = fAccX[i0Step]*cPlanckConstant;
                 double ayt = fAccY[i0Step]*cPlanckConstant;
                 
@@ -170,33 +185,42 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
                 double vxno = fVelPreSctX[i0Step] - THx;
                 double vyno = fVelPreSctY[i0Step] - THy;
                 
+                /*
+                if(strip->IsBentX()){
+                    vxin += (vStepSum / strip->GetBR()->GetX());
+                    vxno += (vStepSum / strip->GetBR()->GetX());
+                }
+                if(strip->IsBentY()){
+                    vyin += (vStepSum / strip->GetBR()->GetY());
+                    vyno += (vStepSum / strip->GetBR()->GetY());
+                }
+                */
+                
                 double vPhBef = vOmPrime * 0.5 *((vPhCoeff)+(vxno*vxno)+(vyno*vyno));
                 double vPhAft = vOmPrime * 0.5 *((vPhCoeff)+(vxin*vxin)+(vyin*vyin));
                 
-                fa=fa+vPhBef*dz;
-                double fa1=fa-vPhBef*dz/2;
+                vPhase=vPhase+vPhBef*dz;
+                double vPhase_t_average=vPhase-vPhBef*dz/2;
                 
-                fa1 += vPhBef*dz/2;
-                double fa2 = vOmPrime*(axt*vxno+ayt*vyno);
+                double vPhade_dtdt = vOmPrime*(axt*vxno+ayt*vyno);
                 double dzmod = 2.*sin(vPhBef*dz/2)/vPhBef;
                 
                 double skJ=1/vPhAft-1/vPhBef;
-                skJ -= (fa2/(vPhBef*vPhBef))*dzmod;
+                skJ -= (vPhade_dtdt/(vPhBef*vPhBef))*dzmod;
                 
                 double skIx=vxin/vPhAft-vxno/vPhBef;
-                skIx += dzmod*(axt/vPhBef-vxno*fa2/(vPhBef*vPhBef));
+                skIx += dzmod*(axt/vPhBef-vxno*vPhade_dtdt/(vPhBef*vPhBef));
                 
                 double skIy=vyin/vPhAft-vyno/vPhBef;
-                skIy += dzmod*(ayt/vPhBef-vyno*fa2/(vPhBef*vPhBef));
+                skIy += dzmod*(ayt/vPhBef-vyno*vPhade_dtdt/(vPhBef*vPhBef));
                 
                 //integral
-                ss += sin(fa1)*skJ;//sum sin integral J della BK
-                sc += cos(fa1)*skJ;//sum cos integral J della BK
-                ssx += sin(fa1)*skIx;// sum sin integral Ix della BK
-                ssy += sin(fa1)*skIy;// sum sin integral Iy della BK
-                scx += cos(fa1)*skIx;// sum cos integral Ix della BK
-                scy += cos(fa1)*skIy;// sum cos integral Iy della BK
-                
+                ss += sin(vPhase_t_average)*skJ;//sum sin integral J della BK
+                sc += cos(vPhase_t_average)*skJ;//sum cos integral J della BK
+                ssx += sin(vPhase_t_average)*skIx;// sum sin integral Ix della BK
+                ssy += sin(vPhase_t_average)*skIy;// sum sin integral Iy della BK
+                scx += cos(vPhase_t_average)*skIx;// sum cos integral Ix della BK
+                scy += cos(vPhase_t_average)*skIy;// sum cos integral Iy della BK
             }
             
             double I2 = ssx*ssx+scx*scx+ssy*ssy+scy*scy; // eV^-2
@@ -218,3 +242,5 @@ double ECHARM_radiation::ComputeRadEmProb(ECHARM_strip* strip,ECHARM_particle* p
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_miller_h
 
 #include "ECHARM_miller.hh"
 #include <sstream>
@@ -114,3 +115,5 @@ double ECHARM_miller::GetModuleSquared(int vIndex){
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

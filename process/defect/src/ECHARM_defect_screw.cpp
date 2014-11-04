@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifdef _ECHARM_defect_screw_h
 
 #include "ECHARM_defect_screw.hh"
 
@@ -80,3 +81,4 @@ void ECHARM_defect_screw::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

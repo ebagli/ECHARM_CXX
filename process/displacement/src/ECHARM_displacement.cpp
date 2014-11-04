@@ -5,11 +5,15 @@
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifdef _ECHARM_displacement_h
 
 #include "ECHARM_displacement.hh"
+#ifdef ROOT_
 #include "TH2D.h"
+#endif
+
 ECHARM_displacement::ECHARM_displacement(double num,double prob,bool sudden = true):
-ECHARM_process("defect"){
+ECHARM_process("displacement"){
     
     bSudden = sudden;
     fNum = num;
@@ -20,9 +24,10 @@ ECHARM_process("defect"){
     fArea = 1.;
     bVecStored = false;
     bTabVal = true;
-
-    fNumSteps[0] = 256;
-    fNumSteps[1] = 256;
+    bBoxYzero = true;
+    
+    fNumSteps[0] = 2048;
+    fNumSteps[1] = 64;
     fNumSteps[2] = 1;
 
     if(num < 1){
@@ -39,6 +44,7 @@ ECHARM_process("defect"){
         fAngPhi.push_back(0.);
         fAngTheta.push_back(0.);
         fAngPsi.push_back(0.);
+        fDefIsOn.push_back(true);
     }
     
     fDispl = new ECHARM_3vec(0.,0.,0.);
@@ -110,13 +116,7 @@ void ECHARM_displacement::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part,EC
     
     if(bSudden==false){
         for(int i0 = 0;i0 < fNum;i0++){
-            
-            double vRandom = 0.;
-            if(fProb < 1.){
-                vRandom = drand48();
-            }
-            
-            if(vRandom<fProb){
+            if(fDefIsOn.at(i0)){
                 fPosTemp->Set(part->GetPos());
                 fPosTemp->Add(fCenter.at(i0),-1.);
                 fPosTemp->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
@@ -146,16 +146,12 @@ void ECHARM_displacement::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part,EC
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
+void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save* info){
     
     if(bSudden==true){
         for(int i0 = 0;i0 < fNum;i0++){
-            double vRandom = 0.;
-            if(fProb < 1.){
-                vRandom = drand48();
-            }
             
-            if(vRandom<fProb){
+            if(fDefIsOn.at(i0)==true){
                 fPosTemp->Set(part->GetPos());
                 fPosTemp->Add(fCenter.at(i0),-1.);
 
@@ -165,13 +161,15 @@ void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part
                 if((fPosTemp->IsInCube(fLimitsHalf)) &&
                    (fPosTempPre->IsInCube(fLimitsHalf)) ){
 
-                    fPosTemp->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
-                    fPosTempPre->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
+                    bool bIsInHotZone = IsInHotZone();
                     
-                    if(bTabVal == true){
+                    fPosTemp->Rotate(-fAngPsi.at(i0),-fAngTheta.at(i0),-fAngPhi.at(i0));
+                    fPosTempPre->Rotate(-fAngPsi.at(i0),-fAngTheta.at(i0),-fAngPhi.at(i0));
+
+                    if(bTabVal == true && bIsInHotZone == false){
                         fPosTemp->Add(fLimitsHalf);
                         fPosTempPre->Add(fLimitsHalf);
-
+                        
                         fDispl->SetX(fVecDisplX->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplX->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
                         fDispl->SetY(fVecDisplY->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplY->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
                         fDispl->SetZ(fVecDisplZ->GetVal2d(fPosTemp->GetX(),fPosTemp->GetZ()) - fVecDisplZ->GetVal2d(fPosTempPre->GetX(),fPosTempPre->GetZ()));
@@ -183,13 +181,11 @@ void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part
                         fDispl->Add(fDisplPre,-1.);
                     }
                     
-                    fDispl->Rotate(-fAngPsi.at(i0),-fAngTheta.at(i0),-fAngPhi.at(i0));
+                    fDispl->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
                     fDispl->SetZ(0.);
                     
                     part->GetPos()->Add(fDispl);
-
                 }
-                
             }
         }
     }
@@ -208,6 +204,15 @@ void ECHARM_displacement::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particl
             fAngPhi.at(i0) = drand48() * c2Pi;
             fAngTheta.at(i0) = acos(2.* drand48() - 1.);
         }
+        
+        double vRandom = drand48();
+                
+        if(vRandom<fProb){
+            fDefIsOn.at(i0) = true;
+        }
+        else{
+            fDefIsOn.at(i0) = false;
+        }
     }
 }
 
@@ -215,10 +220,20 @@ void ECHARM_displacement::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particl
 
 void ECHARM_displacement::Init(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
     if(bVecStored==false){
-        fBoxX->SetPar(1,1.*centimeter*fArea*0.5);
-        fBoxY->SetPar(1,0.);
+        fBoxX->SetPar(1,strip->GetDim()->GetX()*fArea*0.5);
+        if(bBoxYzero == true){
+            fBoxY->SetPar(1,0.);
+        }
+        else{
+            fBoxY->SetPar(1,strip->GetDim()->GetY()*0.5);
+        }
         fBoxZ->SetPar(1,strip->GetDim()->GetZ()*0.5);
         
+        if(bVecStored==false){
+            fNumSteps[0] = 32;
+            fNumSteps[1] = 32;
+            fNumSteps[2] = 1;
+        }
         Store();
     }
 }
@@ -227,13 +242,25 @@ void ECHARM_displacement::Init(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_
 
 void ECHARM_displacement::Print(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
 #ifdef ROOT_
-    std::string displX = "_displX";
     std::string BRX = "_BRX";
+    std::string BRY = "_BRY";
+
+    fVecBRX->PrintToTH2(GetName() + BRX);
+    fVecBRY->PrintToTH2(GetName() + BRY);
+    
     std::string CRX = "_CRX";
+    std::string CRY = "_CRY";
+    
+    fVecCRX->PrintToTH2(GetName() + CRX);
+    fVecCRY->PrintToTH2(GetName() + CRX);
+
+    std::string displX = "_displX";
+    std::string displY = "_displY";
+    std::string displZ = "_displZ";
     
     fVecDisplX->PrintToTH2(GetName() + displX);
-    fVecBRX->PrintToTH2(GetName() + BRX);
-    fVecCRX->PrintToTH2(GetName() + CRX);
+    fVecDisplY->PrintToTH2(GetName() + displY);
+    fVecDisplZ->PrintToTH2(GetName() + displZ);
 #endif
 }
 
@@ -343,3 +370,4 @@ void ECHARM_displacement::ComputeBR(ECHARM_3vec*,ECHARM_3vec*){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

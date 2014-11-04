@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_STtest_h
+
 #include "ECHARM_STtest.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -33,7 +35,6 @@ ECHARM_STtest::ECHARM_STtest(double length,double BR,double temp = 450.){
     
     fCrystal->SetTemperature(temp);
     fCrystal->ComputeParameters();
-    std::cout << fCrystal->GetAtom(0)->GetThermalVibrationConstant() << std::endl;
     
     ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
     ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,2048);
@@ -61,19 +62,6 @@ ECHARM_STtest::ECHARM_STtest(double length,double BR,double temp = 450.){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(1. * millimeter,1. * millimeter,length);;
     fBRconst = new ECHARM_3vec(BR,0.,0.);
 
@@ -86,3 +74,4 @@ ECHARM_STtest::~ECHARM_STtest(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

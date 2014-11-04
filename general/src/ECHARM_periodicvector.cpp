@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_periodicvector_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_periodicvector.hh"
@@ -317,3 +320,4 @@ double ECHARM_periodicvector::GetVal(double vX,double vY,double vZ){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

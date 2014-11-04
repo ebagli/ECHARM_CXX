@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_defect_stacking_fault_h
+
 #include "ECHARM_defect_stacking_fault.hh"
 
 ECHARM_defect_stacking_fault::ECHARM_defect_stacking_fault(double num,double prob = 1.):
@@ -22,8 +24,10 @@ ECHARM_defect_stacking_fault::~ECHARM_defect_stacking_fault(){
 
 void ECHARM_defect_stacking_fault::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double z = partpos->GetZ() - defpos->GetZ();
+    double burgerEdge = sin(fBurger->GetAngle(fLine))*fBurger->GetModule();
+
     if(z>=0.){
-        fDispl->SetX(fBurger * 0.5);
+        fDispl->SetX(burgerEdge * 0.5);
     }
     else{
         fDispl->SetX(0.);
@@ -42,3 +46,4 @@ void ECHARM_defect_stacking_fault::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* d
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

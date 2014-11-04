@@ -9,6 +9,7 @@
 //  Computer Physics Communications 141 (2001) 230–246
 //  Eq. (16) and (2)
 //
+#ifdef _ECHARM_process_ms_tikhomirov_h
 
 #include "ECHARM_process_ms_tikhomirov.hh"
 
@@ -129,3 +130,4 @@ double ECHARM_process_ms_tikhomirov::ComputeThetaMax(ECHARM_strip* strip,ECHARM_
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
+#endif

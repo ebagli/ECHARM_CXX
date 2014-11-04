@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_crystal_Ni_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal_Ni.hh"
@@ -43,3 +46,5 @@ ECHARM_crystal_Ni::~ECHARM_crystal_Ni(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

@@ -20,8 +20,7 @@ public:
     ECHARM_kernel(ECHARM_strip*);
     virtual ~ECHARM_kernel();
     
-    double GetTransverseVariationMax();
-    bool SetTransverseVariationMax(double);
+    bool UpdateTransverseVariationMax(double);
         
     bool UpdateStep();
     int DoStep();
@@ -37,6 +36,9 @@ public:
     int End();
     int Print();
 
+    bool IsInChanneling();
+    void CheckChannelingCondition();
+    
 protected:
     bool bSavePartIn;
     bool bSavePartOut;
@@ -48,8 +50,8 @@ protected:
     std::vector<ECHARM_process*> fProcesses;
     
     
-    double fTimeTimeStepMax;
-    double fTimeTimeStepMin;
+    double fTimeStepMax;
+    double fTimeStepMin;
     double fTransverseVariationMax;
    
     bool bSaveTrajStatus;
@@ -64,7 +66,8 @@ protected:
     double fTimeStep;
     double fTimeStepTotal;
     bool bPartIsIn;
-
+    
+    bool bHasBeenInChanneling;
     
 #include "ECHARM_kernel.hxx"
 };

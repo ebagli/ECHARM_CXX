@@ -20,6 +20,7 @@ public:
     virtual ~ECHARM_radiation();
     
     void DoOnParticle(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
+    void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
     void Store();
@@ -33,6 +34,9 @@ private:
     int fAngXbins;
     int fAngYbins;
 
+    double fInitialAngleX;
+    double fInitialAngleY;
+    
     bool bSliceTraj;
     
     int fStepNum;

@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_crystal_LiNbO3_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal_LiNbO3.hh"
@@ -17,8 +20,8 @@ ECHARM_crystal_LiNbO3::ECHARM_crystal_LiNbO3(){
     SetAtomName("LiNbO3");
     
     ECHARM_atom_moliere *atomLi = new ECHARM_atom_moliere("Li",3.,6.941 * amu,575.0,42.2);
-    ECHARM_atom_moliere *atomNb = new ECHARM_atom_moliere("Nb",41.,92.906 * amu,575.0,96.0);
-    ECHARM_atom_moliere *atomO = new ECHARM_atom_moliere("O",32.,72.61 * amu,575.0,255.417);
+    ECHARM_atom_moliere *atomNb = new ECHARM_atom_moliere("Nb",41.,92.906 * amu,575.0,417.0);
+    ECHARM_atom_moliere *atomO = new ECHARM_atom_moliere("O",8.,15.9994 * amu,575.0,96.0);
 
     ECHARM_lattice *latticeLi = new ECHARM_lattice();
     latticeLi->Add(0.0000,0.0000,0.2829);
@@ -88,3 +91,5 @@ ECHARM_crystal_LiNbO3::~ECHARM_crystal_LiNbO3(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

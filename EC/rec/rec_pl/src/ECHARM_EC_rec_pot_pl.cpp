@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_EC_rec_pot_pl_h
 
 #include "ECHARM_EC_rec_pot_pl.hh"
 
@@ -39,3 +40,4 @@ bool ECHARM_EC_rec_pot_pl::GetIndexesEC(double* vIndexEC,int*,int i0,int,int){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

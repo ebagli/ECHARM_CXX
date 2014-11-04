@@ -9,6 +9,8 @@
 //  Computer Physics Communications 141 (2001) 230–246
 //
 
+#ifdef _ECHARM_process_cpc141_2001_doublegauss_h
+
 #include "ECHARM_process_cpc141_2001_doublegauss.hh"
 
 ECHARM_process_cpc141_2001_doublegauss::ECHARM_process_cpc141_2001_doublegauss(){
@@ -52,4 +54,4 @@ double ECHARM_process_cpc141_2001_doublegauss::ComputeStdDevMod(ECHARM_strip* st
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
+#endif

@@ -5,7 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
-
+#ifdef _ECHARM_distribution_box_h
 #include "ECHARM_distribution_box.hh"
 
 ECHARM_distribution_box::ECHARM_distribution_box(double mean,double sigma):
@@ -36,3 +36,4 @@ double ECHARM_distribution_box::GetProbability(double x){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
+#endif

@@ -5,6 +5,8 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_crystal_Vacuum_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal_Vacuum.hh"
@@ -50,3 +52,5 @@ ECHARM_crystal_Vacuum::~ECHARM_crystal_Vacuum(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

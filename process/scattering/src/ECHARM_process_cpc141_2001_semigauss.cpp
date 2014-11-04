@@ -9,6 +9,8 @@
 //  Computer Physics Communications 141 (2001) 230–246
 //
 
+#ifdef _ECHARM_process_cpc141_2001_semigauss_h
+
 #include "ECHARM_process_cpc141_2001_semigauss.hh"
 
 ECHARM_process_cpc141_2001_semigauss::ECHARM_process_cpc141_2001_semigauss(){
@@ -45,3 +47,4 @@ double ECHARM_process_cpc141_2001_semigauss::ComputeThetaScattering(ECHARM_strip
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
+#endif

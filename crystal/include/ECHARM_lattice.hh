@@ -10,8 +10,8 @@
 //   It is forbidden to have a difference number of vIndexes for the three coordinate vector.
 //   The coordinate are not expressed in an orthogonal base but in the cell base which will be selected in the ECHARM_crystal class.
 
-#ifndef _ECHARM_Lattice_h
-#define _ECHARM_Lattice_h
+#ifndef _ECHARM_lattice_h
+#define _ECHARM_lattice_h
 
 #include "ECHARM_3vec.hh"
 

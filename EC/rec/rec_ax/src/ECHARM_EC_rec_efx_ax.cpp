@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_EC_rec_efx_ax_h
 
 #include "ECHARM_EC_rec_efx_ax.hh"
 
@@ -65,3 +66,4 @@ bool ECHARM_EC_rec_efx_ax::GetIndexesEC(double* vIndexEC,int* vIndexSF,int i0,in
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

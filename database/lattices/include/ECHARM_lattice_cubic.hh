@@ -6,8 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifndef _ECHARM_Lattice_cubic_h
-#define _ECHARM_Lattice_cubic_h
+#ifndef _ECHARM_lattice_cubic_h
+#define _ECHARM_lattice_cubic_h
 
 #include "ECHARM_lattice.hh"
 

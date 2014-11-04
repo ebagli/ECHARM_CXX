@@ -61,3 +61,20 @@ inline void DivideAvgElD(double num) {fAvgElD /= num;};
 inline void SetAvgElD(double num) {fAvgElD = num;};
 inline double GetAvgElD() {return fAvgElD;};
 
+inline void SetChInitial(int val) {fChInitial = val;};
+inline int GetChInitial() {return fChInitial;};
+
+inline void AddChTimes() {fChTimes++;};
+inline int GetChTimes() {return fChTimes;};
+
+inline void AddDechTimes() {fDechTimes++;};
+inline int GetDechTimes() {return fDechTimes;};
+
+inline void SetPartNum(int part) {fPartNum = part;};
+inline int GetPartNum() {return fPartNum;};
+
+inline void SetCharge(double num) {fCharge = num;};
+inline double GetCharge() {return fCharge;};
+
+inline void SetMass(double num) {fMass = num;};
+inline double GetMass() {return fMass;};

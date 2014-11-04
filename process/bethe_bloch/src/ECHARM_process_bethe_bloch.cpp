@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_process_bethe_bloch_h
+
 #include "ECHARM_process_bethe_bloch.hh"
 #include "ECHARM_distribution_gauss.hh"
 
@@ -65,13 +67,11 @@ void ECHARM_process_bethe_bloch::DoOnParticle(ECHARM_strip* strip,ECHARM_particl
 
     fDistr->SetPar(1,fStdDev);
     
-    double vMomVar = fDistr->GenerateNumber();
+    double vMomVar = part->GetMom()->GetModule() - fDistr->GenerateNumber();
 
-    double vPhi = c2Pi * drand48();
-    
-    part->GetMom()->AddX( vMomVar * cos(vPhi) );
-    part->GetMom()->AddY( vMomVar * sin(vPhi) );
-    part->GetMom()->SubtractZ( vMomVar);
+    part->GetMom()->ScaleModule(vMomVar);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

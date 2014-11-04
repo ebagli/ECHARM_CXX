@@ -1,32 +1,36 @@
 //
-//  ECHARM_undulator.h
+//  ECHARM_torsion.h
 //
 //
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef _ECHARM_undulator_h
-#define _ECHARM_undulator_h
+#ifndef _ECHARM_torsion_h
+#define _ECHARM_torsion_h
 
-#include "ECHARM_displacement.hh"
+#include "ECHARM_process.hh"
+#include "ECHARM_distribution_gauss.hh"
 
-class ECHARM_undulator: public ECHARM_displacement
+class ECHARM_torsion: public ECHARM_process
 {
 public:
-    ECHARM_undulator(double,double,double,bool);
-    virtual ~ECHARM_undulator();
+    ECHARM_torsion(double,double,double,double);
+    virtual ~ECHARM_torsion();
     
-    virtual void Init(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
-    virtual void ComputeDispl(ECHARM_3vec*,ECHARM_3vec*);
-    virtual void ComputeBR(ECHARM_3vec*,ECHARM_3vec*);
-    
+    void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
+    void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
+
 protected:
-    double fAmplitude;
-    double fPeriod;
-    double fPhase;
-        
+    double fTorsionX; // µrad/mm
+    double fTorsionY; // µrad/mm
+    
+    double fX;
+    double fY;
+    
+    ECHARM_distribution_gauss* fDistrX;
+    ECHARM_distribution_gauss* fDistrY;
 public:
-#include "ECHARM_undulator.hxx"
+#include "ECHARM_torsion.hxx"
 };
 #endif

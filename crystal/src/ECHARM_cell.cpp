@@ -6,6 +6,7 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_cell_h
 #include "ECHARM_cell.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -183,3 +184,4 @@ double ECHARM_cell::ComputeRecPeriod(int vIndex00,int vIndex01, int vIndex02)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

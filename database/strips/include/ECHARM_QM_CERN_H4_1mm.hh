@@ -1,21 +1,21 @@
 //
-//  ECHARM_STtest.h
+//  ECHARM_QM_CERN_H4_1mm.h
 //  
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 //  Short class description:
-//   Class ECHARM_STtest
+//   Class ECHARM_QM_CERN_H4_1mm
 //
 
-#ifndef _ECHARM_STtest_h
-#define _ECHARM_STtest_h
+#ifndef _ECHARM_QM_CERN_H4_1mm_h
+#define _ECHARM_QM_CERN_H4_1mm_h
 #include "ECHARM_strip.hh"
 
-class ECHARM_STtest : public ECHARM_strip {
+class ECHARM_QM_CERN_H4_1mm : public ECHARM_strip {
 public:
-    ECHARM_STtest(double,double,double);
-    virtual ~ECHARM_STtest();
+    ECHARM_QM_CERN_H4_1mm(double,double);
+    virtual ~ECHARM_QM_CERN_H4_1mm();
 };
 #endif

@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 31/07/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifdef _ECHARM_defect_edge_h
 
 #include "ECHARM_defect_edge.hh"
 
@@ -53,7 +54,6 @@ void ECHARM_defect_edge::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         fDispl->SetY(dy);
         fDispl->SetZ(dz);
     }
-    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -95,3 +95,5 @@ void ECHARM_defect_edge::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

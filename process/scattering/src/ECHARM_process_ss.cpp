@@ -10,6 +10,8 @@
 //  Eq. (16) and (2)
 //
 
+#ifdef _ECHARM_process_ss_h
+
 #include "ECHARM_process_ss.hh"
 
 ECHARM_process_ss::ECHARM_process_ss(){
@@ -47,5 +49,5 @@ double ECHARM_process_ss::ComputeThetaScattering(ECHARM_strip* strip,ECHARM_part
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+#endif
 

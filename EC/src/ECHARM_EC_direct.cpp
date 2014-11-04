@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_EC_direct_h
 
 #include "ECHARM_EC_direct.hh"
 
@@ -29,7 +30,7 @@ ECHARM_EC(name,
           crystal){
     fCellNumb = cellnumber;
     fStepNumbPerCell = 128;
-    fLimit = 1.E-2 * AA * AA;
+    fLimit = 1.E-6 * AA;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -91,22 +92,22 @@ double ECHARM_EC_direct::Get2d(double x, double y){
 double ECHARM_EC_direct::GetFunc(double xpart, double ypart, double zpart){
     double vResult = 0;
     
-    for(int j0 = 0; j0 < fCrystal->GetNumBases();j0++){
+    for(unsigned int j0 = 0; j0 < fCrystal->GetNumBases();j0++){
         for(int j1 = 0; j1 < fCrystal->GetLattice(j0)->GetCoordinatesNumber();j1++){
             double x = fCrystal->GetLattice(j0)->GetCoordinates().at(j1)->GetX() * fCrystal->GetCell()->GetSizes()->GetX() - xpart;
             double y = fCrystal->GetLattice(j0)->GetCoordinates().at(j1)->GetY() * fCrystal->GetCell()->GetSizes()->GetY() - ypart;
             double z = fCrystal->GetLattice(j0)->GetCoordinates().at(j1)->GetZ() * fCrystal->GetCell()->GetSizes()->GetZ() - zpart;
-            double r2 = x*x+y*y+z*z;
-            if(r2 > fLimit){
-                vResult += fCrystal->GetAtom(j0)->ComputeFF(r2) / fSquareRoot(r2);
+            double r = fSquareRoot(x*x+y*y+z*z);
+            if(r > fLimit){
+                vResult += fCrystal->GetAtom(j0)->ComputeFF(r) / r;
             }
         }
     }
-    
+    vResult *= cElectronLengthOnCharge; //eV*m on charge evaluated in unit of electron charge
     vResult *= (fCrystal->GetZ());
-
+    
     return vResult;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+#endif

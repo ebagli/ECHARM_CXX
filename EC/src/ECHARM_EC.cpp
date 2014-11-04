@@ -5,6 +5,8 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_EC_h
+
 #include "ECHARM_EC.hh"
 #ifdef ROOT_
 #include "TH1D.h"
@@ -142,3 +144,5 @@ void ECHARM_EC::PrintToFile(std::string vAddition = "",
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

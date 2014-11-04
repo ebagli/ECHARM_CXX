@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_beam_SLAC_h
+
 #include "ECHARM_beam_SLAC.hh"
 #include "ECHARM_distribution_gauss.hh"
 #include "ECHARM_distribution_box.hh"
@@ -17,12 +19,8 @@ ECHARM_beam_SLAC::ECHARM_beam_SLAC(double vBeamEnergy, double thetaxin=0.,double
     
     AddParticle(electron,1.);
     
-    if(vBeamEnergy > 10. * GeV){
-        std::cout << "Max beam energy 10 GeV" << std::endl;
-    }
-    
     fDistrMomentumX = new ECHARM_distribution_gauss(thetaxin*vBeamEnergy,thetaxyin_sigma*vBeamEnergy);
-    fDistrMomentumY = new ECHARM_distribution_const(0.);
+    fDistrMomentumY = new ECHARM_distribution_gauss(0.,thetaxyin_sigma*vBeamEnergy);
     fDistrMomentumZ = new ECHARM_distribution_const(vBeamEnergy);
 
 }
@@ -33,3 +31,4 @@ ECHARM_beam_SLAC::~ECHARM_beam_SLAC(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

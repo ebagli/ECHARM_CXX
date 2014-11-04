@@ -26,6 +26,8 @@ public:
     virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual void Init(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     
+    virtual bool IsInHotZone() {return false;};
+    
     void Print(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
     void SetLimitStrip(ECHARM_strip*);
@@ -48,6 +50,7 @@ protected:
     std::vector<double> fAngPhi;
     std::vector<double> fAngTheta;
     std::vector<double> fAngPsi;
+    std::vector<bool> fDefIsOn;
 
     ECHARM_3vec* fDispl;
     ECHARM_3vec* fDisplPre;
@@ -67,7 +70,7 @@ protected:
     ECHARM_distribution_box* fBoxX;
     ECHARM_distribution_box* fBoxY;
     ECHARM_distribution_box* fBoxZ;
-
+    bool bBoxYzero;
 
 protected:
     ECHARM_3vec* fPosTemp;

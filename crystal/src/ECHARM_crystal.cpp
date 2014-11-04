@@ -5,6 +5,8 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_crystal_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal.hh"
@@ -273,4 +275,4 @@ void ECHARM_crystal::ComputeRadLength(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+#endif

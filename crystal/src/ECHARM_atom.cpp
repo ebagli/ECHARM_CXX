@@ -6,6 +6,7 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_atom_h
 #include "ECHARM_atom.hh"
 
 ECHARM_atom::ECHARM_atom(std::string  AtomName,
@@ -108,3 +109,4 @@ double ECHARM_atom::ComputeThomasFermiRadius()
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

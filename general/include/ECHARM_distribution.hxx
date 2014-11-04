@@ -8,6 +8,7 @@
 
 public:
     inline std::vector<double> GetPars() {return fPar;};
+    inline double GetPar(unsigned int vIndex) {return fPar.at(vIndex);};
     inline std::vector<std::string> GetParNames() {return fParNames;};
     
     inline void SetPars(std::vector<double> vPar) {fPar = vPar;};

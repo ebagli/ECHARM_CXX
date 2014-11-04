@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_FIG5_PRE52_2045_h
+
 #include "ECHARM_FIG5_PRE52_2045.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -58,19 +60,6 @@ ECHARM_FIG5_PRE52_2045::ECHARM_FIG5_PRE52_2045(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(2. * millimeter,55. * millimeter,3. * centimeter);;
     fBRconst = new ECHARM_3vec(450. * centimeter,0.,0.);
 
@@ -87,3 +76,4 @@ ECHARM_FIG5_PRE52_2045::~ECHARM_FIG5_PRE52_2045(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

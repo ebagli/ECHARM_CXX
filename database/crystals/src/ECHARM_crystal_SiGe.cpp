@@ -5,6 +5,9 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+
+#ifdef _ECHARM_crystal_SiGe_h
+
 #include <cfloat>
 #include <limits>
 #include "ECHARM_crystal_SiGe.hh"
@@ -78,3 +81,5 @@ ECHARM_crystal_SiGe::~ECHARM_crystal_SiGe(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

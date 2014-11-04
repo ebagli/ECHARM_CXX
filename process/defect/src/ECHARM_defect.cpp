@@ -6,19 +6,27 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_defect_h
+
 #include "ECHARM_defect.hh"
-#include "TH2D.h"
+
 ECHARM_defect::ECHARM_defect(double num,double prob,bool sudden = true):
 ECHARM_displacement(num,prob,sudden){
     
     SetName("defect");
     bRandomPosition = true;
     fPoissonRatio = 0.42;
-    fBurger = 1. * AA;
+    fBurger = new ECHARM_3vec(1. * AA,0.,0.);
+    fLine = new ECHARM_3vec(0.,1.,0.);
+    fHotLimit = new ECHARM_3vec(0.,1.,0.);
     
     fLimitsHalf->SetX(2. * micrometer);
     fLimitsHalf->SetY(2. * micrometer);
     fLimitsHalf->SetZ(2. * micrometer);
+    
+    fHotLimit->SetX(0.1 * micrometer);
+    fHotLimit->SetY(0.1 * micrometer);
+    fHotLimit->SetZ(0.1 * micrometer);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -28,60 +36,157 @@ ECHARM_defect::~ECHARM_defect(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
-    for(int i0 = 0;i0 < fNum;i0++){
-        if(bRandomPosition == true){
-            fCenter.at(i0)->SetX(fBoxX->GenerateNumber());
-            fCenter.at(i0)->SetY(fBoxY->GenerateNumber());
-            fCenter.at(i0)->SetZ(fBoxZ->GenerateNumber());
-        }
-        if(bRandomAngle == true){
-            fAngPhi.at(i0) = drand48() * c2Pi;
-            fAngTheta.at(i0) = acos(2.* drand48() - 1.);
-        }
+bool ECHARM_defect::IsInHotZone(){
+    if((fPosTemp->IsInCube(fHotLimit)) &&
+       (fPosTempPre->IsInCube(fHotLimit)) ){
+        return true;
     }
+    return false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_defect::Init(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
     if(bVecStored==false){
-        fBoxX->SetPar(1,1.*centimeter*fArea*0.5);
-        fBoxY->SetPar(1,0.);
+        fBoxX->SetPar(1,1.*centimeter*centimeter/strip->GetDim()->GetZ()*fArea*0.5);
+        if(bBoxYzero == true){
+            fBoxY->SetPar(1,0.);
+        }
+        else{
+            fBoxY->SetPar(1,1.*centimeter*0.5);
+        }
         fBoxZ->SetPar(1,strip->GetDim()->GetZ()*0.5);
         
-        if(fBurger==0.){
-            fBurger = strip->GetCrystal()->GetPeriodX();
+        if(fBurger->GetModule()==0.){
+            fBurger->SetX(strip->GetCrystal()->GetPeriodX());
         }
         
+        if(bVecStored==false){
+            fNumSteps[0] = 32;
+            fNumSteps[1] = 32;
+            fNumSteps[2] = 1;
+        }
         Store();
     }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::ComputeDispl(ECHARM_3vec*,ECHARM_3vec*){
-    fDispl->SetX(0.);
-    fDispl->SetY(0.);
-    fDispl->SetZ(0.);
+void ECHARM_defect::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
+    double x = partpos->GetX() - defpos->GetX();
+    double z = partpos->GetZ() - defpos->GetZ();
+    
+    double dx = 0.0;
+    double dz = 0.0;
+    double dy = 0.0;
+    
+    double burgerEdge = sin(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    double burgerScrew = cos(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    
+    if(x!=0. &&
+       z!=0.){
+        double xz2 = x * x + z * z;
+        
+        if(burgerEdge!=0.){
+            dx = atan2(x , z ) ;
+            dx += ( z * x / xz2 / 2.0 / ( 1.0 - fPoissonRatio ) );
+            dx *= ( burgerEdge );
+            dx /= ( 2. * cPi );
+            
+            dz = ( ( 1.0 - 2.0 * fPoissonRatio) * log(xz2));
+            dz += ( ( x * x - z * z ) / xz2 );
+            dz *= ( burgerEdge );
+            dz /= ( 8. * cPi );
+            dz /= ( 1. - fPoissonRatio );
+        }
+        
+        if(burgerScrew!=0.){
+            dy = atan2( x , z ) ;
+            dy *= ( burgerScrew );
+            dy /= ( 2. * cPi );
+        }
+        
+    }
+    fDispl->SetX(dx);
+    fDispl->SetZ(dz);
+    fDispl->SetY(dy);
     
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::ComputeBR(ECHARM_3vec*,ECHARM_3vec*){
-    fBR->SetX(0.);
-    fBR->SetY(0.);
+void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
+    
+    double x = partpos->GetX() - defpos->GetX();
+    double z = partpos->GetZ() - defpos->GetZ();
+    
+    double burgerEdge = sin(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    double burgerScrew = cos(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    
     fBR->SetZ(0.);
+    
+    if(x==0. &&
+       z==0.){
+        fBR->SetX(0.);
+        fBR->SetY(0.);
+    }
+    else{
+        // (1 + (d/dz (b/(2*l)(arctan(z/x)+1/(2*(1-P))*x*z/(x*x+z*z))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x)+1/(2*(1-P))*x*z/(x*x+z*z))))
+        double xz2 = x*x + z*z;
+        double p = fPoissonRatio;
+        
+        double Rx1 = fSquare( ( 3. - 2. * p ) * x * x + (1. - 2. * p) * z * z );
+        Rx1 *= ( x * x * burgerEdge * burgerEdge);
+        Rx1 /= (16. * cPi * cPi * fSquare( p - 1.) * xz2 * xz2 * xz2 * xz2);
+        Rx1 += 1.;
+        
+        double Rx2 = burgerEdge * x * z * ( (2. * p - 5.) * x * x + (2. * p - 1.) * z * z );
+        double Rx = 2. * cPi * ( p - 1.) * xz2 * xz2 * xz2;
+        
+        if(Rx2!=0){
+            Rx /= Rx2;
+            Rx *= pow(Rx1,1.5);
+        }
+        else{
+            Rx = 0.;
+        }
+        fBR->SetX(Rx);
+        
+        // (1 + (d/dz (b/(2*l)(arctan(z/x))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x))))
+        double Ry1 = burgerScrew*burgerScrew+x*x;
+        Ry1 /= fSquare(2.*cPi*xz2);
+        Ry1 += 1.;
+        
+        double Ry2 = burgerScrew * x * z;
+        double Ry = cPi * xz2 * xz2;
+        
+        if(Ry2!=0){
+            Ry /= Ry2;
+            Ry *= pow(Ry1,1.5);
+        }
+        else{
+            Ry = 0.;
+        }
+        fBR->SetY(- Ry);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_defect::ComputeAnglesFromBurgerAndLineDirections(ECHARM_3vec* burger,ECHARM_3vec* line){
+void ECHARM_defect::ComputeAnglesFromBurgerAndLineDirections(){
     
-    ECHARM_3vec* xaxis = burger->NormalizeVectorTo();
-    ECHARM_3vec* yaxis = line->NormalizeVectorTo();
-    ECHARM_3vec* zaxis = burger->VectorProductTo(line);
+    ECHARM_3vec* xaxis;
+    ECHARM_3vec* yaxis = fLine->NormalizeVectorTo();
+    if(fLine->IsParallel(fBurger)){
+        xaxis = new ECHARM_3vec(-yaxis->GetY(),yaxis->GetX(),yaxis->GetZ());
+    }
+    else{
+        xaxis = fBurger->VectorProductTo(fLine);
+    }
+    ECHARM_3vec* zaxis = xaxis->VectorProductTo(yaxis);
+    
+    xaxis->NormalizeVector();
+    yaxis->NormalizeVector();
     zaxis->NormalizeVector();
     
     double theta = 0.;
@@ -106,9 +211,10 @@ void ECHARM_defect::ComputeAnglesFromBurgerAndLineDirections(ECHARM_3vec* burger
             psi = atan2(-yaxis->GetX(),-yaxis->GetX());
         }
     }
-  
+    
     SetAng(phi,theta,psi);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

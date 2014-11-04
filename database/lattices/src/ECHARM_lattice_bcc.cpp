@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_lattice_bcc_h
+
 #include "ECHARM_lattice_bcc.hh"
 
 ECHARM_lattice_bcc::ECHARM_lattice_bcc():ECHARM_lattice(){
@@ -20,4 +22,4 @@ ECHARM_lattice_bcc::~ECHARM_lattice_bcc(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
+#endif

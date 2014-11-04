@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_EC_rec_h
 
 #include "ECHARM_EC_rec.hh"
 
@@ -201,3 +202,4 @@ double ECHARM_EC_rec::GetFT1D_CUDA(double x, std::vector<double>& fc){
 #endif
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

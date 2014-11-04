@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_beam_H8_pencil_h
+
 #include "ECHARM_beam_H8_pencil.hh"
 #include "ECHARM_distribution_box.hh"
 #include "ECHARM_distribution_const.hh"
@@ -34,3 +36,4 @@ ECHARM_beam_H8_pencil::~ECHARM_beam_H8_pencil(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

@@ -22,9 +22,6 @@
 #include "ECHARM_distribution_gauss.hh"
 #include "ECHARM_distribution_gauss.cpp"
 
-#include "ECHARM_distribution_gauss_cut.hh"
-#include "ECHARM_distribution_gauss_cut.cpp"
-
 #include "ECHARM_distribution_box.hh"
 #include "ECHARM_distribution_box.cpp"
 
@@ -84,9 +81,6 @@
 
 #include "ECHARM_EC_intrp.hh"
 #include "ECHARM_EC_intrp.cpp"
-
-#include "ECHARM_EC_direct.hh"
-#include "ECHARM_EC_direct.cpp"
 
 #include "ECHARM_EC_rec.hh"
 #include "ECHARM_EC_rec.cpp"
@@ -189,8 +183,6 @@
 #include "ECHARM_process_bethe_bloch.hh"
 #include "ECHARM_process_bethe_bloch.cpp"
 
-#include "ECHARM_torsion.hh"
-#include "ECHARM_torsion.cpp"
 
 
 
@@ -277,9 +269,6 @@
 #include "ECHARM_QM60_150.hh"
 #include "ECHARM_QM60_150.cpp"
 
-#include "ECHARM_QM_CERN_H4_1mm.hh"
-#include "ECHARM_QM_CERN_H4_1mm.cpp"
-
 #include "ECHARM_FIG14_NIMB266_3835_111.hh"
 #include "ECHARM_FIG14_NIMB266_3835_111.cpp"
 
@@ -296,14 +285,8 @@
 #include "ECHARM_NiCOMECER.cpp"
 
 // beam database
-#include "ECHARM_beam_ee_discrimination.hh"
-#include "ECHARM_beam_ee_discrimination.cpp"
-
 #include "ECHARM_beam_LHC_UA9.hh"
 #include "ECHARM_beam_LHC_UA9.cpp"
-
-#include "ECHARM_beam_H4_electron.hh"
-#include "ECHARM_beam_H4_electron.cpp"
 
 #include "ECHARM_beam_H8_2012_UA9.hh"
 #include "ECHARM_beam_H8_2012_UA9.cpp"
@@ -313,9 +296,6 @@
 
 #include "ECHARM_beam_H8_pencil.hh"
 #include "ECHARM_beam_H8_pencil.cpp"
-
-#include "ECHARM_beam_H8_cut.hh"
-#include "ECHARM_beam_H8_cut.cpp"
 
 #include "ECHARM_beam_COMECER.hh"
 #include "ECHARM_beam_COMECER.cpp"

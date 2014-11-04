@@ -45,6 +45,8 @@ public:
     void SavePart(ECHARM_particle*,double,double);
 
 private:
+    int fPartNum;
+    
     std::vector<double> fRadEmEn;
     std::vector<double> fRadEmProb;
 
@@ -55,6 +57,9 @@ private:
     ECHARM_Particle_Save fPart;
     std::vector<ECHARM_Particle_Save> fPartVec;
     
+    double fCharge;
+    double fMass;
+    
     ECHARM_3vec* fDispl;
     ECHARM_3vec* fBR;
     
@@ -63,6 +68,10 @@ private:
 
     std::vector<double> fElD;
     double fAvgElD;
+    
+    int fChInitial;
+    int fChTimes;
+    int fDechTimes;
     
 #include "ECHARM_info_save.hxx"
 };

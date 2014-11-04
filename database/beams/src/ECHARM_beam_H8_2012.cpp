@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_beam_H8_2012_h
 
 #include "ECHARM_beam_H8_2012.hh"
 #include "ECHARM_distribution_gauss.hh"
@@ -28,3 +29,4 @@ ECHARM_beam_H8_2012::~ECHARM_beam_H8_2012(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

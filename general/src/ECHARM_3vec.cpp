@@ -5,6 +5,7 @@
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
+#ifdef _ECHARM_3vec_h
 
 #include "ECHARM_3vec.hh"
 #include <sstream>
@@ -25,6 +26,18 @@ ECHARM_3vec::ECHARM_3vec(double X, double Y, double Z){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ECHARM_3vec::~ECHARM_3vec(){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+bool ECHARM_3vec::IsParallel(ECHARM_3vec* vVector){
+    if((fSize[1] * vVector->Get(2) - fSize[2] * vVector->Get(1) == 0.)&&
+       (fSize[2] * vVector->Get(0) - fSize[0] * vVector->Get(2) == 0.)&&
+       (fSize[0] * vVector->Get(1) - fSize[1] * vVector->Get(0) == 0.)
+       ){
+        return true;
+    }
+    return false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -75,6 +88,24 @@ double ECHARM_3vec::ScalarProduct(ECHARM_3vec* vVector){
         vScalarProduct += fSize[i] * vVector->fSize[i];
     }
     return vScalarProduct;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+double ECHARM_3vec::ScalarProduct(double vec[3]){
+    double vScalarProduct = 0.0;
+    for(unsigned int i=0;i<3;i++){
+        vScalarProduct += fSize[i] * vec[i];
+    }
+    return vScalarProduct;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+double ECHARM_3vec::GetAngle(ECHARM_3vec* vVector){
+    double vScalarProduct = this->ScalarProduct(vVector);
+    double vMagnitude = vVector->GetModule() * this->GetModule();
+    return acos(vScalarProduct/vMagnitude);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -289,3 +320,4 @@ void ECHARM_3vec::Rotate(double phi){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+#endif

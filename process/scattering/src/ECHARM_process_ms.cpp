@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef _ECHARM_process_ms_h
+
 #include "ECHARM_process_ms.hh"
 #include "ECHARM_distribution_gauss.hh"
 
@@ -94,3 +96,5 @@ void ECHARM_process_ms::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle*
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

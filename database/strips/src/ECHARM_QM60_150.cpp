@@ -6,6 +6,8 @@
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
+#ifdef _ECHARM_QM60_150_h
+
 #include "ECHARM_QM60_150.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
@@ -18,7 +20,7 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_QM60_150::ECHARM_QM60_150(){
+ECHARM_QM60_150::ECHARM_QM60_150(double vBendingRadius){
     
     fCrystal = new ECHARM_crystal_Si();
     
@@ -58,21 +60,8 @@ ECHARM_QM60_150::ECHARM_QM60_150(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fPot->ComputeMax();
-    fPot->ComputeMin();
-    fEFX->ComputeMax();
-    fEFX->ComputeMin();
-    fEFY->ComputeMax();
-    fEFY->ComputeMin();
-    fEFZ->ComputeMax();
-    fEFZ->ComputeMin();
-    fAtD->ComputeMax();
-    fAtD->ComputeMin();
-    fElD->ComputeMax();
-    fElD->ComputeMin();
-    
     fDim = new ECHARM_3vec(10. * millimeter,10. * millimeter,60. * micrometer);;
-    fBRconst = new ECHARM_3vec(137. * millimeter,0.,0.);
+    fBRconst = new ECHARM_3vec(vBendingRadius,0.,0.);
 
     SetName("QM60_150");
 }
@@ -83,3 +72,5 @@ ECHARM_QM60_150::~ECHARM_QM60_150(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif

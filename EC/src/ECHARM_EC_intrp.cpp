@@ -80,6 +80,32 @@ void ECHARM_EC_intrp::Store(ECHARM_EC* vEC){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+double ECHARM_EC_intrp::ComputeMax() {
+    if(fMax != 0.){
+        return fMax;
+    }
+    else{
+        return fVec->GetMax();
+    }
+
+    return  0.;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+double ECHARM_EC_intrp::ComputeMin() {
+    if(fMax != 0.){
+        return fMin;
+    }
+    else{
+        return fVec->GetMin();
+    }
+    
+    return  0.;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 double ECHARM_EC_intrp::Get(double x,double y,double z){
     return fVec->GetVal(x,y,z);
 }

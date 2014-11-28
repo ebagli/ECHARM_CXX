@@ -15,7 +15,7 @@
 
 class ECHARM_STtest : public ECHARM_strip {
 public:
-    ECHARM_STtest(double,double,double);
+    ECHARM_STtest(double,double,double,int,int,int);
     virtual ~ECHARM_STtest();
 };
 #endif

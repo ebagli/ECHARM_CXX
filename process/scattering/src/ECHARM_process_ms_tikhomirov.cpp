@@ -90,7 +90,13 @@ double ECHARM_process_ms_tikhomirov::ComputeTheta2(ECHARM_strip* strip,ECHARM_pa
     UpdateConstants(strip,part);
     double vInvTheta2 = fTotalProbThetaSS / (length * fXS_SSconstant * strip->GetCrystal()->GetNucleiDensity());
     vInvTheta2 += 1./fSquare(fThetaMax);
-    return fSquareRoot(1./vInvTheta2);
+    
+    double correction = 1.;
+    
+    if(part->GetMass()==cElectronMass){
+        correction = 1.7;
+    }
+    return fSquareRoot(1./vInvTheta2*correction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

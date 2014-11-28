@@ -47,6 +47,7 @@ int ECHARM_kernel::DoBeforeInteraction(){
         myProcess != fProcesses.end();
         myProcess++){
         (*myProcess)->DoBeforeInteraction(fStrip,fPart,fInfo);
+        (*myProcess)->ResetSinceLastProcess();
     }
     
     fInfo->GetDispl()->Zero();
@@ -57,10 +58,6 @@ int ECHARM_kernel::DoBeforeInteraction(){
     fTimeStepTotal = 0.;
     bSaveTrajStepTemp = 0.;
     UpdateTransverseVariationMax(fTransverseVariationMax);
-    
-    fPart->ResetStepLengthSinceLastProcess();
-    fPart->ResetAtDSinceLastProcess();
-    fPart->ResetElDSinceLastProcess();
     
     return 0;
 }
@@ -208,7 +205,6 @@ int ECHARM_kernel::DoOnParticle(){
 int ECHARM_kernel::DoOnStrip(){
     std::vector<ECHARM_process*>::iterator myProcess;
     
-    fPart->GetPos()->Add(fInfo->GetDispl(),-1.);
 
     fPart->SavePos();
     
@@ -296,11 +292,7 @@ bool ECHARM_kernel::UpdateStep(){
         fTimeStep = (GetStrip()->GetDim()->GetZ() * 0.5 - fPart->GetPos()->GetZ());
         return false;
     }
-    
-    fPart->UpdateStepLengthSinceLastProcess();
-    fPart->UpdateAtDSinceLastProcess(fStrip->GetAtD()->Get(fPart->GetPos())*fTimeStep);
-    fPart->UpdateElDSinceLastProcess(fStrip->GetElD()->Get(fPart->GetPos())*fTimeStep);
-    
+        
     return true;
 }
 

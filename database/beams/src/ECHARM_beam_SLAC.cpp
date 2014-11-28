@@ -13,11 +13,19 @@
 #include "ECHARM_distribution_box.hh"
 #include "ECHARM_distribution_const.hh"
 
-ECHARM_beam_SLAC::ECHARM_beam_SLAC(double vBeamEnergy, double thetaxin=0.,double thetaxyin_sigma = 30. * microrad){
+ECHARM_beam_SLAC::ECHARM_beam_SLAC(double vBeamEnergy, double thetaxin=0.,double thetaxyin_sigma = 30. * microrad,int charge = -1){
 
     ECHARM_particle* electron = new ECHARM_particle(-1,cElectronMass);
     
-    AddParticle(electron,1.);
+    ECHARM_particle* positron = new ECHARM_particle(+1,cElectronMass);
+    
+    if(charge==-1){
+        AddParticle(electron,1.);
+    }
+    
+    if(charge==+1){
+        AddParticle(positron,1.);
+    }
     
     fDistrMomentumX = new ECHARM_distribution_gauss(thetaxin*vBeamEnergy,thetaxyin_sigma*vBeamEnergy);
     fDistrMomentumY = new ECHARM_distribution_gauss(0.,thetaxyin_sigma*vBeamEnergy);

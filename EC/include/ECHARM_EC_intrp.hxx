@@ -20,8 +20,5 @@ inline double GetStep(int vIndex) {return fStep[vIndex];};
 
 inline double ComputeStep(int vIndex) {return (fCrystal->GetPeriod(vIndex) / double(fNumSteps[vIndex] - 1));};
 
-inline double ComputeMax() {return fVec->GetMax();};
-inline double ComputeMin() {return fVec->GetMin();};
-
 inline void PrintVecToFile(std::string filename,std::string opt = "") {fVec->PrintToFile(filename,opt);};
 inline void ReadVecFromFile(std::string filename) {fVec->ReadFromFile(filename);};

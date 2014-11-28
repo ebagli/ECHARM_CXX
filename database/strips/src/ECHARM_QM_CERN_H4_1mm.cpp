@@ -21,11 +21,21 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * millimeter){
+ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * millimeter,std::string name = "Si"){
     
-    fCrystal = new ECHARM_crystal_Si();
-
-    int vMillerX[3] = {1,1,1};
+    if(name == "Si"){
+        fCrystal = new ECHARM_crystal_Si();
+    }
+    else if(name == "Ge"){
+        fCrystal = new ECHARM_crystal_Ge();
+    }
+    else{
+        fCrystal = new ECHARM_crystal_Si();
+    }
+    
+    
+    
+    int vMillerX[3] = {2,1,1};
     int vMillerY[3] = {1,1,-2};
     int vMillerZ[3] = {1,-1,0};
     

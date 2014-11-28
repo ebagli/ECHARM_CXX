@@ -33,13 +33,17 @@ public:
     virtual double ComputeAvgAtD(ECHARM_strip*,ECHARM_particle*);
     virtual double ComputeAvgElD(ECHARM_strip*,ECHARM_particle*);
     virtual double ComputeAvgDen(ECHARM_strip*,ECHARM_particle*);
-
-    inline std::string GetName() {return fName;};
-    inline void SetName(std::string name) {fName = name;};
     
 protected:
     std::string fName;
     bool fInitialized;
     bool fEnded;
+    
+    double fStepLengthSinceLastProgress;
+    double fAtDSinceLastProgress;
+    double fElDSinceLastProgress;
+
+#include "ECHARM_process.hxx"
+
 };
 #endif

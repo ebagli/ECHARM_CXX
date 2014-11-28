@@ -13,3 +13,6 @@ inline void SetCrystal(ECHARM_crystal *crystal) {fCrystal = crystal;};
 
 inline std::string GetName() {return fName;}; //!< Get name.
 inline void SetName(std::string Name) {fName=Name;}; //!< Set name.
+
+inline void ResetMax() {fMax = 0.;};
+inline void ResetMin() {fMin = 0.;};

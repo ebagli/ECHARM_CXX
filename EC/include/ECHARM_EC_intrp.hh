@@ -27,6 +27,9 @@ public:
 #endif
 
     void Store(ECHARM_EC*);
+    double ComputeMax();
+    double ComputeMin();
+    
 
 public:
     virtual double Get(double,double,double);

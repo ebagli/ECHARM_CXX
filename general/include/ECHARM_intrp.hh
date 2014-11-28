@@ -20,7 +20,7 @@ public:
 
     double GetXinUnitPeriod(double,double&);
     double GetXinUnitOne(double,double&);
-    void GetIndexes(int*,int&);
+    void GetIndexes(long*,int&);
 };
 
 #endif

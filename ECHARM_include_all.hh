@@ -177,11 +177,17 @@
 #include "ECHARM_defect.hh"
 #include "ECHARM_defect.cpp"
 
+#include "ECHARM_defect_point.hh"
+#include "ECHARM_defect_point.cpp"
+
 #include "ECHARM_defect_stacking_fault.hh"
 #include "ECHARM_defect_stacking_fault.cpp"
 
 #include "ECHARM_radiation.hh"
 #include "ECHARM_radiation.cpp"
+
+#include "ECHARM_radiation_noparts.hh"
+#include "ECHARM_radiation_noparts.cpp"
 
 #include "ECHARM_undulator.hh"
 #include "ECHARM_undulator.cpp"
@@ -234,6 +240,9 @@
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_crystal_Si.cpp"
 
+#include "ECHARM_crystal_Si_Defect.hh"
+#include "ECHARM_crystal_Si_Defect.cpp"
+
 #include "ECHARM_crystal_LiNbO3.hh"
 #include "ECHARM_crystal_LiNbO3.cpp"
 
@@ -264,6 +273,9 @@
 
 #include "ECHARM_SiAM.hh"
 #include "ECHARM_SiAM.cpp"
+
+#include "ECHARM_SiVacancy.hh"
+#include "ECHARM_SiVacancy.cpp"
 
 #include "ECHARM_LiNbO3_1.hh"
 #include "ECHARM_LiNbO3_1.cpp"
@@ -304,6 +316,9 @@
 
 #include "ECHARM_beam_H4_electron.hh"
 #include "ECHARM_beam_H4_electron.cpp"
+
+#include "ECHARM_beam_H4_positron.hh"
+#include "ECHARM_beam_H4_positron.cpp"
 
 #include "ECHARM_beam_H8_2012_UA9.hh"
 #include "ECHARM_beam_H8_2012_UA9.cpp"

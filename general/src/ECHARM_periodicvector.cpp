@@ -227,11 +227,11 @@ double ECHARM_periodicvector::GetVal1d(double vX){
     
     double x = fIntrp->GetXinUnitPeriod(vX,fPeriod[0]);
     double stepX = GetStepX();
-    int vInt[4];
-    vInt[1] = int( x / stepX );
+    long vInt[4];
+    vInt[1] = long( x / stepX );
     fIntrp->GetIndexes(vInt,fNumSteps[0]);
     x -= vInt[1] * stepX;
-
+    
     if(x == 0.0) {
         return fVec.at(vInt[1]);
     }
@@ -249,15 +249,15 @@ double ECHARM_periodicvector::GetVal2d(double vX,double vY){
     
     double x = fIntrp->GetXinUnitPeriod(vX,fPeriod[0]);
     double stepX = GetStepX();
-    int vIntX[4];
-    vIntX[1] = int( x / stepX );
+    long vIntX[4];
+    vIntX[1] = long( x / stepX );
     fIntrp->GetIndexes(vIntX,fNumSteps[0]);
     x -= vIntX[1] * stepX;
     
     double y = fIntrp->GetXinUnitPeriod(vY,fPeriod[1]);
     double stepY = GetStepY();
-    int vIntY[4];
-    vIntY[1] = int( y / stepY );
+    long vIntY[4];
+    vIntY[1] = long( y / stepY );
     fIntrp->GetIndexes(vIntY,fNumSteps[1]);
     y -= vIntY[1] * stepY;
     

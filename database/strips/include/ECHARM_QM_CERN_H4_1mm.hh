@@ -15,7 +15,7 @@
 
 class ECHARM_QM_CERN_H4_1mm : public ECHARM_strip {
 public:
-    ECHARM_QM_CERN_H4_1mm(double,double);
+    ECHARM_QM_CERN_H4_1mm(double,double,std::string);
     virtual ~ECHARM_QM_CERN_H4_1mm();
 };
 #endif

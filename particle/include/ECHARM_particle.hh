@@ -44,10 +44,6 @@ private:
     ECHARM_3vec* fPosPre;
     ECHARM_3vec* fMomPre;
 
-    double fStepLengthSinceLastProgress;
-    double fAtDSinceLastProgress;
-    double fElDSinceLastProgress;
-
 #include "ECHARM_particle.hxx"
 };
 

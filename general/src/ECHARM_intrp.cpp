@@ -64,7 +64,7 @@ double ECHARM_intrp::GetXinUnitOne(double vX, double &vPeriod){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_intrp::GetIndexes(int* index, int& ntot){
+void ECHARM_intrp::GetIndexes(long* index, int& ntot){
     if( (index[1]) == (ntot - 1) ){
         index[0] = ntot - 2;
         index[2] = 0;

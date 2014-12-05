@@ -87,6 +87,8 @@ int ECHARM_kernel::Interaction(){
         
         DoOnParticle();
         
+        UpdateProcesses();
+        
         fInfo->AddAvgAtD(fStrip->GetAtD()->Get(fPart->GetPos()) * fTimeStep);
         fInfo->AddAvgElD(fStrip->GetElD()->Get(fPart->GetPos()) * fTimeStep);
         
@@ -202,10 +204,25 @@ int ECHARM_kernel::DoOnParticle(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-int ECHARM_kernel::DoOnStrip(){
+int ECHARM_kernel::UpdateProcesses(){
     std::vector<ECHARM_process*>::iterator myProcess;
     
+    for(myProcess = fProcesses.begin();
+        myProcess != fProcesses.end();
+        myProcess++){
+        (*myProcess)->UpdateAtDSinceLastProcess(fStrip->GetAtD()->Get(fPart->GetPos())*fTimeStep);
+        (*myProcess)->UpdateElDSinceLastProcess(fStrip->GetElD()->Get(fPart->GetPos())*fTimeStep);
+        (*myProcess)->UpdateStepLengthSinceLastProcess(fTimeStep);
+    }
+    
+    return 0;
+}
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+int ECHARM_kernel::DoOnStrip(){
+    std::vector<ECHARM_process*>::iterator myProcess;
+        
     fPart->SavePos();
     
     fStrip->ResetBR();

@@ -27,6 +27,7 @@ public:
     
     int DoOnStrip();
     int DoOnParticle();
+    int UpdateProcesses();
 
     int DoBeforeInteraction();
     int Interaction();

@@ -61,8 +61,8 @@ ECHARM_STLHC::ECHARM_STLHC(){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,5. * millimeter);;
-    fBRconst = new ECHARM_3vec(80. * meter,0.,0.);
+    fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,4.1 * millimeter);;
+    fBRconst = new ECHARM_3vec(78.846 * meter,0.,0.);
     
     SetName("STLHC");
 }

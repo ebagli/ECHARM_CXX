@@ -12,7 +12,7 @@
 #include "ECHARM_distribution_gauss.hh"
 #include "ECHARM_distribution_const.hh"
 
-ECHARM_beam_LHC_UA9::ECHARM_beam_LHC_UA9(){
+ECHARM_beam_LHC_UA9::ECHARM_beam_LHC_UA9(double vMeanX,double vSigmaX){
 
     ECHARM_particle* proton = new ECHARM_particle(+1,cProtonMass);
     
@@ -20,9 +20,9 @@ ECHARM_beam_LHC_UA9::ECHARM_beam_LHC_UA9(){
     
     double vBeamEnergy = 7. * TeV;
     
-    //fDistrMomentumX = new ECHARM_distribution_gauss(0.,5.*microrad*vBeamEnergy);
+    fDistrMomentumX = new ECHARM_distribution_box(vMeanX*vBeamEnergy,vSigmaX*vBeamEnergy);
+    //fDistrMomentumX = new ECHARM_distribution_const(0.);
     //fDistrMomentumY = new ECHARM_distribution_gauss(0.,5.*microrad*vBeamEnergy);
-    fDistrMomentumX = new ECHARM_distribution_const(0.);
     fDistrMomentumY = new ECHARM_distribution_const(0.);
     fDistrMomentumZ = new ECHARM_distribution_const(vBeamEnergy);
 

@@ -16,7 +16,7 @@
 class ECHARM_beam_LHC_UA9 : public ECHARM_beam
 {
 public:
-    ECHARM_beam_LHC_UA9();
+    ECHARM_beam_LHC_UA9(double,double);
     virtual ~ECHARM_beam_LHC_UA9();
 };
 

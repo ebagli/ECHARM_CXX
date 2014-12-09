@@ -61,8 +61,9 @@ ECHARM_LiNbO3_1::ECHARM_LiNbO3_1(){
     SetEFZ(efz);
     
     fDim = new ECHARM_3vec(0.9 * millimeter,70. * millimeter,1. * millimeter);;
-    fBRconst = new ECHARM_3vec(5.46 * meter,0.,0.);
-
+    //fBRconst = new ECHARM_3vec(5.46 * meter,0.,0.);
+    fBRconst = new ECHARM_3vec(5.241 * meter,0.,0.);
+    
     SetName("LiNbO3_1");
 }
 

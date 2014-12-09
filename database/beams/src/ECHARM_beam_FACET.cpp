@@ -19,8 +19,8 @@ ECHARM_beam_FACET::ECHARM_beam_FACET(double thetaxin,double thetaxyin_sigma = 30
     AddParticle(positron,1.);
     double vBeamEnergy = 15. * GeV;
     
-    fDistrMomentumX = new ECHARM_distribution_box(thetaxin*vBeamEnergy,thetaxyin_sigma*vBeamEnergy);
-    fDistrMomentumY = new ECHARM_distribution_const(0.);
+    fDistrMomentumX = new ECHARM_distribution_gauss(thetaxin*vBeamEnergy,thetaxyin_sigma*vBeamEnergy);
+    fDistrMomentumY = new ECHARM_distribution_gauss(0.,thetaxyin_sigma*vBeamEnergy);
     fDistrMomentumZ = new ECHARM_distribution_const(vBeamEnergy);
 
 }

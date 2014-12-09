@@ -94,7 +94,7 @@ double ECHARM_process_ms_tikhomirov::ComputeTheta2(ECHARM_strip* strip,ECHARM_pa
     double correction = 1.;
     
     if(part->GetMass()==cElectronMass){
-        correction = 1.7;
+        correction = 1.85;
     }
     return fSquareRoot(1./vInvTheta2*correction);
 }

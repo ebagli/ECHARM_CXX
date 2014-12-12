@@ -265,6 +265,9 @@
 #include "ECHARM_STLHC.hh"
 #include "ECHARM_STLHC.cpp"
 
+#include "ECHARM_STLHC_UA9SIM.hh"
+#include "ECHARM_STLHC_UA9SIM.cpp"
+
 #include "ECHARM_ST45.hh"
 #include "ECHARM_ST45.cpp"
 

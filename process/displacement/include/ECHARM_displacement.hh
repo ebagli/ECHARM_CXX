@@ -67,9 +67,9 @@ protected:
     double fArea;
     double fProb;
     
-    ECHARM_distribution_box* fBoxX;
-    ECHARM_distribution_box* fBoxY;
-    ECHARM_distribution_box* fBoxZ;
+    ECHARM_distribution* fBoxX;
+    ECHARM_distribution* fBoxY;
+    ECHARM_distribution* fBoxZ;
     bool bBoxYzero;
 
 protected:

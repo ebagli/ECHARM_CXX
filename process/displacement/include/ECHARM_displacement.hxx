@@ -24,9 +24,13 @@ inline ECHARM_periodicvector* GetBRX() {return fVecBRX;};
 inline ECHARM_periodicvector* GetBRY() {return fVecBRY;};
 inline ECHARM_periodicvector* GetRBZ() {return fVecBRZ;};
 
-std::vector<double> GetAngPhi() {return fAngPhi;};
-std::vector<double> GetAngTheta() {return fAngTheta;};
-std::vector<double> GetAngPsi() {return fAngPsi;};
+inline std::vector<double> GetAngPhi() {return fAngPhi;};
+inline std::vector<double> GetAngTheta() {return fAngTheta;};
+inline std::vector<double> GetAngPsi() {return fAngPsi;};
 
-void SetBoxYzero(bool val) {bBoxYzero = val;};
-bool GetBoxYzero() {return bBoxYzero;};
+inline void SetBoxYzero(bool val) {bBoxYzero = val;};
+inline bool GetBoxYzero() {return bBoxYzero;};
+
+inline void SetDistributionX(ECHARM_distribution* distr) {fBoxX=distr;};
+inline void SetDistributionY(ECHARM_distribution* distr) {fBoxY=distr;};
+inline void SetDistributionZ(ECHARM_distribution* distr) {fBoxZ=distr;};

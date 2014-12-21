@@ -283,6 +283,9 @@
 #include "ECHARM_LiNbO3_1.hh"
 #include "ECHARM_LiNbO3_1.cpp"
 
+#include "ECHARM_LiNbO3_Si_Ge.hh"
+#include "ECHARM_LiNbO3_Si_Ge.cpp"
+
 #include "ECHARM_FIG5_PRE52_2045.hh"
 #include "ECHARM_FIG5_PRE52_2045.cpp"
 
@@ -334,6 +337,9 @@
 
 #include "ECHARM_beam_H8_cut.hh"
 #include "ECHARM_beam_H8_cut.cpp"
+
+#include "ECHARM_beam_pencil.hh"
+#include "ECHARM_beam_pencil.cpp"
 
 #include "ECHARM_beam_COMECER.hh"
 #include "ECHARM_beam_COMECER.cpp"

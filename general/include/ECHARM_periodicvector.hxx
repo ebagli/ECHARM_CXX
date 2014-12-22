@@ -33,5 +33,20 @@ inline std::vector<double> Get() {return fVec;};
 inline double GetVal(int i,int j,int k) {return fVec.at(this->ComputeIndex(i,j,k));};
 inline double GetVal(ECHARM_3vec* vec) {return GetVal(vec->GetX(),vec->GetY(),vec->GetZ());};
 
-inline double GetMax() {return *std::max_element(fVec.begin(),fVec.end());};
-inline double GetMin() {return *std::min_element(fVec.begin(),fVec.end());};
+double GetMax(){
+    if(fMax==DBL_MAX){
+        return *std::max_element(fVec.begin(),fVec.end());
+    }
+    else{
+        return fMax;
+    }
+};
+
+double GetMin(){
+    if(fMin==DBL_MAX){
+        return *std::min_element(fVec.begin(),fVec.end());
+    }
+    else{
+        return fMin;
+    }
+};

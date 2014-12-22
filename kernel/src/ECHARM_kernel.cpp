@@ -295,11 +295,17 @@ bool ECHARM_kernel::UpdateStep(){
     if(fPart->GetMom()->GetX() != 0.0 || fPart->GetMom()->GetY() != 0.0){
         double xy2 = fSquare(fPart->GetMom()->GetX()) + fSquare(fPart->GetMom()->GetY());
         
-        fTimeStep = fabs(fTransverseVariationMax * fPart->GetBeta() * fPart->GetMomMod() / fSquareRoot(xy2));
+        if(xy2!=0.){
+            fTimeStep = fabs(fTransverseVariationMax * fPart->GetBeta() * fPart->GetMomMod() / fSquareRoot(xy2));
+
+            if(fTimeStep < fTimeStepMin) fTimeStep = fTimeStepMin;
+            
+            if(fTimeStep > fTimeStepMax) fTimeStep = fTimeStepMax;
+        }
+        else{
+            fTimeStep = fTimeStepMin;
+        }
         
-        if(fTimeStep < fTimeStepMin) fTimeStep = fTimeStepMin;
-        
-        if(fTimeStep > fTimeStepMax) fTimeStep = fTimeStepMax;
     }
     else{
         fTimeStep = fTimeStepMin;
@@ -307,14 +313,6 @@ bool ECHARM_kernel::UpdateStep(){
     
     if((fPart->GetPos()->GetZ() + fTimeStep) > (GetStrip()->GetDim()->GetZ() * 0.5)){
         fTimeStep = (GetStrip()->GetDim()->GetZ() * 0.5 - fPart->GetPos()->GetZ());
-        return false;
-    }
-
-    if(abs(fPart->GetPos()->GetX()) > (GetStrip()->GetDim()->GetX() * 0.5)){
-        return false;
-    }
-
-    if(abs(fPart->GetPos()->GetY()) > (GetStrip()->GetDim()->GetY() * 0.5)){
         return false;
     }
 

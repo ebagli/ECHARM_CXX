@@ -49,8 +49,8 @@ double ECHARM_atom_xray::ComputeFF(double Vec)
     
     for(unsigned int i=0;i<6;i++)
     {
-        vResult += (fExperimentalFormFactorParameters[i]);
-        vResult /= (1. + Vec / fExperimentalFormFactorParameters[i+6] / GetThomasFermiRadius());
+        vResult += (fExperimentalFormFactorParameters[i]  / (1. + Vec * Vec / fExperimentalFormFactorParameters[i+6]));
+        ;
     }
     return vResult;
 }

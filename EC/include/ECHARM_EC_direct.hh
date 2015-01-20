@@ -18,6 +18,7 @@ public:
     ECHARM_EC_direct(std::string,ECHARM_crystal*,int);
     ~ECHARM_EC_direct();
     
+    double GetXinUnitPeriod(double, double);
     double Get(double,double,double);
     double Get1d(double);
     double Get2d(double,double);
@@ -26,7 +27,7 @@ public:
 protected:
     int fCellNumb;
     int fStepNumbPerCell;
-    double fLimit;
+    ECHARM_distribution_gauss* fThermVibr;
 #include "ECHARM_EC_direct.hxx"
 };
 #endif

@@ -274,6 +274,9 @@
 #include "ECHARM_STtest.hh"
 #include "ECHARM_STtest.cpp"
 
+#include "ECHARM_SiEnhancement.hh"
+#include "ECHARM_SiEnhancement.cpp"
+
 #include "ECHARM_SiAM.hh"
 #include "ECHARM_SiAM.cpp"
 

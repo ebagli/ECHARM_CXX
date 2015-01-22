@@ -19,7 +19,7 @@ ECHARM_manager::ECHARM_manager(ECHARM_beam* beam, ECHARM_info_save *info){
 
     fInfo->Reset();
     
-    
+    bSaveTrajStatus = false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -70,6 +70,7 @@ int ECHARM_manager::Init(){
         myKernel != fKernel.end();
         myKernel++){
         
+        //(*myKernel)->SetSaveTrajStep(bSaveTrajStatus);
         (*myKernel)->SetParticle(fBeam->GetGeneratedParticle());
         (*myKernel)->SetInfo(fInfo);
         (*myKernel)->Init();

@@ -30,6 +30,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cfloat>
 
 #include "ECHARM_intrp.hh"
 #include "ECHARM_3vec.hh"

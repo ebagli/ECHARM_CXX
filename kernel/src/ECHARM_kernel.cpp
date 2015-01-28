@@ -368,8 +368,8 @@ bool ECHARM_kernel::IsInChanneling(){
 bool ECHARM_kernel::UpdateTransverseVariationMax(double transvarmax){
     fTransverseVariationMax = transvarmax;
     
-    double maxEFX = fStrip->GetEFX()->ComputeMax() - fStrip->GetEFX()->ComputeMin();
-    double maxEFY = fStrip->GetEFY()->ComputeMax() - fStrip->GetEFY()->ComputeMin();
+    double maxEFX = fStrip->GetEFX()->ComputeMax();
+    double maxEFY = fStrip->GetEFY()->ComputeMax();
     
     double maxEF = maxEFX;
     if(maxEFY > maxEF){
@@ -377,12 +377,11 @@ bool ECHARM_kernel::UpdateTransverseVariationMax(double transvarmax){
     }
     
     if(maxEF != 0.){
-        fTimeStepMax = fSquareRoot( transvarmax * fPart->GetBeta() * fPart->GetMomMod() / maxEF );
+        fTimeStepMax = fSquareRoot( transvarmax * fPart->GetBeta() * fPart->GetMomMod() / fabs(maxEF) );
     }
     else{
         fTimeStepMax = fTimeStepMin * 20.;
     }
-    
     return true;
 }
 

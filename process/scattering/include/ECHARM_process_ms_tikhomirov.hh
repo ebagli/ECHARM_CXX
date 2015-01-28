@@ -30,6 +30,8 @@ public:
     double ComputeThetaMax(ECHARM_strip*,ECHARM_particle*);
 
     inline void SetTotalProbThetaSS(double sigmass) {fTotalProbThetaSS = sigmass;}
+    inline void SetCorrectionElectron(double corr) {fCorrectionElectron = corr;}
+
     void UpdateConstants(ECHARM_strip*,ECHARM_particle*);
     
 protected:
@@ -38,5 +40,7 @@ protected:
     double fThetaMax;
     double fTotalProbThetaSS;
     double fXS_SSconstant;
+    double fCorrectionElectron;
+
 };
 #endif

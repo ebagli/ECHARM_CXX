@@ -108,7 +108,9 @@ void ECHARM_file_save::Analysis(){
     while(vFileHistoIn >> angXin){
         vFileHistoIn >> angYin >> angXout >> angYout;
         vBin = int((-(angXout-angXin)-vBinMin)/(vBinStep));
-        vBinContent[vBin]++;
+        if(vBin<vBinNumber && vBin>=0){
+        	vBinContent[vBin]++;
+        }
     }
     vFileHistoIn.close();
 

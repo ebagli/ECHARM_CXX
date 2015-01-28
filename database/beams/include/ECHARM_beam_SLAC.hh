@@ -16,7 +16,7 @@
 class ECHARM_beam_SLAC : public ECHARM_beam
 {
 public:
-    ECHARM_beam_SLAC(double,double,double,int);
+    ECHARM_beam_SLAC(double,double,double,int,bool);
     virtual ~ECHARM_beam_SLAC();
 };
 

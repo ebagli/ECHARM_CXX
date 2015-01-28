@@ -16,7 +16,7 @@
 class ECHARM_beam_pencil : public ECHARM_beam
 {
 public:
-    ECHARM_beam_pencil(double,double,double);
+    ECHARM_beam_pencil(double,double,double,double,double);
     virtual ~ECHARM_beam_pencil();
 };
 

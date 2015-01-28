@@ -12,7 +12,7 @@
 #include "ECHARM_distribution_box.hh"
 #include "ECHARM_distribution_const.hh"
 
-ECHARM_beam_pencil::ECHARM_beam_pencil(double beam_energy,double angx_zero = 0.,double angx_sigma = 0.){
+ECHARM_beam_pencil::ECHARM_beam_pencil(double beam_energy,double angx_zero = 0.,double angx_sigma = 0.,double angy_zero = 0.,double angy_sigma = 0.){
 
     ECHARM_particle* proton = new ECHARM_particle(+1,cProtonMass);
     
@@ -24,8 +24,14 @@ ECHARM_beam_pencil::ECHARM_beam_pencil(double beam_energy,double angx_zero = 0.,
     else{
         fDistrMomentumX = new ECHARM_distribution_const(angx_zero*beam_energy);
     }
-    
-    fDistrMomentumY = new ECHARM_distribution_const(0.);
+
+    if(angy_sigma != 0.){
+        fDistrMomentumY = new ECHARM_distribution_box(angy_zero*beam_energy,angy_sigma*beam_energy);
+    }
+    else{
+        fDistrMomentumY = new ECHARM_distribution_const(angy_zero*beam_energy);
+    }
+
     fDistrMomentumZ = new ECHARM_distribution_const(beam_energy);
 
 }

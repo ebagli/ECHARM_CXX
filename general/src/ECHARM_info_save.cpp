@@ -52,6 +52,8 @@ void ECHARM_info_save::Reset(){
     fMass = 0.;
     fCharge = 0.;
     
+    fPartNum = 0.;
+
     fEmittedPhEn.clear();
 
     for(unsigned int i0=0;i0<fRadEmProb.size();i0++){
@@ -61,6 +63,13 @@ void ECHARM_info_save::Reset(){
     fPartVec.clear();
     fAtD.clear();
     fElD.clear();
+    fDisplX.clear();
+    fDisplY.clear();
+    fDisplZ.clear();
+
+    fPot.clear();
+    fEFX.clear();
+    fKin.clear();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -84,11 +93,18 @@ void ECHARM_info_save::SavePartOut(ECHARM_particle* part) {
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_info_save::SavePart(ECHARM_particle* part,double atd,double eld) {
+void ECHARM_info_save::SavePart(ECHARM_particle* part,double atd,double eld,double pot,double efx,double kin) {
     SavePartStruct(part,fPart);
     fPartVec.push_back(fPart);
     fAtD.push_back(atd);
     fElD.push_back(eld);
+    fDisplX.push_back(fDispl->GetX());
+    fDisplY.push_back(fDispl->GetY());
+    fDisplZ.push_back(fDispl->GetZ());
+
+    fPot.push_back(pot);
+    fEFX.push_back(efx);
+    fKin.push_back(kin);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

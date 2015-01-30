@@ -63,6 +63,10 @@ protected:
     double charge;
     double mass;
     
+    double pot;
+    double efx;
+    double kin;
+
     int chIn;
     int chTimes;
     int dchTimes;

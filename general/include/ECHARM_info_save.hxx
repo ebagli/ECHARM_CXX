@@ -40,8 +40,15 @@ inline void SetPart(ECHARM_Particle_Save part) {fPart = part;};
 inline ECHARM_Particle_Save GetPart() {return fPart;};
 inline std::vector<ECHARM_Particle_Save> GetPartVec() {return fPartVec;};
 
+inline std::vector<double> GetPot() {return fPot;};
+inline std::vector<double> GetEFX() {return fEFX;};
+inline std::vector<double> GetKin() {return fKin;};
+
 inline void SetDispl(ECHARM_3vec* num) {fDispl->Set(num);};
 inline ECHARM_3vec* GetDispl() {return fDispl;};
+inline std::vector<double> GetDisplX() {return fDisplX;};
+inline std::vector<double> GetDisplY() {return fDisplY;};
+inline std::vector<double> GetDisplZ() {return fDisplZ;};
 
 inline void SetBR(ECHARM_3vec* num) {fBR->Set(num);};
 inline ECHARM_3vec* GetBR() {return fBR;};

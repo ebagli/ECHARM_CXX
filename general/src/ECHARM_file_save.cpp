@@ -60,9 +60,13 @@ void ECHARM_file_save::UpdateInfoTraj(ECHARM_info_save* info,int i0){
         atd = info->GetAtD().at(i0);
         eld = info->GetElD().at(i0);
         brstep = 0.;
-        displx = 0.;
-        disply = 0.;
-        displz = 0.;
+        displx = info->GetDisplX().at(i0)/AA;
+        disply = info->GetDisplY().at(i0)/AA;
+        displz = info->GetDisplZ().at(i0)/AA;
+        pot = info->GetPot().at(i0);
+        efx = info->GetEFX().at(i0);
+        kin = info->GetKin().at(i0);
+        partNum = info->GetPartNum();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

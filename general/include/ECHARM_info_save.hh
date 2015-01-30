@@ -42,7 +42,7 @@ public:
     
     void SavePartIn(ECHARM_particle* part);
     void SavePartOut(ECHARM_particle* part);
-    void SavePart(ECHARM_particle*,double,double);
+    void SavePart(ECHARM_particle*,double,double,double,double,double);
 
 private:
     int fPartNum;
@@ -60,6 +60,13 @@ private:
     double fCharge;
     double fMass;
     
+    std::vector<double> fPot;
+    std::vector<double> fEFX;
+    std::vector<double> fKin;
+
+    std::vector<double> fDisplX;
+    std::vector<double> fDisplY;
+    std::vector<double> fDisplZ;
     ECHARM_3vec* fDispl;
     ECHARM_3vec* fBR;
     

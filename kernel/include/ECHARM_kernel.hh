@@ -39,7 +39,14 @@ public:
 
     bool IsInChanneling();
     void CheckChannelingCondition();
-    
+
+    double GetTransverseEnergy();
+    double GetPotential();
+    double GetKineticEnergy();
+    double GetAtD();
+    double GetElD();
+    double GetElectricFieldX();
+
 protected:
     bool bSavePartIn;
     bool bSavePartOut;

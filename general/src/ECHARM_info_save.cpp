@@ -12,6 +12,7 @@
 ECHARM_info_save::ECHARM_info_save(){
     fDispl = new ECHARM_3vec(0.,0.,0.);
     fBR = new ECHARM_3vec(0.,0.,0.);
+    fBeamSize = new ECHARM_3vec(0.,0.,0.);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -41,6 +42,7 @@ void ECHARM_info_save::AddRadEmEn(double val){
 void ECHARM_info_save::Reset(){
     fDispl->Zero();
     fBR->Zero();
+    fBeamSize->Zero();
 
     fAvgAtD = 0.;
     fAvgElD = 0.;

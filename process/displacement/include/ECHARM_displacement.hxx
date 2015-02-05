@@ -16,6 +16,8 @@ inline void SetHalfLimits(ECHARM_3vec *limit) {fLimitsHalf = limit;};
 inline void SetProb(double num) {fProb = num;};
 inline double GetProb() {return fProb;};
 
+inline ECHARM_3vec* GetDispl() {return fDispl;};
+
 inline ECHARM_periodicvector* GetDisplX() {return fVecDisplX;};
 inline ECHARM_periodicvector* GetDisplY() {return fVecDisplY;};
 inline ECHARM_periodicvector* GetDisplZ() {return fVecDisplZ;};

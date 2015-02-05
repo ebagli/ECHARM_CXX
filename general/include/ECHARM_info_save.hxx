@@ -53,6 +53,9 @@ inline std::vector<double> GetDisplZ() {return fDisplZ;};
 inline void SetBR(ECHARM_3vec* num) {fBR->Set(num);};
 inline ECHARM_3vec* GetBR() {return fBR;};
 
+inline void SetBeamSize(ECHARM_3vec* num) {fBeamSize->Set(num);};
+inline ECHARM_3vec* GetBeamSize() {return fBeamSize;};
+
 inline std::vector<double> GetAtD() {return fAtD;};
 inline std::vector<double> GetElD() {return fElD;};
 

@@ -79,6 +79,11 @@ protected:
     ECHARM_Particle_Save partStep;
 
     double brstep;
+
+    double beamx;
+    double beamy;
+    double beamz;
+
     double displx;
     double disply;
     double displz;

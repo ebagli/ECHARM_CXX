@@ -11,6 +11,7 @@
 
 ECHARM_strip::ECHARM_strip(){
     fBR = new ECHARM_3vec(0.,0.,0.);
+    fBRconst = new ECHARM_3vec(0.,0.,0.);
     fPos = new ECHARM_3vec(0.,0.,0.);
 }
 
@@ -50,7 +51,7 @@ void ECHARM_strip::PrintGeometry(){
     std::cout << "Size      X  [mm]   Y  [mm]   Z  [mm] "<< std::endl;
     fDim->Print(1.0/millimeter);
     std::cout << "Bend. Rad.R_X [m]   R_Y [m]   R_Z [m]" << std::endl;
-    fBR->Print();
+    fBRconst->Print();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

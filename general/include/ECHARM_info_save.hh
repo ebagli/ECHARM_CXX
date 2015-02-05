@@ -69,7 +69,8 @@ private:
     std::vector<double> fDisplZ;
     ECHARM_3vec* fDispl;
     ECHARM_3vec* fBR;
-    
+    ECHARM_3vec* fBeamSize;
+
     std::vector<double> fAtD;
     double fAvgAtD;
 

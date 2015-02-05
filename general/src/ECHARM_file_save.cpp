@@ -34,6 +34,10 @@ void ECHARM_file_save::UpdateInfo(ECHARM_info_save* info){
     disply = info->GetDispl()->GetY();
     displz = info->GetDispl()->GetZ();
 
+    beamx = info->GetBeamSize()->GetX()/micrometer;
+    beamy = info->GetBeamSize()->GetY()/micrometer;
+    beamz = info->GetBeamSize()->GetZ()/micrometer;
+
     dchTimes = info->GetDechTimes();
     chTimes = info->GetChTimes();
     chIn = info->GetChInitial();

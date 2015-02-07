@@ -363,9 +363,9 @@ double ECHARM_kernel::GetElectricFieldX(){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_kernel::GetPotential(){
-    fPart->GetPos()->Add(fInfo->GetDispl(),-1.);
+    fPart->GetPos()->Add(fInfo->GetDispl(),+1.);
     double vPot = fPart->GetZ() * fStrip->GetPot()->Get(fPart->GetPos());
-    fPart->GetPos()->Add(fInfo->GetDispl(),1.);
+    fPart->GetPos()->Add(fInfo->GetDispl(),-1.);
     return vPot;
 }
 

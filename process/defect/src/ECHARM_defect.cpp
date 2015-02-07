@@ -135,6 +135,7 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         double xz2 = x*x + z*z;
         double p = fPoissonRatio;
         
+        /*
         double Rx1 = fSquare( ( 3. - 2. * p ) * x * x + (1. - 2. * p) * z * z );
         Rx1 *= ( x * x * burgerEdge * burgerEdge);
         Rx1 /= (16. * cPi * cPi * fSquare( p - 1.) * xz2 * xz2 * xz2 * xz2);
@@ -150,6 +151,26 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         else{
             Rx = 0.;
         }
+        */
+
+    	double a = 0.5 / (1. - p);
+
+    	double ddzdz = - 2. * x * z * (a * xz2 + 3. * x * x - z * z);
+        ddzdz /= (a * xz2 * xz2 * xz2);
+        ddzdz *= 2. * cPi * burgerEdge;
+
+        double ddz = x * (a * xz2 + x * x - z * z);
+        ddz /= (a * xz2 * xz2);
+        ddz *= 2. * cPi * burgerEdge;
+
+        double Rx = pow(1. + ddz * ddz,1.5);
+        if(ddzdz!=0.){
+        	Rx /= ddzdz;
+        }
+        else{
+        	Rx = 1.E15;
+        }
+
         fBR->SetX(Rx);
         
         // (1 + (d/dz (b/(2*l)(arctan(z/x))))^2)^1.5/ (d/dzdz (b/(2*l)(arctan(z/x))))

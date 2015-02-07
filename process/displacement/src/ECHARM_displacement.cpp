@@ -120,7 +120,7 @@ void ECHARM_displacement::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part,EC
                 fPosTemp->Set(part->GetPos());
                 fPosTemp->Add(fCenter.at(i0),-1.);
                 fPosTemp->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
-                
+
                 if(fPosTemp->IsInCube(fLimitsHalf)){
                     
                     fPosTemp->Add(fLimitsHalf);
@@ -133,10 +133,10 @@ void ECHARM_displacement::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part,EC
                     else{
                         ComputeBR(fPosTemp,fZero);
                     }
-                    
+
                     fBR->Rotate(-fAngPsi.at(i0),-fAngTheta.at(i0),-fAngPhi.at(i0));
                     fBR->SetZ(0.);
-                                        
+
                     strip->GetBR()->AddInverse(fBR);
                 }
             }

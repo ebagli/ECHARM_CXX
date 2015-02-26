@@ -246,6 +246,9 @@
 #include "ECHARM_crystal_LiNbO3.hh"
 #include "ECHARM_crystal_LiNbO3.cpp"
 
+#include "ECHARM_crystal_LiNbO3_cubic.hh"
+#include "ECHARM_crystal_LiNbO3_cubic.cpp"
+
 #include "ECHARM_crystal_SiGe.hh"
 #include "ECHARM_crystal_SiGe.cpp"
 
@@ -285,6 +288,9 @@
 
 #include "ECHARM_LiNbO3_1.hh"
 #include "ECHARM_LiNbO3_1.cpp"
+
+#include "ECHARM_LiNbO3_1_cubic.hh"
+#include "ECHARM_LiNbO3_1_cubic.cpp"
 
 #include "ECHARM_LiNbO3_Si_Ge.hh"
 #include "ECHARM_LiNbO3_Si_Ge.cpp"

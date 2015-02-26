@@ -95,7 +95,7 @@ double ECHARM_EC_intrp::ComputeMax() {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_EC_intrp::ComputeMin() {
-    if(fMax != 0.){
+    if(fMin != 0.){
         return fMin;
     }
     else{

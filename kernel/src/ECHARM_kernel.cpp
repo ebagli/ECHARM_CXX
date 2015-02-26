@@ -392,12 +392,14 @@ bool ECHARM_kernel::IsInChanneling(){
         vPotMax = fPart->GetZ() * fStrip->GetPot()->ComputeMin();
     }
 
+    /*
     if(fStrip->IsBentX()){
-        vPotMax -= (fPart->GetMomVel() / fStrip->GetBR()->GetX() * fStrip->GetCrystal()->GetPeriodX() );
+        vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetX()) * fStrip->GetCrystal()->GetPeriodX() );
     }
     if(fStrip->IsBentY()){
-        vPotMax -= (fPart->GetMomVel() / fStrip->GetBR()->GetY() * fStrip->GetCrystal()->GetPeriodY() );
+        vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetY()) * fStrip->GetCrystal()->GetPeriodY() );
     }
+    */
 
     if(vEn<vPotMax){
         return true;

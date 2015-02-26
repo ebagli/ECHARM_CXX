@@ -62,8 +62,8 @@ ECHARM_periodicvector::~ECHARM_periodicvector(){
 
 void ECHARM_periodicvector::Set(std::vector<double> vVec){
     fVec = vVec;
-    fMax = *std::min_element(fVec.begin(),fVec.end());
-    fMin = *std::max_element(fVec.begin(),fVec.end());
+    fMax = *std::max_element(fVec.begin(),fVec.end());
+    fMin = *std::min_element(fVec.begin(),fVec.end());
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

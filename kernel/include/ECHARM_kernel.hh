@@ -66,6 +66,7 @@ protected:
     double bSaveTrajStep;
     double bSaveTrajStepTemp;
 
+    bool bExitOnDechanneling;
     // Temporary variables
 protected:
     ECHARM_3vec* fMomHalf;

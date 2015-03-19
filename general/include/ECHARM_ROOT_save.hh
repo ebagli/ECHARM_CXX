@@ -44,6 +44,7 @@ public:
     void Analysis();
     void Close();
     
+    inline TTree* GetTree() {return fTree;};
 private:
     //ROOT
     TFile *vRootFile;

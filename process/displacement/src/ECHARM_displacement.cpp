@@ -147,7 +147,6 @@ void ECHARM_displacement::DoOnStrip(ECHARM_strip* strip,ECHARM_particle* part,EC
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save* info){
-    
     if(bSudden==true){
         for(int i0 = 0;i0 < fNum;i0++){
             
@@ -183,7 +182,6 @@ void ECHARM_displacement::DoOnParticle(ECHARM_strip* strip,ECHARM_particle* part
                     
                     fDispl->Rotate(fAngPhi.at(i0),fAngTheta.at(i0),fAngPsi.at(i0));
                     fDispl->SetZ(0.);
-                    
                     part->GetPos()->Add(fDispl);
                 }
             }

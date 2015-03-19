@@ -62,7 +62,7 @@ ECHARM_SiVacancy::ECHARM_SiVacancy(double length,double BR,double defect_density
     SetEFY(efy);
     SetEFZ(efz);
     
-    fDim = new ECHARM_3vec(1. * centimeter,1. * centimeter,length);;
+    fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,length);;
     fBRconst = new ECHARM_3vec(BR,0.,0.);
 
     SetName("STtest");

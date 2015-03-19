@@ -18,6 +18,7 @@ ECHARM_process_ms_tikhomirov::ECHARM_process_ms_tikhomirov(){
     fTotalProbThetaSS = 0.3;
     fName = "ms_tikhomirov";
     fCorrectionElectron = 1.85;
+    fMass = cElectronMass;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -94,7 +95,7 @@ double ECHARM_process_ms_tikhomirov::ComputeTheta2(ECHARM_strip* strip,ECHARM_pa
     
     double correction = 1.;
     
-    if(part->GetMass()==cElectronMass){
+    if(part->GetMass()==fMass){
         correction = fCorrectionElectron;
     }
 

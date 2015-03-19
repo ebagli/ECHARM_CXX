@@ -16,6 +16,7 @@ inline ECHARM_3vec* GetBR() {return fBR;};
 inline ECHARM_3vec* GetBRconst() {return fBRconst;};
 inline void ResetBR() {fBR->Set(fBRconst);}
 inline ECHARM_3vec* GetAnglesLattice() {return fAL;};
+inline double GetVolume() {return fDim->GetX()*fDim->GetY()*fDim->GetZ();};
 
 inline bool IsBentX() {return IsBent(0);};
 inline bool IsBentY() {return IsBent(1);};

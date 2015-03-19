@@ -33,6 +33,9 @@ inline void SetSaveTrajStatus(bool aBool) {bSaveTrajStatus = aBool;};
 inline double GetSaveTrajStep() {return bSaveTrajStep;};
 inline void SetSaveTrajStep(double aDouble) {bSaveTrajStep = aDouble;};
 
+inline bool GetExitOnDechanneling() {return bExitOnDechanneling;};
+inline void SetExitOnDechanneling(bool aBool) {bExitOnDechanneling = aBool;};
+
 inline void AddProcess(ECHARM_process* process) {fProcesses.push_back(process);};
 inline std::vector<ECHARM_process*> GetProcesses() {return fProcesses;};
 

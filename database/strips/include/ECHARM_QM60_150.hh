@@ -15,7 +15,7 @@
 
 class ECHARM_QM60_150 : public ECHARM_strip {
 public:
-    ECHARM_QM60_150(double);
+    ECHARM_QM60_150(double,double);
     virtual ~ECHARM_QM60_150();
 };
 #endif

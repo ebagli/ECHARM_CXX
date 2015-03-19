@@ -25,7 +25,8 @@ ECHARM_kernel::ECHARM_kernel(ECHARM_strip* strip){
     bSaveTrajStatus = false;
     bSavePartIn = false;
     bSavePartOut = false;
-    
+    bExitOnDechanneling = false;
+
     bSaveTrajStep = 1. * micrometer;
     bSaveTrajStepTemp = 0.;
 }
@@ -76,11 +77,13 @@ int ECHARM_kernel::Interaction(){
     fInfo->SetMass(fPart->GetMass()/MeV);
     fInfo->SetCharge(fPart->GetZ());
     
+    bool bExit = false;
+
     do {
         bPartIsIn = fStrip->IsIn(fPart->GetPos());
         
         bPartIsIn = UpdateStep();
-        
+
         DoOnStrip();
         
         DoStep();
@@ -102,7 +105,18 @@ int ECHARM_kernel::Interaction(){
         
         CheckChannelingCondition();
         
-    } while(bPartIsIn);
+        if(bPartIsIn==false){
+        	bExit = true;
+        }
+        else if(bExitOnDechanneling ==  true){
+        	if(fInfo->GetChTimes()==0){
+        		bExit = true;
+        	}
+        	else if(fInfo->GetChTimes()>0 && fInfo->GetDechTimes()==fInfo->GetChTimes()){
+        		bExit = true;
+        	}
+        }
+    } while(bExit == false);
     
     DoAfterInteraction();
     
@@ -210,8 +224,8 @@ int ECHARM_kernel::UpdateProcesses(){
     for(myProcess = fProcesses.begin();
         myProcess != fProcesses.end();
         myProcess++){
-        (*myProcess)->UpdateAtDSinceLastProcess(fStrip->GetAtD()->Get(fPart->GetPos())*fTimeStep);
-        (*myProcess)->UpdateElDSinceLastProcess(fStrip->GetElD()->Get(fPart->GetPos())*fTimeStep);
+        (*myProcess)->UpdateAtDSinceLastProcess(fStrip,fPart,fTimeStep);
+        (*myProcess)->UpdateElDSinceLastProcess(fStrip,fPart,fTimeStep);
         (*myProcess)->UpdateStepLengthSinceLastProcess(fTimeStep);
     }
     
@@ -245,7 +259,6 @@ int ECHARM_kernel::DoOnStrip(){
 
 int ECHARM_kernel::DoStep(){
     //http://www.physics.drexel.edu/~valliere/PHYS305/Diff_Eq_Integrators/Verlet_Methods/Verlet/
-    
     fMomHalf->Set(fPart->GetMom());
     fPosHalf->Set(fPart->GetPos());
     
@@ -253,7 +266,7 @@ int ECHARM_kernel::DoStep(){
     double kMom = fTimeStep / fPart->GetBeta();
     double kBR = fTimeStep * fPart->GetMomVel();
     double Z = fPart->GetZ();
-    
+
     fPosHalf->AddX(fPart->GetMom()->GetX() * kPos * 0.5);
     fPosHalf->AddY(fPart->GetMom()->GetY() * kPos * 0.5);
     fPosHalf->AddZ(fPart->GetMom()->GetZ() * kPos * 0.5);
@@ -283,7 +296,7 @@ int ECHARM_kernel::DoStep(){
     if(fStrip->IsBentY()){
         fPart->GetMom()->SubtractY(kBR / fStrip->GetBR()->GetY());
     }
-    
+
     fTimeStepTotal += fTimeStep;
     
     return 0;
@@ -392,14 +405,13 @@ bool ECHARM_kernel::IsInChanneling(){
         vPotMax = fPart->GetZ() * fStrip->GetPot()->ComputeMin();
     }
 
-    /*
+    
     if(fStrip->IsBentX()){
         vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetX()) * fStrip->GetCrystal()->GetPeriodX() );
     }
     if(fStrip->IsBentY()){
         vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetY()) * fStrip->GetCrystal()->GetPeriodY() );
     }
-    */
 
     if(vEn<vPotMax){
         return true;

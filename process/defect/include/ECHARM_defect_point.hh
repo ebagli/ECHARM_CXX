@@ -20,9 +20,11 @@ public:
     void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     void DoAfterInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
-    double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
+    void UpdateAtDSinceLastProcess(ECHARM_strip*,ECHARM_particle*,double);
+    void UpdateElDSinceLastProcess(ECHARM_strip*,ECHARM_particle*,double);
 
 private:
+    ECHARM_3vec* fPosDef;
     double fDefectDensity;
     double fInitialProb;
 };

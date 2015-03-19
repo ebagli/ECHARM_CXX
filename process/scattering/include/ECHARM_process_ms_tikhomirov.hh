@@ -42,5 +42,6 @@ protected:
     double fXS_SSconstant;
     double fCorrectionElectron;
 
+    double fMass;
 };
 #endif

@@ -20,7 +20,7 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_QM60_150::ECHARM_QM60_150(double vBendingRadius){
+ECHARM_QM60_150::ECHARM_QM60_150(double vBendingRadius,double vCrystalLength){
     
     fCrystal = new ECHARM_crystal_Si();
     
@@ -60,7 +60,7 @@ ECHARM_QM60_150::ECHARM_QM60_150(double vBendingRadius){
     SetEFY(efy);
     SetEFZ(efz);
     
-    fDim = new ECHARM_3vec(10. * millimeter,10. * millimeter,60. * micrometer);;
+    fDim = new ECHARM_3vec(10. * millimeter,10. * millimeter,vCrystalLength);;
     fBRconst = new ECHARM_3vec(vBendingRadius,0.,0.);
 
     SetName("QM60_150");

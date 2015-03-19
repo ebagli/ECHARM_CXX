@@ -19,6 +19,7 @@ ECHARM_defect_point::ECHARM_defect_point(double defect_density){
     fInitialProb = fTotalProbThetaSS;
     fDefectDensity = defect_density;
     fName = "defect_point";
+    fPosDef = new ECHARM_3vec();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -41,31 +42,24 @@ void ECHARM_defect_point::DoAfterInteraction(ECHARM_strip* strip,ECHARM_particle
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-double ECHARM_defect_point::ComputeThetaScattering(ECHARM_strip* strip,ECHARM_particle* part){
-    double vTheta = 0.;
-    
-    double vStep = GetStepLengthSinceLastProcess();
-    vStep *= (0.5 * (strip->GetAtD()->ComputeMax() + strip->GetElD()->ComputeMax() - (GetAtDSinceLastProcess() + GetElDSinceLastProcess())));
-    
-    double vInvMFP = ComputeXS_SS(strip,part,fThetaMin);
-    vInvMFP *= strip->GetCrystal()->GetNucleiDensity();
-    
-    double vZss = +DBL_MAX;
-    if(vStep>0. && vInvMFP>0.){
-        vZss = -log(drand48()) / vInvMFP / vStep;
-    }
-    else{
-        std::cout << fName << " " << vStep << " " << vInvMFP << " " << strip->GetAtD()->ComputeMax() << " " << strip->GetElD()->ComputeMax() << " " << GetAtDSinceLastProcess() << " " << GetElDSinceLastProcess() << std::endl;
-    }
-    
-    if(vZss < fTotalProbThetaSS){
-        double vTheta2 = ComputeTheta2(strip,part,vStep);
-        vTheta += ComputeThetaSS(strip,part,vTheta2);
-        ResetSinceLastProcess();
-    }
-    
-    return vTheta;
+void ECHARM_defect_point::UpdateAtDSinceLastProcess(ECHARM_strip* strip,ECHARM_particle* part,double timestep){
+	fPosDef->Set(part->GetPos());
+	fPosDef->AddX(strip->GetCrystal()->GetPeriodX()*0.5);
+	fPosDef->AddY(strip->GetCrystal()->GetPeriodY()*0.5);
+	fPosDef->AddZ(strip->GetCrystal()->GetPeriodZ()*0.5);
+	fAtDSinceLastProgress += strip->GetAtD()->Get(fPosDef)*timestep;
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_defect_point::UpdateElDSinceLastProcess(ECHARM_strip* strip,ECHARM_particle* part,double timestep){
+	fPosDef->Set(part->GetPos());
+	fPosDef->AddX(strip->GetCrystal()->GetPeriodX()*0.5);
+	fPosDef->AddY(strip->GetCrystal()->GetPeriodY()*0.5);
+	fPosDef->AddZ(strip->GetCrystal()->GetPeriodZ()*0.5);
+	fElDSinceLastProgress += strip->GetElD()->Get(fPosDef)*timestep;
+}
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif

@@ -34,6 +34,10 @@ public:
     virtual double ComputeAvgElD(ECHARM_strip*,ECHARM_particle*);
     virtual double ComputeAvgDen(ECHARM_strip*,ECHARM_particle*);
     
+    virtual void UpdateAtDSinceLastProcess(ECHARM_strip*,ECHARM_particle*,double);
+    virtual void UpdateElDSinceLastProcess(ECHARM_strip*,ECHARM_particle*,double);
+
+
 protected:
     std::string fName;
     bool fInitialized;

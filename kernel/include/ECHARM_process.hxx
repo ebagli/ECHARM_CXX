@@ -21,9 +21,6 @@ inline void ResetAtDSinceLastProcess() {fAtDSinceLastProgress = 0.;};
 inline double GetElDSinceLastProcess() {return fElDSinceLastProgress/fStepLengthSinceLastProgress;};
 inline void ResetElDSinceLastProcess() {fElDSinceLastProgress = 0.;};
 
-inline void UpdateAtDSinceLastProcess(double num) {fAtDSinceLastProgress += num;};
-inline void UpdateElDSinceLastProcess(double num) {fElDSinceLastProgress += num;};
-
 inline void ResetSinceLastProcess(){
     ResetStepLengthSinceLastProcess();
     ResetAtDSinceLastProcess();

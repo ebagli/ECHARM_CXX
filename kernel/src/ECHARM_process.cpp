@@ -97,4 +97,16 @@ double ECHARM_process::ComputeAvgDen(ECHARM_strip* strip,ECHARM_particle* part){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void ECHARM_process::UpdateAtDSinceLastProcess(ECHARM_strip* strip,ECHARM_particle* part,double timestep){
+	fAtDSinceLastProgress += strip->GetAtD()->Get(part->GetPos())*timestep;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_process::UpdateElDSinceLastProcess(ECHARM_strip* strip,ECHARM_particle* part,double timestep){
+	fElDSinceLastProgress += strip->GetElD()->Get(part->GetPos())*timestep;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 #endif

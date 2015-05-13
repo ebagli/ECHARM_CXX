@@ -71,9 +71,9 @@ void ECHARM_file_save::UpdateInfoTraj(ECHARM_info_save* info,int i0){
         efx = info->GetEFX().at(i0);
         kin = info->GetKin().at(i0);
         partNum = info->GetPartNum();
-        dchTimes = info->GetDechTimes();
-        chTimes = info->GetChTimes();
-        chIn = info->GetChInitial();
+        dchTimes = info->GetDechTimesTot().at(i0);
+        chTimes = info->GetChTimesTot().at(i0);
+        chIn = info->GetChInitialTot().at(i0);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -98,7 +98,7 @@ int ECHARM_kernel::Interaction(){
         if(bSaveTrajStatus)
             if(fTimeStepTotal > bSaveTrajStepTemp){
                 {
-                    fInfo->SavePart(fPart,GetAtD(),GetElD(),GetPotential(),GetElectricFieldX(),GetKineticEnergy());
+                    fInfo->SavePart(fPart,GetAtD(),GetElD(),GetPotential(),GetElectricFieldX(),GetKineticEnergy(),fInfo->GetChTimes(),fInfo->GetDechTimes(),fInfo->GetChInitial());
                     bSaveTrajStepTemp += bSaveTrajStep;
                 }
             }
@@ -418,8 +418,7 @@ bool ECHARM_kernel::IsInChanneling(){
             vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetY()) * fStrip->GetCrystal()->GetPeriodY() );
         }
     }
-//std::cout << vEn << " " << vPotMax << std::endl;
-//while(!getchar());
+
     if(vEn<vPotMax){
         return true;
     }

@@ -95,7 +95,7 @@ void ECHARM_info_save::SavePartOut(ECHARM_particle* part) {
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void ECHARM_info_save::SavePart(ECHARM_particle* part,double atd,double eld,double pot,double efx,double kin) {
+void ECHARM_info_save::SavePart(ECHARM_particle* part,double atd,double eld,double pot,double efx,double kin,int ch,int dech,int chin) {
     SavePartStruct(part,fPart);
     fPartVec.push_back(fPart);
     fAtD.push_back(atd);
@@ -103,6 +103,10 @@ void ECHARM_info_save::SavePart(ECHARM_particle* part,double atd,double eld,doub
     fDisplX.push_back(fDispl->GetX());
     fDisplY.push_back(fDispl->GetY());
     fDisplZ.push_back(fDispl->GetZ());
+    fChTimesTot.push_back(ch);
+    fDechTimesTot.push_back(dech);
+    fChInitialTot.push_back(chin);
+
 
     fPot.push_back(pot);
     fEFX.push_back(efx);

@@ -42,7 +42,7 @@ public:
     
     void SavePartIn(ECHARM_particle* part);
     void SavePartOut(ECHARM_particle* part);
-    void SavePart(ECHARM_particle*,double,double,double,double,double);
+    void SavePart(ECHARM_particle*,double,double,double,double,double,int,int,int);
 
 private:
     int fPartNum;
@@ -77,8 +77,11 @@ private:
     std::vector<double> fElD;
     double fAvgElD;
     
+    std::vector<int> fChInitialTot;
     int fChInitial;
+    std::vector<int> fChTimesTot;
     int fChTimes;
+    std::vector<int> fDechTimesTot;
     int fDechTimes;
     
 #include "ECHARM_info_save.hxx"

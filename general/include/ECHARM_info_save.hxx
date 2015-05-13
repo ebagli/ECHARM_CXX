@@ -71,6 +71,10 @@ inline void DivideAvgElD(double num) {fAvgElD /= num;};
 inline void SetAvgElD(double num) {fAvgElD = num;};
 inline double GetAvgElD() {return fAvgElD;};
 
+inline std::vector<int> GetChTimesTot() {return fChTimesTot;};
+inline std::vector<int> GetDechTimesTot() {return fDechTimesTot;};
+inline std::vector<int> GetChInitialTot() {return fChInitialTot;};
+
 inline void SetChInitial(int val) {fChInitial = val;};
 inline int GetChInitial() {return fChInitial;};
 

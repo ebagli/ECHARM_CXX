@@ -22,6 +22,9 @@ inline void SetTimeStepMin(double step) {fTimeStepMin = step;};
 inline double GetTransverseVariationMax() {return fTransverseVariationMax;};
 inline void SetTransverseVariationMax(double step) {fTransverseVariationMax = step;};
 
+inline double GetOverrideMaxPotential() {return fOverrideMaxPotential;};
+inline void SetOverrideMaxPotential(double step) {fOverrideMaxPotential = step;};
+
 inline double GetTimeStepTotal() {return fTimeStepTotal;};
 
 inline double GetStep() {return fTimeStep;};

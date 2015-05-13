@@ -53,6 +53,9 @@ void ECHARM_ROOT_save::Open(){
     fTreeTraj->Branch("pot",&pot,"pot/D");
     fTreeTraj->Branch("kin",&kin,"kin/D");
     fTreeTraj->Branch("efx",&efx,"efx/D");
+    fTreeTraj->Branch("ch",&chTimes,"ch/I");
+    fTreeTraj->Branch("chin",&chIn,"chin/I");
+    fTreeTraj->Branch("dch",&dchTimes,"dch/I");
     fTreeTraj->Branch("displX",&displx,"displX/D");
     fTreeTraj->Branch("displY",&disply,"displY/D");
     fTreeTraj->Branch("displZ",&displz,"displZ/D");

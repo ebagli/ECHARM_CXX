@@ -57,7 +57,6 @@ protected:
     ECHARM_strip* fStrip;
     std::vector<ECHARM_process*> fProcesses;
     
-    
     double fTimeStepMax;
     double fTimeStepMin;
     double fTransverseVariationMax;
@@ -68,6 +67,8 @@ protected:
 
     bool bExitOnDechanneling;
     // Temporary variables
+    double fOverrideMaxPotential;
+
 protected:
     ECHARM_3vec* fMomHalf;
     ECHARM_3vec* fPosHalf;

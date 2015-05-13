@@ -51,9 +51,7 @@ ECHARM_atom::ECHARM_atom(std::string File_Atom)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_atom::~ECHARM_atom()
-{
-    if (&fThermalVibrationConstant)         { delete &fThermalVibrationConstant; }
+ECHARM_atom::~ECHARM_atom(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

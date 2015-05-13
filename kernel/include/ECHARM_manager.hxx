@@ -11,3 +11,5 @@ inline void AddKernel(ECHARM_kernel* kernel) {fKernel.push_back(kernel);};
 
 inline bool GetSaveTrajStatus() {return bSaveTrajStatus;};
 inline void SetSaveTrajStatus(bool aBool) {bSaveTrajStatus = aBool;};
+
+inline ECHARM_info_save* GetInfo() {return fInfo;};

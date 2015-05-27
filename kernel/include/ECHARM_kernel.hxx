@@ -25,6 +25,8 @@ inline void SetTransverseVariationMax(double step) {fTransverseVariationMax = st
 inline double GetOverrideMaxPotential() {return fOverrideMaxPotential;};
 inline void SetOverrideMaxPotential(double step) {fOverrideMaxPotential = step;};
 
+inline void EnableOverrideMaxPotential(bool abool) {bOverrideMaxPotential = abool;};
+
 inline double GetTimeStepTotal() {return fTimeStepTotal;};
 
 inline double GetStep() {return fTimeStep;};
@@ -34,7 +36,6 @@ inline bool GetSaveTrajStatus() {return bSaveTrajStatus;};
 inline void SetSaveTrajStatus(bool aBool) {bSaveTrajStatus = aBool;};
 
 inline double GetSaveTrajStep() {return bSaveTrajStep;};
-inline void SetSaveTrajStep(double aDouble) {bSaveTrajStep = aDouble;};
 
 inline bool GetExitOnDechanneling() {return bExitOnDechanneling;};
 inline void SetExitOnDechanneling(bool aBool) {bExitOnDechanneling = aBool;};

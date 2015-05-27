@@ -17,6 +17,8 @@ class ECHARM_manager
 {
 public:
     ECHARM_manager(ECHARM_beam*,ECHARM_info_save*);
+    ECHARM_manager(ECHARM_beam*);
+
     virtual ~ECHARM_manager();
     
     int Init();

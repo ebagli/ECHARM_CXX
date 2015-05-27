@@ -82,6 +82,11 @@ void ECHARM_file_save::Open(){
     std::cout << "Opening Out File... " << fFilename;
     fFileOut.open(fFilename.c_str());
     std::cout << " ...Opened" << std::endl;
+
+    std::string filenameTraj = fFilename + ".traj.txt";
+    std::cout << "Opening Out File... " << filenameTraj;
+    fFileOutTraj.open(filenameTraj.c_str());
+    std::cout << " ...Opened" << std::endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -91,7 +96,8 @@ void ECHARM_file_save::Save(ECHARM_info_save* info){
 
     for(unsigned int i0=0;i0<info->GetAtD().size();i0++){
         UpdateInfoTraj(info,i0);
-    }
+        fFileOutTraj << partNum << " " << i0 << " " << chIn << " " << partStep.posz/micrometer << " " << pot/eV  << " " << kin/eV << std::endl;
+   }
     
     fFileOut << partIn.angx << " " << partIn.angy << " " << partOut.angx  << " " << partOut.angy << std::endl;
 }
@@ -140,6 +146,7 @@ void ECHARM_file_save::Analysis(){
 void ECHARM_file_save::Close(){
     std::cout << "Closing Out File... " << fFilename;
     fFileOut.close();
+    fFileOutTraj.close();
     std::cout << " ...Closed" << std::endl;
 }
 

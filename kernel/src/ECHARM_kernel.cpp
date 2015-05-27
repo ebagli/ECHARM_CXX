@@ -29,11 +29,25 @@ ECHARM_kernel::ECHARM_kernel(ECHARM_strip* strip){
     
     bSaveTrajStep = 1. * micrometer;
     bSaveTrajStepTemp = 0.;
+    
+    fOverrideMaxPotential = DBL_MAX;
+    bOverrideMaxPotential = false;
+    
+    fMachineError = 1. * AA;
+    
+    bDEBUG = false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ECHARM_kernel::~ECHARM_kernel(){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_kernel::SetSaveTrajStep(double aDouble) {
+    bSaveTrajStep = aDouble;
+    fMachineError = 0.05 * bSaveTrajStep;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -79,8 +93,10 @@ int ECHARM_kernel::Interaction(){
     
     bool bExit = false;
     
+    fStepNumber = 0;
+    
     do {
-        bPartIsIn = fStrip->IsIn(fPart->GetPos());
+        //bPartIsIn = int(fStrip->IsIn(fPart->GetPos()));
         
         bPartIsIn = UpdateStep();
         
@@ -95,17 +111,9 @@ int ECHARM_kernel::Interaction(){
         fInfo->AddAvgAtD(fStrip->GetAtD()->Get(fPart->GetPos()) * fTimeStep);
         fInfo->AddAvgElD(fStrip->GetElD()->Get(fPart->GetPos()) * fTimeStep);
         
-        if(bSaveTrajStatus)
-            if(fTimeStepTotal > bSaveTrajStepTemp){
-                {
-                    fInfo->SavePart(fPart,GetAtD(),GetElD(),GetPotential(),GetElectricFieldX(),GetKineticEnergy(),fInfo->GetChTimes(),fInfo->GetDechTimes(),fInfo->GetChInitial());
-                    bSaveTrajStepTemp += bSaveTrajStep;
-                }
-            }
-        
         CheckChannelingCondition();
         
-        if(bPartIsIn==false){
+        if(bPartIsIn==0){
             bExit = true;
         }
         else if(bExitOnDechanneling ==  true){
@@ -116,6 +124,13 @@ int ECHARM_kernel::Interaction(){
                 bExit = true;
             }
         }
+        
+        if(bSaveTrajStatus && (bPartIsIn==2 || bPartIsIn==0)){
+            fInfo->SavePart(fPart,GetAtD(),GetElD(),GetPotential(),GetElectricFieldX(),GetKineticEnergy());
+        }
+        
+        fStepNumber++;
+        
     } while(bExit == false);
     
     DoAfterInteraction();
@@ -304,7 +319,7 @@ int ECHARM_kernel::DoStep(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-bool ECHARM_kernel::UpdateStep(){
+int ECHARM_kernel::UpdateStep(){
     if(fPart->GetMom()->GetX() != 0.0 || fPart->GetMom()->GetY() != 0.0){
         double xy2 = fSquare(fPart->GetMom()->GetX()) + fSquare(fPart->GetMom()->GetY());
         
@@ -326,10 +341,22 @@ bool ECHARM_kernel::UpdateStep(){
     
     if((fPart->GetPos()->GetZ() + fTimeStep) > (GetStrip()->GetDim()->GetZ() * 0.5)){
         fTimeStep = (GetStrip()->GetDim()->GetZ() * 0.5 - fPart->GetPos()->GetZ());
-        return false;
+        return 0;
     }
     
-    return true;
+    if(bSaveTrajStatus){
+        if(bSaveTrajStepTemp==0){
+            bSaveTrajStepTemp += bSaveTrajStep;
+            return 2;
+        }
+        else if((fTimeStepTotal + fTimeStep) > bSaveTrajStepTemp){
+            fTimeStep = bSaveTrajStepTemp - fTimeStepTotal;
+            bSaveTrajStepTemp += bSaveTrajStep;
+            return 2;
+        }
+    }
+    
+    return 1;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -368,9 +395,9 @@ double ECHARM_kernel::GetAtD(){
 
 double ECHARM_kernel::GetElectricFieldX(){
     fPart->GetPos()->Add(fInfo->GetDispl(),-1.);
-    double vPot = fStrip->GetEFX()->Get(fPart->GetPos());
+    double vVal = fPart->GetZ() * fStrip->GetEFX()->Get(fPart->GetPos());
     fPart->GetPos()->Add(fInfo->GetDispl(),1.);
-    return vPot;
+    return vVal;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -402,7 +429,7 @@ bool ECHARM_kernel::IsInChanneling(){
     
     double vPotMax = 0.;
     
-    if(fOverrideMaxPotential != DBL_MAX){
+    if(bOverrideMaxPotential == true){
         vPotMax = fOverrideMaxPotential;
     }
     else{
@@ -412,13 +439,13 @@ bool ECHARM_kernel::IsInChanneling(){
         }
         
         if(fStrip->IsBentX()){
-            vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetX()) * fStrip->GetCrystal()->GetPeriodX() );
+            vPotMax -= fabs(fPart->GetMomVel() / fabs(fStrip->GetBR()->GetX()) * fStrip->GetCrystal()->GetPeriodX() );
         }
         if(fStrip->IsBentY()){
-            vPotMax -= (fPart->GetMomVel() / fabs(fStrip->GetBR()->GetY()) * fStrip->GetCrystal()->GetPeriodY() );
+            vPotMax -= fabs(fPart->GetMomVel() / fabs(fStrip->GetBR()->GetY()) * fStrip->GetCrystal()->GetPeriodY() );
         }
     }
-
+    
     if(vEn<vPotMax){
         return true;
     }

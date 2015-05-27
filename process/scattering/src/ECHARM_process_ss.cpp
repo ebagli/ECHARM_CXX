@@ -40,7 +40,9 @@ double ECHARM_process_ss::ComputeThetaScattering(ECHARM_strip* strip,ECHARM_part
         vZss = -log(drand48()) / vInvMFP / vStep;
     }
     
-    if(vZss < fTotalProbThetaSS){
+    //if(vZss < fTotalProbThetaSS){
+    if(true){
+
         double vTheta2 = ComputeTheta2(strip,part,vStep);
         vTheta += ComputeThetaSS(strip,part,vTheta2);
         ResetSinceLastProcess();

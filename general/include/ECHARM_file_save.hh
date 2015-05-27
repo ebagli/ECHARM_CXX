@@ -52,7 +52,8 @@ public:
 protected:
     std::string fFilename;
     std::ofstream fFileOut;
-    
+    std::ofstream fFileOutTraj;
+
     //IN OUT
     int partNum;
     

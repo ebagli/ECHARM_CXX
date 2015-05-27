@@ -24,6 +24,20 @@ ECHARM_manager::ECHARM_manager(ECHARM_beam* beam, ECHARM_info_save *info){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+ECHARM_manager::ECHARM_manager(ECHARM_beam* beam){
+
+    fBeam = beam;
+    fInfo = new ECHARM_info_save();
+
+    fTimeStepTotal = 0.;
+
+    fInfo->Reset();
+
+    bSaveTrajStatus = false;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 ECHARM_manager::~ECHARM_manager(){
 }
 

@@ -31,6 +31,10 @@ public:
     virtual double ComputeThetaMin(ECHARM_strip*,ECHARM_particle*);
     virtual double ComputeThetaMax(ECHARM_strip*,ECHARM_particle*);
 
+#ifdef ROOT_
+    void PrintRMStoTH1(ECHARM_strip*,ECHARM_particle*);
+#endif
+    
 protected:
     double fStdDev;
 

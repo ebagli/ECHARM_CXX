@@ -91,7 +91,7 @@ double ECHARM_process::ComputeAvgElD(ECHARM_strip* strip,ECHARM_particle* part){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process::ComputeAvgDen(ECHARM_strip* strip,ECHARM_particle* part){
-    double vAvgDen = ComputeAvgAtD(strip,part) + ComputeAvgElD(strip,part);
+    double vAvgDen = (ComputeAvgAtD(strip,part) + ComputeAvgElD(strip,part)) * 0.5;
     return vAvgDen;
 }
 

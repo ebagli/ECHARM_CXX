@@ -97,4 +97,52 @@ void ECHARM_process_ms::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle*
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void ECHARM_process_ms::PrintRMStoTH1(ECHARM_strip* strip,ECHARM_particle *particle){
+    
+    
+    char histoname[64];
+    int nbins = 100;
+    double xpoint;
+    double length = 0.1 * millimeter;
+    double energy = 400. * GeV;
+    
+    sprintf(histoname,"%s_l",fName.c_str());
+    TH2F* h1l = new TH2F(histoname,"",nbins,0,length/millimeter,512,-128,128);
+    h1l->GetXaxis()->SetTitle("Length [mm]");
+    h1l->GetYaxis()->SetTitle("rms [#murad]");
+
+    sprintf(histoname,"%s_e",fName.c_str());
+    TH2F* h1e = new TH2F(histoname,"",nbins,0,energy/GeV,512,-128,128);
+    h1e->GetXaxis()->SetTitle("Energy [GeV]");
+    h1e->GetYaxis()->SetTitle("rms [#murad]");
+
+    for(unsigned int i0=0;i0<nbins;i0++){
+        particle->GetMom()->Set(0.,0.,energy);
+        particle->GetPos()->Set(0.,0.,length * float(i0+1.5) / float(nbins));
+        particle->GetPosPre()->Set(0.,0.,0.);
+        xpoint = float(i0 + 1.5) / float(nbins) * length / millimeter;
+        for(unsigned int i1=0;i1<10000;i1++){
+            SetStepLengthSinceLastProcess(length * float(i0+1.5) / float(nbins));
+            SetAtDSinceLastProcess(1.);
+            SetElDSinceLastProcess(1.);
+            h1l->Fill(xpoint,ComputeThetaScattering(strip,particle)/microrad);
+        }
+    }
+
+    for(unsigned int i0=0;i0<nbins;i0++){
+        particle->GetMom()->Set(0.,0.,energy * float(i0+1.5) / float(nbins));
+        particle->GetPos()->Set(0.,0.,length);
+        particle->GetPosPre()->Set(0.,0.,0.);
+        xpoint = float(i0 + 1.5) / float(nbins) * energy / GeV;
+        for(unsigned int i1=0;i1<10000;i1++){
+            SetStepLengthSinceLastProcess(length);
+            SetAtDSinceLastProcess(1.);
+            SetElDSinceLastProcess(1.);
+            h1e->Fill(xpoint,ComputeThetaScattering(strip,particle)/microrad);
+        }
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 #endif

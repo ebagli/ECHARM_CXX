@@ -9,13 +9,13 @@
 //  Computer Physics Communications 141 (2001) 230–246
 //  Eq. (16) and (2)
 //
-#ifdef _ECHARM_process_ms_tikhomirov_h
 
+#ifdef _ECHARM_process_ms_tikhomirov_h
 #include "ECHARM_process_ms_tikhomirov.hh"
 
 ECHARM_process_ms_tikhomirov::ECHARM_process_ms_tikhomirov(){
     fEnergyStored = 0.;
-    fTotalProbThetaSS = 0.3;
+    fTotalProbThetaSS = 0.1;
     fName = "ms_tikhomirov";
     fCorrectionElectron = 1.85;
     fMass = cElectronMass;
@@ -66,6 +66,8 @@ double ECHARM_process_ms_tikhomirov::ComputeThetaScattering(ECHARM_strip* strip,
 
 double ECHARM_process_ms_tikhomirov::ComputeThetaSS(ECHARM_strip* strip,ECHARM_particle* part,double theta2){
     double vInvThetaSS = fSquareRoot(1. + drand48() * (fSquare(fThetaMax/theta2) - 1.));
+    double random = drand48();
+    vInvThetaSS *= ((random - 0.5)/fabs(random - 0.5));
     return (fThetaMax / vInvThetaSS);
 }
 

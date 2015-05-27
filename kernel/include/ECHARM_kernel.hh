@@ -22,7 +22,7 @@ public:
     
     bool UpdateTransverseVariationMax(double);
         
-    bool UpdateStep();
+    int UpdateStep();
     int DoStep();
     
     int DoOnStrip();
@@ -47,6 +47,9 @@ public:
     double GetElD();
     double GetElectricFieldX();
 
+    void SetSaveTrajStep(double);
+    void SaveTrajStep();
+    
 protected:
     bool bSavePartIn;
     bool bSavePartOut;
@@ -68,17 +71,22 @@ protected:
     bool bExitOnDechanneling;
     // Temporary variables
     double fOverrideMaxPotential;
+    bool bOverrideMaxPotential;
 
 protected:
+    bool bDEBUG;
     ECHARM_3vec* fMomHalf;
     ECHARM_3vec* fPosHalf;
 
     double fTimeStep;
     double fTimeStepTotal;
-    bool bPartIsIn;
+    int bPartIsIn;
+    int fStepNumber;
     
     bool bHasBeenInChanneling;
-    
+
+    double fMachineError;
+
 #include "ECHARM_kernel.hxx"
 };
 #endif

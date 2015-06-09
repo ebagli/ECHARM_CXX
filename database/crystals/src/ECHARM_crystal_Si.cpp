@@ -52,7 +52,7 @@ ECHARM_crystal_Si::ECHARM_crystal_Si(){
 
     ComputeParameters();
     
-    SetThermalVibrationConstant(0.075);
+    SetThermalVibrationConstant(0.075 * AA);
 }
 
 

@@ -1,21 +1,21 @@
 //
-//  ECHARM_crystal_Si_Defect.cpp
+//  ECHARM_crystal_Si_singleatom.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifdef _ECHARM_crystal_Si_Defect_h
+#ifdef _ECHARM_crystal_Si_singleatom_h
 
 #include <cfloat>
 #include <limits>
-#include "ECHARM_crystal_Si_Defect.hh"
+#include "ECHARM_crystal_Si_singleatom.hh"
 #include "ECHARM_atom_xray.hh"
 #include "ECHARM_miller_cubic.hh"
-#include "ECHARM_lattice_diamond.hh"
+#include "ECHARM_lattice_single.hh"
 
-ECHARM_crystal_Si_Defect::ECHARM_crystal_Si_Defect(double defect_density){
+ECHARM_crystal_Si_singleatom::ECHARM_crystal_Si_singleatom(){
     
     SetAtomName("Si");
     double vSiExperimentalCoefficients[12];
@@ -34,9 +34,13 @@ ECHARM_crystal_Si_Defect::ECHARM_crystal_Si_Defect(double defect_density){
     vSiExperimentalCoefficients[10] = 84.53648*AA*AA;
     vSiExperimentalCoefficients[11] = 56.34208*AA*AA;
     
-    int vMillerX[3] = {2,-2,0};
-    int vMillerY[3] = {1,1,-2};
-    int vMillerZ[3] = {1,1,1};
+    ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.,vSiExperimentalCoefficients);
+    ECHARM_lattice_single *lattice_single = new ECHARM_lattice_single();
+    AddBase(atom_xray,lattice_single);
+    
+    int vMillerX[3] = {1,0,0};
+    int vMillerY[3] = {0,1,0};
+    int vMillerZ[3] = {0,0,1};
     
     fMiller = new ECHARM_miller_cubic(vMillerX,vMillerY);
 
@@ -46,19 +50,6 @@ ECHARM_crystal_Si_Defect::ECHARM_crystal_Si_Defect(double defect_density){
 
     fCell = new ECHARM_cell(5.43*AA,5.43*AA,5.43*AA);
 
-    ECHARM_lattice_diamond *lattice_diamond = new ECHARM_lattice_diamond();
-    
-    double percentage = defect_density / (lattice_diamond->GetCoordinatesNumber() / fCell->GetVolume());
-        
-    ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.,vSiExperimentalCoefficients);
-    ECHARM_atom_moliere *vacuum = new ECHARM_atom_moliere("vacuum",0.,0. * amu,640.,173.);
-    
-    AddBase(atom_xray,lattice_diamond,1.-percentage);
-    AddBase(vacuum,lattice_diamond,percentage);
-    
-    //atoms per cm3 is = (1 cm3 * #atoms_in_the_cell / #cell_volume[cm^3])
-
-    
     ComputeParameters();
     
     SetThermalVibrationConstant(0.075 * AA);
@@ -67,7 +58,7 @@ ECHARM_crystal_Si_Defect::ECHARM_crystal_Si_Defect(double defect_density){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_crystal_Si_Defect::~ECHARM_crystal_Si_Defect(){
+ECHARM_crystal_Si_singleatom::~ECHARM_crystal_Si_singleatom(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

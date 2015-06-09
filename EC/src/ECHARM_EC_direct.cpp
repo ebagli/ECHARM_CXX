@@ -56,6 +56,7 @@ double ECHARM_EC_direct::GetXinUnitPeriod(double x, double vPeriod){
 double ECHARM_EC_direct::Get(double vX, double vY, double vZ){
     
     double vResult = 0;
+    
     double x = GetXinUnitPeriod(vX,fCrystal->GetPeriodX());
     double y = GetXinUnitPeriod(vY,fCrystal->GetPeriodY());
     double z = GetXinUnitPeriod(vZ,fCrystal->GetPeriodZ());
@@ -77,6 +78,7 @@ double ECHARM_EC_direct::Get1d(double vX){
     double vResult = 0;
     double x = GetXinUnitPeriod(vX,fCrystal->GetPeriodX());
     
+    double vStepX = fCrystal->GetPeriodX()/fStepNumbPerCell;
     double vStepY = fCrystal->GetPeriodY()/fStepNumbPerCell;
     double vStepZ = fCrystal->GetPeriodZ()/fStepNumbPerCell;
     
@@ -84,7 +86,7 @@ double ECHARM_EC_direct::Get1d(double vX){
     for(int i2 = -fCellNumb; i2 <= fCellNumb;i2++){
         for(int i1 = 0; i1 <= fStepNumbPerCell;i1++){
             for(int i0 = 0; i0 <= fStepNumbPerCell;i0++){
-                vResult += GetFunc(x,vStepY *i0,vStepZ * i1);
+                vResult += GetFunc(x + i2*vStepX,vStepY *i0,vStepZ * i1);
             }
         }
     }
@@ -124,7 +126,9 @@ double ECHARM_EC_direct::GetFunc(double xpart, double ypart, double zpart){
             
             r += fThermVibr->GenerateNumber();
             
-            vResult += (cElectronCharge2 / r * fCrystal->GetAtom(j0)->ComputeFF(r) * fCrystal->GetAtom(j0)->GetZ()) ;
+            double temp = (cElectronCharge2 / r * fCrystal->GetAtom(j0)->ComputeFF(r) * fCrystal->GetAtom(j0)->GetZ());
+            vResult += temp;
+
         }
     }
         

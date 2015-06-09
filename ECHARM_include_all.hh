@@ -240,6 +240,9 @@
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_crystal_Si.cpp"
 
+#include "ECHARM_crystal_Si_singleatom.hh"
+#include "ECHARM_crystal_Si_singleatom.cpp"
+
 #include "ECHARM_crystal_Si_Defect.hh"
 #include "ECHARM_crystal_Si_Defect.cpp"
 
@@ -270,6 +273,9 @@
 
 #include "ECHARM_STLHC_UA9SIM.hh"
 #include "ECHARM_STLHC_UA9SIM.cpp"
+
+#include "ECHARM_STLHC_2mm.hh"
+#include "ECHARM_STLHC_2mm.cpp"
 
 #include "ECHARM_ST45.hh"
 #include "ECHARM_ST45.cpp"

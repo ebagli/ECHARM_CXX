@@ -101,7 +101,7 @@ void ECHARM_process_ms::PrintRMStoTH1(ECHARM_strip* strip,ECHARM_particle *parti
     
     
     char histoname[64];
-    int nbins = 100;
+    unsigned int nbins = 100;
     double xpoint;
     double length = 0.1 * millimeter;
     double energy = 400. * GeV;

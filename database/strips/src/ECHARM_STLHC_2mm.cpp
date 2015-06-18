@@ -62,7 +62,7 @@ ECHARM_STLHC_2mm::ECHARM_STLHC_2mm(){
     SetEFZ(efz);
     
     fDim = new ECHARM_3vec(1. * millimeter,55. * millimeter,2. * millimeter);;
-    fBRconst = new ECHARM_3vec(27.5 * meter,0.,0.);
+    fBRconst = new ECHARM_3vec(36.36 * meter,0.,0.);
     
     SetName("STLHC_2mm");
 }

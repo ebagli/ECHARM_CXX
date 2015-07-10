@@ -16,7 +16,9 @@ ECHARM_manager::ECHARM_manager(ECHARM_beam* beam, ECHARM_info_save *info){
     fInfo = info;
     
     fTimeStepTotal = 0.;
-
+    fNumberOfParticlesPrint = 1;
+    fNumberOfParticles = 0;
+    
     fInfo->Reset();
     
     bSaveTrajStatus = false;
@@ -43,6 +45,39 @@ ECHARM_manager::~ECHARM_manager(){
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+int ECHARM_manager::RunDYNECHARM(ECHARM_file_save* info_save,int vNumberOfParticles = 0){
+    if(vNumberOfParticles != 0){
+        fNumberOfParticles = vNumberOfParticles;
+    }
+
+    Init();
+    
+#pragma omp single
+    {
+        Print();
+    }
+    
+#pragma omp for schedule(dynamic)
+    for(int iPart=0;iPart<vNumberOfParticles;iPart++){
+        
+        Go();
+        
+#pragma omp critical
+        {
+            fInfo->SetPartNum(iPart);
+            info_save->Save(fInfo);
+            if((iPart%fNumberOfParticlesPrint)==0){
+                std::cout << "Particle - " << iPart << std::endl;
+            }
+            
+        }
+    }
+    End();
+    return 0;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 int ECHARM_manager::Go(){
     
     fInfo->Reset();
@@ -50,7 +85,10 @@ int ECHARM_manager::Go(){
     fTimeStepTotal = 0.;
     
     fBeam->GenerateParticle();
-        
+    fInfo->GetBeamSize()->SetX(fBeam->GetDistrBeamSizeX()->GenerateNumber());
+    fInfo->GetBeamSize()->SetY(fBeam->GetDistrBeamSizeY()->GenerateNumber());
+    fInfo->GetBeamSize()->SetZ(fBeam->GetDistrBeamSizeZ()->GenerateNumber());
+
     std::vector<ECHARM_kernel*>::iterator myKernel;
 
     for(myKernel = fKernel.begin();

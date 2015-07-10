@@ -20,6 +20,10 @@ ECHARM_beam::ECHARM_beam(){
     fDistrMomentumY = new ECHARM_distribution_box(0.,0.);
     fDistrMomentumZ = new ECHARM_distribution_box(0.,0.);
     
+    fDistrBeamSizeX = new ECHARM_distribution_box(0.,0.);
+    fDistrBeamSizeY = new ECHARM_distribution_box(0.,0.);
+    fDistrBeamSizeZ = new ECHARM_distribution_box(0.,0.);
+
     fDistrPositionX =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionY =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionZ =  new ECHARM_distribution_const(0.);
@@ -39,7 +43,11 @@ ECHARM_beam::ECHARM_beam(ECHARM_particle* particle,double perc = 1.){
     fDistrMomentumX = new ECHARM_distribution_box(0.,0.);
     fDistrMomentumY = new ECHARM_distribution_box(0.,0.);
     fDistrMomentumZ = new ECHARM_distribution_box(0.,0.);
-    
+
+    fDistrBeamSizeX = new ECHARM_distribution_box(0.,0.);
+    fDistrBeamSizeY = new ECHARM_distribution_box(0.,0.);
+    fDistrBeamSizeZ = new ECHARM_distribution_box(0.,0.);
+
     fDistrPositionX =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionY =  new ECHARM_distribution_box(0.,0.);
     fDistrPositionZ =  new ECHARM_distribution_const(0.);

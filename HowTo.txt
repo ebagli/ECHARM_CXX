@@ -1,0 +1,22 @@
+//
+//  Created by Enrico Bagli on 10/07/15.
+//  Copyright 2015 Enrico Bagli. All rights reserved.
+//
+
+1. Download the GIT repository for the DYNECHARM++ code
+git clone https://github.com/ebagli/ECHARM_CXX
+
+2. Set up the environmental variable ECHARMSYS
+export ECHARMSYS=/home/username/userdirs/ECHARM_CXX
+
+3. Create a directory and copy Makefile and main.c 
+mkdir DYNECHARM
+cd DYNECHARM
+cp $ECHARMSYS/Makefile .
+cp $ECHARMSYS/main.c .
+
+4. Make sure that ROOT is installed and compile
+make
+
+5. Run the DYNECHARM++ code
+./main

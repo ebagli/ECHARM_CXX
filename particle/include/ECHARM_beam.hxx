@@ -31,3 +31,12 @@ inline ECHARM_distribution* GetDistrPosZ() {return fDistrPositionZ;}
 inline void SetDistrPosZ(ECHARM_distribution* Position) {fDistrPositionZ=Position;}
 
 inline ECHARM_particle* GetGeneratedParticle() {return fParticle;}
+
+inline ECHARM_distribution* GetDistrBeamSizeX() {return fDistrBeamSizeX;}
+inline void GetDistrBeamSizeX(ECHARM_distribution* Position) {fDistrBeamSizeX=Position;}
+
+inline ECHARM_distribution* GetDistrBeamSizeY() {return fDistrBeamSizeY;}
+inline void GetDistrBeamSizeY(ECHARM_distribution* Position) {fDistrBeamSizeY=Position;}
+
+inline ECHARM_distribution* GetDistrBeamSizeZ() {return fDistrBeamSizeZ;}
+inline void GetDistrBeamSizeZ(ECHARM_distribution* Position) {fDistrBeamSizeZ=Position;}

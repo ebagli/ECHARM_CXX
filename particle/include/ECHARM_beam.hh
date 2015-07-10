@@ -41,6 +41,10 @@ protected:
 
     ECHARM_distribution* fDistrParticles;
 
+    ECHARM_distribution* fDistrBeamSizeX;
+    ECHARM_distribution* fDistrBeamSizeY;
+    ECHARM_distribution* fDistrBeamSizeZ;
+
     ECHARM_distribution* fDistrPositionX;
     ECHARM_distribution* fDistrMomentumX;
 

@@ -29,12 +29,16 @@ public:
 
     int GenerateParticle();
 
+    int RunDYNECHARM(ECHARM_file_save*,int);
+
 protected:
     ECHARM_beam* fBeam;
     ECHARM_info_save* fInfo;
 
     std::vector<ECHARM_kernel*> fKernel;
 
+    int fNumberOfParticles;
+    int fNumberOfParticlesPrint;
     double fTimeStepTotal;
     bool bSaveTrajStatus;
     

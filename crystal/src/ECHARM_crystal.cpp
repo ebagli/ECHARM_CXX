@@ -163,6 +163,7 @@ void ECHARM_crystal::ComputeParameters()
     SetDebyeTemperature(vDT);
     SetAverageIonizationConstant(vAvIonConst);
     SetThermalVibrationConstant(vTV);
+    SetThomasFermiRadius(ComputeThomasFermiRadius());
     
     fPeriod[0] = fCell->ComputePeriod(fMiller->GetX());
     fPeriod[1] = fCell->ComputePeriod(fMiller->GetY());

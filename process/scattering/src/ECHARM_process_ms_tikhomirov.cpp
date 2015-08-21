@@ -51,7 +51,8 @@ double ECHARM_process_ms_tikhomirov::ComputeThetaScattering(ECHARM_strip* strip,
         
     }while(bExit==false);
     
-    if(vTheta == 0.){
+    //if(vTheta == 0.)
+    {
         ComputeStdDev(strip,part,vLength);
         fStdDev *= ComputeAvgDen(strip,part);
         vTheta +=  ComputeThetaMS(strip,part);

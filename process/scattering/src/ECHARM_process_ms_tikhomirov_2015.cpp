@@ -16,7 +16,7 @@
 ECHARM_process_ms_tikhomirov_2015::ECHARM_process_ms_tikhomirov_2015(){
     fEnergyStored = 0.;
     fTotalProbThetaSS = 0.1;
-    fName = "ms_tikhomirov";
+    fName = "ms_tikhomirov_2015";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -39,10 +39,7 @@ double ECHARM_process_ms_tikhomirov_2015::ComputeThetaScattering(ECHARM_strip* s
     double vMomTV = vMom * strip->GetCrystal()->GetThermalVibrationConstant();
 
     UpdateConstants(strip,part,vLength);
-    
-    std::cout << fXS_SS << std::endl;
-    while(!getchar());
-    
+
     do{
         bExit = true;
         double vRand = drand48();
@@ -101,13 +98,13 @@ void ECHARM_process_ms_tikhomirov_2015::UpdateConstants(ECHARM_strip* strip,ECHA
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ECHARM_process_ms_tikhomirov_2015::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle* part,ECHARM_info_save*){
-    //UpdateConstants(strip,part);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_ms_tikhomirov_2015::ComputeTheta1(ECHARM_strip* strip,ECHARM_particle* part){
-    double vA = fSquareRoot(1.13 + 3.76 * fSquare( strip->GetCrystal()->GetZ() * cFineStructureConstant / part->GetBeta() ) );
+    double vA = 0.;
+    fSquareRoot(1.13 + 3.76 * fSquare( strip->GetCrystal()->GetZ() * cFineStructureConstant / part->GetBeta() ) );
     vA /= part->GetMomMod();
     vA *= cPlanckConstant;
     vA /= strip->GetCrystal()->GetThomasFermiRadius();;
@@ -117,7 +114,6 @@ double ECHARM_process_ms_tikhomirov_2015::ComputeTheta1(ECHARM_strip* strip,ECHA
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_process_ms_tikhomirov_2015::ComputeTheta2(ECHARM_strip* strip,ECHARM_particle* part,double length){
-    UpdateConstants(strip,part,length);
     double vInvTheta2 = fTotalProbThetaSS / (length * fXS_SSconstant * strip->GetCrystal()->GetNucleiDensity());
     vInvTheta2 += 1./fSquare(fThetaMax);
     return fSquareRoot(1./vInvTheta2);

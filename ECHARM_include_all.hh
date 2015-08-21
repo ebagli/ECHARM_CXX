@@ -168,6 +168,9 @@
 #include "ECHARM_process_ms_tikhomirov.hh"
 #include "ECHARM_process_ms_tikhomirov.cpp"
 
+#include "ECHARM_process_ms_tikhomirov_2015.hh"
+#include "ECHARM_process_ms_tikhomirov_2015.cpp"
+
 #include "ECHARM_process_ss.hh"
 #include "ECHARM_process_ss.cpp"
 

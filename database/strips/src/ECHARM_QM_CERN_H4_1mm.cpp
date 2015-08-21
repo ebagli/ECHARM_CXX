@@ -35,7 +35,7 @@ ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * mill
     
     
     
-    int vMillerX[3] = {2,1,1};
+    int vMillerX[3] = {1,1,1};
     int vMillerY[3] = {1,1,-2};
     int vMillerZ[3] = {1,-1,0};
     

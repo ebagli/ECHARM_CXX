@@ -239,6 +239,12 @@
 #include "ECHARM_lattice_diamond.hh"
 #include "ECHARM_lattice_diamond.cpp"
 
+#include "ECHARM_lattice_zincblend_a.hh"
+#include "ECHARM_lattice_zincblend_a.cpp"
+
+#include "ECHARM_lattice_zincblend_b.hh"
+#include "ECHARM_lattice_zincblend_b.cpp"
+
 // crystal database
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_crystal_Si.cpp"
@@ -264,6 +270,9 @@
 #include "ECHARM_crystal_Ni.hh"
 #include "ECHARM_crystal_Ni.cpp"
 
+#include "ECHARM_crystal_InSb.hh"
+#include "ECHARM_crystal_InSb.cpp"
+
 #include "ECHARM_crystal_Vacuum.hh"
 #include "ECHARM_crystal_Vacuum.cpp"
 
@@ -285,6 +294,9 @@
 
 #include "ECHARM_STtest.hh"
 #include "ECHARM_STtest.cpp"
+
+#include "ECHARM_ST_InSb.hh"
+#include "ECHARM_ST_InSb.cpp"
 
 #include "ECHARM_SiEnhancement.hh"
 #include "ECHARM_SiEnhancement.cpp"
@@ -330,6 +342,9 @@
 
 #include "ECHARM_NiCOMECER.hh"
 #include "ECHARM_NiCOMECER.cpp"
+
+#include "ECHARM_EC_CALC.hh"
+#include "ECHARM_EC_CALC.cpp"
 
 // beam database
 #include "ECHARM_beam_ee_discrimination.hh"

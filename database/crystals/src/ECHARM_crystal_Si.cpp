@@ -51,7 +51,7 @@ ECHARM_crystal_Si::ECHARM_crystal_Si(){
     fCell = new ECHARM_cell(5.43*AA,5.43*AA,5.43*AA);
 
     ComputeParameters();
-    
+
     SetThermalVibrationConstant(0.075 * AA);
 }
 

@@ -14,5 +14,3 @@ inline ECHARM_3vec* GetBurger() {return fBurger;};
 
 inline void SetLine(ECHARM_3vec* vec) {fLine = vec;};
 inline ECHARM_3vec* GetLine() {return fLine;};
-
-inline double GetAngleBurgerLine() {return fBurger->ScalarProduct(fLine);};

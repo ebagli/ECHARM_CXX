@@ -23,7 +23,10 @@ public:
     virtual bool IsInHotZone();
 
     void ComputeAnglesFromBurgerAndLineDirections();
-
+    double GetAngleBurgerLine() {return fBurger->GetAngle(fLine);}
+    virtual double GetBurgerEdge() {return sin(GetAngleBurgerLine())*fBurger->GetModule();}
+    virtual double GetBurgerScrew() {return cos(GetAngleBurgerLine())*fBurger->GetModule();}
+    
 protected:
     double fPoissonRatio;
     ECHARM_3vec* fBurger;

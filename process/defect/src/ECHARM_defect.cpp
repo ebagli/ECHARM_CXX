@@ -80,8 +80,8 @@ void ECHARM_defect::ComputeDispl(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double dz = 0.0;
     double dy = 0.0;
     
-    double burgerEdge = sin(fBurger->GetAngle(fLine))*fBurger->GetModule();
-    double burgerScrew = cos(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    double burgerEdge = GetBurgerEdge();
+    double burgerScrew = GetBurgerScrew();
     
     if(x!=0. &&
        z!=0.){
@@ -120,8 +120,8 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
     double x = partpos->GetX() - defpos->GetX();
     double z = partpos->GetZ() - defpos->GetZ();
     
-    double burgerEdge = sin(fBurger->GetAngle(fLine))*fBurger->GetModule();
-    double burgerScrew = cos(fBurger->GetAngle(fLine))*fBurger->GetModule();
+    double burgerEdge = GetBurgerEdge();
+    double burgerScrew = GetBurgerScrew();
     
     fBR->SetZ(0.);
     
@@ -135,27 +135,9 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
         double xz2 = x*x + z*z;
         double p = fPoissonRatio;
         
-        /*
-        double Rx1 = fSquare( ( 3. - 2. * p ) * x * x + (1. - 2. * p) * z * z );
-        Rx1 *= ( x * x * burgerEdge * burgerEdge);
-        Rx1 /= (16. * cPi * cPi * fSquare( p - 1.) * xz2 * xz2 * xz2 * xz2);
-        Rx1 += 1.;
-        
-        double Rx2 = burgerEdge * x * z * ( (2. * p - 5.) * x * x + (2. * p - 1.) * z * z );
-        double Rx = 2. * cPi * ( p - 1.) * xz2 * xz2 * xz2;
-        
-        if(Rx2!=0){
-            Rx /= Rx2;
-            Rx *= pow(Rx1,1.5);
-        }
-        else{
-            Rx = 0.;
-        }
-        */
+        double a = 0.5 / (1. - p);
 
-    	double a = 0.5 / (1. - p);
-
-    	double ddzdz = - 2. * x * z * (a * xz2 + 3. * x * x - z * z);
+        double ddzdz = - 2. * x * z * (a * xz2 + 3. * x * x - z * z);
         ddzdz /= (a * xz2 * xz2 * xz2);
         ddzdz *= 2. * cPi * burgerEdge;
 
@@ -165,10 +147,10 @@ void ECHARM_defect::ComputeBR(ECHARM_3vec* partpos,ECHARM_3vec* defpos){
 
         double Rx = pow(1. + ddz * ddz,1.5);
         if(ddzdz!=0.){
-        	Rx /= ddzdz;
+            Rx /= ddzdz;
         }
         else{
-        	Rx = 1.E15;
+            Rx = 1.E15;
         }
 
         fBR->SetX(Rx);

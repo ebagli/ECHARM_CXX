@@ -180,6 +180,12 @@
 #include "ECHARM_defect.hh"
 #include "ECHARM_defect.cpp"
 
+#include "ECHARM_defect_edge.hh"
+#include "ECHARM_defect_edge.cpp"
+
+#include "ECHARM_defect_screw.hh"
+#include "ECHARM_defect_screw.cpp"
+
 #include "ECHARM_defect_point.hh"
 #include "ECHARM_defect_point.cpp"
 
@@ -345,6 +351,12 @@
 
 #include "ECHARM_EC_CALC.hh"
 #include "ECHARM_EC_CALC.cpp"
+
+#include "ECHARM_PL01.hh"
+#include "ECHARM_PL01.cpp"
+
+#include "ECHARM_PL02.hh"
+#include "ECHARM_PL02.cpp"
 
 // beam database
 #include "ECHARM_beam_ee_discrimination.hh"

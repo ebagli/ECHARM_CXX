@@ -21,7 +21,7 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * millimeter,std::string name = "Si"){
+ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * millimeter,std::string name = "Si",int vMillerX1 = 1,int vMillerX2 = 1, int vMillerX3 = 1){
     
     if(name == "Si"){
         fCrystal = new ECHARM_crystal_Si();
@@ -35,7 +35,7 @@ ECHARM_QM_CERN_H4_1mm::ECHARM_QM_CERN_H4_1mm(double BR,double length = 1. * mill
     
     
     
-    int vMillerX[3] = {1,1,1};
+    int vMillerX[3] = {vMillerX1,vMillerX2,vMillerX3};
     int vMillerY[3] = {1,1,-2};
     int vMillerZ[3] = {1,-1,0};
     

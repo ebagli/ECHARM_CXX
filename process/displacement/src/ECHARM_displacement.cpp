@@ -26,14 +26,14 @@ ECHARM_process("displacement"){
     bTabVal = true;
     bBoxYzero = true;
     
+    fNumberOfPointsMax = 100;
+    fNumberOfPointsTop = 10000;
+
+    EvalArea(num);
+
     fNumSteps[0] = 2048;
     fNumSteps[1] = 64;
     fNumSteps[2] = 1;
-
-    if(num < 1){
-        fNum = 1;
-        fArea = fSquareRoot(1./num);
-    }
     
     fBoxX = new ECHARM_distribution_box(0.,0.);
     fBoxY = new ECHARM_distribution_box(0.,0.);
@@ -55,11 +55,35 @@ ECHARM_process("displacement"){
     fPosTemp = new ECHARM_3vec(0.,0.,0.);
     fPosTempPre = new ECHARM_3vec(0.,0.,0.);
     fZero = new ECHARM_3vec(0.,0.,0.);
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ECHARM_displacement::~ECHARM_displacement(){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void ECHARM_displacement::EvalArea(int num){
+    if(num <= 0){
+        std::cout << "ECHARM_displacement:EvalArea - ERROR: Number of defects per cm2 less than zero" << std::endl;
+    }
+    else if(num < 1 && num>0){
+        fNum = 1;
+        fArea = fSquareRoot(1./num);
+    }
+    else if(num<fNumberOfPointsMax){
+        fNum = num;
+    }
+    else if(num>=fNumberOfPointsMax && num<fNumberOfPointsTop){
+        fNum = fNumberOfPointsMax;
+        fArea = double(fNumberOfPointsMax)/double(num);
+    }
+    else{
+        fNum = fNumberOfPointsMax/fNumberOfPointsTop*num;
+        fArea = double(fNumberOfPointsMax)/double(fNumberOfPointsTop);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

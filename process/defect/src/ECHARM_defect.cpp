@@ -19,7 +19,7 @@ ECHARM_displacement(num,prob,sudden){
     fBurger = new ECHARM_3vec(1. * AA,0.,0.);
     fLine = new ECHARM_3vec(0.,1.,0.);
     fHotLimit = new ECHARM_3vec(0.,1.,0.);
-    
+
     fLimitsHalf->SetX(2. * micrometer);
     fLimitsHalf->SetY(2. * micrometer);
     fLimitsHalf->SetZ(2. * micrometer);

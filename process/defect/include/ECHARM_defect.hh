@@ -28,6 +28,9 @@ public:
     virtual double GetBurgerScrew() {return cos(GetAngleBurgerLine())*fBurger->GetModule();}
     
 protected:
+    double fDefectNumberMax;
+    double fDefectNumberTop;
+
     double fPoissonRatio;
     ECHARM_3vec* fBurger;
     ECHARM_3vec* fLine;

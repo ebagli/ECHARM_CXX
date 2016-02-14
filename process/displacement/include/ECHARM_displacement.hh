@@ -31,7 +31,9 @@ public:
     void Print(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
 
     void SetLimitStrip(ECHARM_strip*);
-    
+
+    void EvalArea(int);
+
     void Store();
 
     virtual void ComputeDispl(ECHARM_3vec*,ECHARM_3vec*);
@@ -66,6 +68,8 @@ protected:
     int fNum;
     double fArea;
     double fProb;
+    double fNumberOfPointsMax;
+    double fNumberOfPointsTop;
     
     ECHARM_distribution* fBoxX;
     ECHARM_distribution* fBoxY;

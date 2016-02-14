@@ -16,6 +16,11 @@ inline void SetHalfLimits(ECHARM_3vec *limit) {fLimitsHalf = limit;};
 inline void SetProb(double num) {fProb = num;};
 inline double GetProb() {return fProb;};
 
+inline void SetArea(double num) {fArea = num;};
+inline double GetArea() {return fArea;};
+
+inline int GetNum() {return fNum;};
+
 inline ECHARM_3vec* GetDispl() {return fDispl;};
 
 inline ECHARM_periodicvector* GetDisplX() {return fVecDisplX;};
@@ -36,3 +41,9 @@ inline bool GetBoxYzero() {return bBoxYzero;};
 inline void SetDistributionX(ECHARM_distribution* distr) {fBoxX=distr;};
 inline void SetDistributionY(ECHARM_distribution* distr) {fBoxY=distr;};
 inline void SetDistributionZ(ECHARM_distribution* distr) {fBoxZ=distr;};
+
+inline void SetNumberOfPointsMax(double num) {fNumberOfPointsMax = num;};
+inline double GetNumberOfPointsMax() {return fNumberOfPointsMax;};
+
+inline void SetNumberOfPointsTop(double num) {fNumberOfPointsTop = num;};
+inline double GetNumberOfPointsTop() {return fNumberOfPointsTop;};

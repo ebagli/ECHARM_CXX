@@ -13,18 +13,26 @@
 ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX, int millerY, int millerZ,bool fastON){
 
 
-    int nPoints = 128;
+    int nPoints = 512;
     if(fastON==true) nPoints = 32;
     
     int vMillerX[3] = {1,-1,0};
     int vMillerY[3] = {1,1,-2};
     int vMillerZ[3] = {1,1,1};
     
+    if(planeOn == true){
+        vMillerX[0] = millerX;
+        vMillerX[1] = millerY;
+        vMillerX[2] = millerZ;
+    }
+    
     fCrystal->GetMiller()->SetX(vMillerX);
     fCrystal->GetMiller()->SetY(vMillerY);
     fCrystal->GetMiller()->SetZ(vMillerZ);
     
+    
     fCrystal->ComputeParameters();
+    
     
     fDim = new ECHARM_3vec(0.,0.,0.);
     fBRconst = new ECHARM_3vec(0.,0.,0.);
@@ -36,31 +44,36 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
         fCrystal->GetMiller()->SetX(vMiller);
 
         char filename[128];
-        sprintf(filename,"%s%d%d%dpot_pl.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
+        sprintf(filename,"%s%d%d%dpl_pot.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
         ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
         ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,2048);
         pot_intrp->Store(pot);
         pot_intrp->PrintVecToFile(filename);
         
-        sprintf(filename,"%s%d%d%datd_pl.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
+        sprintf(filename,"%s%d%d%dpl_atd.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
         ECHARM_EC_rec* atd = new ECHARM_EC_rec_atd_pl(fCrystal,512);
         ECHARM_EC_intrp* atd_intrp = new ECHARM_EC_intrp("atd",fCrystal,2048);
         atd_intrp->Store(atd);
         atd_intrp->PrintVecToFile(filename);
         
-        sprintf(filename,"%s%d%d%deld_pl.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
+        sprintf(filename,"%s%d%d%dpl_eld.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
         ECHARM_EC_rec* eld = new ECHARM_EC_rec_eld_pl(fCrystal,512);
         ECHARM_EC_intrp* eld_intrp = new ECHARM_EC_intrp("eld",fCrystal,2048);
         eld_intrp->Store(eld);
         eld_intrp->PrintVecToFile(filename);
         
-        sprintf(filename,"%s%d%d%defx_pl.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
+        sprintf(filename,"%s%d%d%dpl_efx.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
         ECHARM_EC_rec* efx = new ECHARM_EC_rec_efx_pl(fCrystal,512);
         ECHARM_EC_intrp* efx_intrp = new ECHARM_EC_intrp("efx",fCrystal,2048);
         efx_intrp->Store(efx);
         efx_intrp->PrintVecToFile(filename);
-        
+
+        sprintf(filename,"%s%d%d%dpl_efy.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
         ECHARM_EC_const* efy = new ECHARM_EC_const("efy",fCrystal,0.);
+        ECHARM_EC_intrp* efy_intrp = new ECHARM_EC_intrp("efy",fCrystal,2048);
+        efy_intrp->Store(efy);
+        efy_intrp->PrintVecToFile(filename);
+
         ECHARM_EC_const* efz = new ECHARM_EC_const("efz",fCrystal,0.);
         
         SetPot(pot_intrp);
@@ -81,7 +94,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
         
         std::ifstream fileIn;
         char filename[128];
-        sprintf(filename,"%s111pot.txt",fCrystal->GetAtomName().c_str());
+        sprintf(filename,"%s%d%d%dax_pot.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -94,7 +107,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
             pot_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s111atd.txt",fCrystal->GetAtomName().c_str());
+        sprintf(filename,"%s%d%d%dax_atd.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -107,7 +120,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
             atd_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s111eld.txt",fCrystal->GetAtomName().c_str());
+        sprintf(filename,"%s%d%d%dax_eld.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -120,7 +133,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
             eld_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s111efx.txt",fCrystal->GetAtomName().c_str());
+        sprintf(filename,"%s%d%d%dax_efx.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -133,7 +146,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
             efx_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s111efy.txt",fCrystal->GetAtomName().c_str());
+        sprintf(filename,"%s%d%d%dax_efy.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){

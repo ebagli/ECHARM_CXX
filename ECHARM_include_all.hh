@@ -279,6 +279,9 @@
 #include "ECHARM_crystal_InSb.hh"
 #include "ECHARM_crystal_InSb.cpp"
 
+#include "ECHARM_crystal_PbWO4.hh"
+#include "ECHARM_crystal_PbWO4.cpp"
+
 #include "ECHARM_crystal_Vacuum.hh"
 #include "ECHARM_crystal_Vacuum.cpp"
 
@@ -357,6 +360,9 @@
 
 #include "ECHARM_PL02.hh"
 #include "ECHARM_PL02.cpp"
+
+#include "ECHARM_StripPbWO4.hh"
+#include "ECHARM_StripPbWO4.cpp"
 
 // beam database
 #include "ECHARM_beam_ee_discrimination.hh"

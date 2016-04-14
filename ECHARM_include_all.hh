@@ -364,6 +364,12 @@
 #include "ECHARM_StripPbWO4.hh"
 #include "ECHARM_StripPbWO4.cpp"
 
+#include "ECHARM_STAX110.hh"
+#include "ECHARM_STAX110.cpp"
+
+#include "ECHARM_STAX111.hh"
+#include "ECHARM_STAX111.cpp"
+
 // beam database
 #include "ECHARM_beam_ee_discrimination.hh"
 #include "ECHARM_beam_ee_discrimination.cpp"

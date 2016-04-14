@@ -1,74 +1,45 @@
 //
-//  ECHARM_EC_CALC.cpp
+//  ECHARM_STAX111.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifdef _ECHARM_EC_CALC_h
+#ifdef _ECHARM_STAX111_h
 
-#include "ECHARM_EC_CALC.hh"
+#include "ECHARM_STAX111.hh"
+#include "ECHARM_crystal_Si.hh"
+#include "ECHARM_EC_rec_pot_pl.hh"
+#include "ECHARM_EC_rec_atd_pl.hh"
+#include "ECHARM_EC_rec_eld_pl.hh"
+#include "ECHARM_EC_rec_efx_pl.hh"
+#include "ECHARM_EC_rec_efy_pl.hh"
+#include "ECHARM_EC_rec_efz_pl.hh"
+#include "ECHARM_EC_intrp.hh"
+#include "ECHARM_EC_const.hh"
+#include "ECHARM_3vec.hh"
 
-ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX, int millerY, int millerZ,bool fastON){
-
-
+ECHARM_STAX111::ECHARM_STAX111(){
+    //standard 420
+    double Temp = 420.;
+    
+    fCrystal = new ECHARM_crystal_Si();
+    
     int nPoints = 512;
-    if(fastON==true) nPoints = 32;
-        
-    fDim = new ECHARM_3vec(0.,0.,0.);
-    fBRconst = new ECHARM_3vec(0.,0.,0.);
     
-    SetName("ECHARM_EC_CALC");
+    int vMillerX[3] = {2,-2,0};
+    int vMillerY[3] = {1,1,-2};
+    int vMillerZ[3] = {1,1,1};
+
+    fCrystal->GetMiller()->SetX(vMillerX);
+    fCrystal->GetMiller()->SetY(vMillerY);
+    fCrystal->GetMiller()->SetZ(vMillerZ);
     
-    if(planeOn == true){
-        int vMiller[3] = {millerX,millerY,millerZ};
-        fCrystal->GetMiller()->SetX(vMiller);
-        fCrystal->ComputeParameters();
+    fCrystal->SetTemperature(Temp);
+    fCrystal->ComputeParameters();
 
-        char filename[128];
-        sprintf(filename,"%s%d%d%dpl_pot.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
-        ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_pl(fCrystal,512);
-        ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,2048);
-        pot_intrp->Store(pot);
-        pot_intrp->PrintVecToFile(filename);
-        
-        sprintf(filename,"%s%d%d%dpl_atd.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
-        ECHARM_EC_rec* atd = new ECHARM_EC_rec_atd_pl(fCrystal,512);
-        ECHARM_EC_intrp* atd_intrp = new ECHARM_EC_intrp("atd",fCrystal,2048);
-        atd_intrp->Store(atd);
-        atd_intrp->PrintVecToFile(filename);
-        
-        sprintf(filename,"%s%d%d%dpl_eld.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
-        ECHARM_EC_rec* eld = new ECHARM_EC_rec_eld_pl(fCrystal,512);
-        ECHARM_EC_intrp* eld_intrp = new ECHARM_EC_intrp("eld",fCrystal,2048);
-        eld_intrp->Store(eld);
-        eld_intrp->PrintVecToFile(filename);
-        
-        sprintf(filename,"%s%d%d%dpl_efx.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
-        ECHARM_EC_rec* efx = new ECHARM_EC_rec_efx_pl(fCrystal,512);
-        ECHARM_EC_intrp* efx_intrp = new ECHARM_EC_intrp("efx",fCrystal,2048);
-        efx_intrp->Store(efx);
-        efx_intrp->PrintVecToFile(filename);
-
-        sprintf(filename,"%s%d%d%dpl_efy.txt",fCrystal->GetAtomName().c_str(),millerX,millerY,millerZ);
-        ECHARM_EC_const* efy = new ECHARM_EC_const("efy",fCrystal,0.);
-        ECHARM_EC_intrp* efy_intrp = new ECHARM_EC_intrp("efy",fCrystal,2048);
-        efy_intrp->Store(efy);
-        efy_intrp->PrintVecToFile(filename);
-
-        ECHARM_EC_const* efz = new ECHARM_EC_const("efz",fCrystal,0.);
-        
-        SetPot(pot_intrp);
-        SetAtD(atd_intrp);
-        SetElD(eld_intrp);
-        SetEFX(efx_intrp);
-        SetEFY(efy);
-        SetEFZ(efz);
-    }
-    else{
-        int vMillerZ[3] = {millerX,millerY,millerZ};
-
+    {
         ECHARM_EC_intrp* pot_intrp = new ECHARM_EC_intrp("pot",fCrystal,nPoints,nPoints);
         ECHARM_EC_intrp* atd_intrp = new ECHARM_EC_intrp("atd",fCrystal,nPoints,nPoints);
         ECHARM_EC_intrp* eld_intrp = new ECHARM_EC_intrp("eld",fCrystal,nPoints,nPoints);
@@ -153,11 +124,16 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
         SetEFY(efy_intrp);
         SetEFZ(efz);
     }
+        
+    fDim = new ECHARM_3vec(1.02 * millimeter,55. * millimeter,1.95 * millimeter);;
+    fBRconst = new ECHARM_3vec(31. * meter,0.,0.);
+    
+    SetName("STAX111");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_EC_CALC::~ECHARM_EC_CALC(){
+ECHARM_STAX111::~ECHARM_STAX111(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

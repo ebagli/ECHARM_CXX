@@ -17,7 +17,7 @@
 
 ECHARM_crystal_PbWO4::ECHARM_crystal_PbWO4(){
     
-    SetAtomName("LiNbO3");
+    SetAtomName("PbWO4");
     
     ECHARM_atom_moliere *atomPb = new ECHARM_atom_moliere("Pb",82.,207.2 * amu,787.,42.2);
     ECHARM_atom_moliere *atomW = new ECHARM_atom_moliere("W",74.,183.84 * amu,735.,417.0);

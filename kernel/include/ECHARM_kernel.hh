@@ -64,6 +64,8 @@ protected:
     double fTimeStepMin;
     double fTransverseVariationMax;
    
+    bool bStoreDensity;
+    
     bool bSaveTrajStatus;
     double bSaveTrajStep;
     double bSaveTrajStepTemp;

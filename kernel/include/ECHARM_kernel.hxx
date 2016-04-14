@@ -40,6 +40,9 @@ inline double GetSaveTrajStep() {return bSaveTrajStep;};
 inline bool GetExitOnDechanneling() {return bExitOnDechanneling;};
 inline void SetExitOnDechanneling(bool aBool) {bExitOnDechanneling = aBool;};
 
+inline bool GetStoreDensity() {return bStoreDensity;};
+inline void SetStoreDensity(bool aBool) {bStoreDensity = aBool;};
+
 inline void AddProcess(ECHARM_process* process) {fProcesses.push_back(process);};
 inline std::vector<ECHARM_process*> GetProcesses() {return fProcesses;};
 

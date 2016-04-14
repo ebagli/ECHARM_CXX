@@ -99,12 +99,16 @@ int ECHARM_manager::Go(){
 
         (*myKernel)->Interaction();
         
-        fTimeStepTotal += (*myKernel)->GetTimeStepTotal();
+        if((*myKernel)->GetStoreDensity() == true){
+            fTimeStepTotal += (*myKernel)->GetTimeStepTotal();
+        }
     }
     
-    fInfo->DivideAvgAtD(fTimeStepTotal);
+    if(fTimeStepTotal != 0.){
+        fInfo->DivideAvgAtD(fTimeStepTotal);
     
-    fInfo->DivideAvgElD(fTimeStepTotal);
+        fInfo->DivideAvgElD(fTimeStepTotal);
+    }
     
     return 0;
 }

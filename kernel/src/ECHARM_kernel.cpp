@@ -35,6 +35,8 @@ ECHARM_kernel::ECHARM_kernel(ECHARM_strip* strip){
     
     fMachineError = 1. * AA;
     
+    bStoreDensity = true;
+    
     bDEBUG = false;
 }
 
@@ -108,8 +110,10 @@ int ECHARM_kernel::Interaction(){
         
         UpdateProcesses();
         
-        fInfo->AddAvgAtD(fStrip->GetAtD()->Get(fPart->GetPos()) * fTimeStep);
-        fInfo->AddAvgElD(fStrip->GetElD()->Get(fPart->GetPos()) * fTimeStep);
+        if(bStoreDensity){
+            fInfo->AddAvgAtD(fStrip->GetAtD()->Get(fPart->GetPos()) * fTimeStep);
+            fInfo->AddAvgElD(fStrip->GetElD()->Get(fPart->GetPos()) * fTimeStep);
+        }
         
         CheckChannelingCondition();
         

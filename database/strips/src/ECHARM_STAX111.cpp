@@ -22,7 +22,7 @@
 
 ECHARM_STAX111::ECHARM_STAX111(){
     //standard 420
-    double Temp = 420.;
+    double Temp = 300.;
     
     fCrystal = new ECHARM_crystal_Si();
     

@@ -252,6 +252,9 @@
 #include "ECHARM_lattice_zincblend_b.cpp"
 
 // crystal database
+#include "ECHARM_crystal_C.hh"
+#include "ECHARM_crystal_C.cpp"
+
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_crystal_Si.cpp"
 

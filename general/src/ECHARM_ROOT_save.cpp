@@ -47,6 +47,7 @@ void ECHARM_ROOT_save::Open(){
     
     fTreeTraj = new TTree("traj","DYNECHARM Simulation");
     fTreeTraj->Branch("step",&partStep,"posX/D:posY/D:posZ/D:angX/D:angY/D:momZ/D");
+    fTreeTraj->Branch("partIn",&partIn,"posXin/D:posYin/D:posZin/D:angXin/D:angYin/D:momZin/D");
     fTreeTraj->Branch("atd",&atd,"atd/D");
     fTreeTraj->Branch("eld",&eld,"eld/D");
     fTreeTraj->Branch("strip",&brstep,"br/D");

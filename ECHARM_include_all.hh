@@ -285,6 +285,12 @@
 #include "ECHARM_crystal_PbWO4.hh"
 #include "ECHARM_crystal_PbWO4.cpp"
 
+#include "ECHARM_crystal_Al2O3.hh"
+#include "ECHARM_crystal_Al2O3.cpp"
+
+#include "ECHARM_crystal_Al2O3_O.hh"
+#include "ECHARM_crystal_Al2O3_O.cpp"
+
 #include "ECHARM_crystal_Vacuum.hh"
 #include "ECHARM_crystal_Vacuum.cpp"
 

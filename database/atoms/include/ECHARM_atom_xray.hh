@@ -27,6 +27,12 @@ public:
                      double AverageIonizationConstant,
                      double ExperimentalFormFactorParameters[12]);
     
+    ECHARM_atom_xray(std::string AtomName,
+                     double Z,
+                     double A,
+                     double DebyeTemperature,
+                     double AverageIonizationConstant);
+    
     ECHARM_atom_xray(std::string File_Atom);    //!< Read an atom from a file.
     virtual ~ECHARM_atom_xray();
         

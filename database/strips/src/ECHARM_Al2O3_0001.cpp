@@ -1,14 +1,14 @@
 //
-//  ECHARM_STAX111.cpp
+//  ECHARM_Al2O3_0001.cpp
 //
 //
 //  Created by Enrico Bagli on 04/06/12.
 //  Copyright 2012 Enrico Bagli. All rights reserved.
 //
 
-#ifdef _ECHARM_STAX111_h
+#ifdef _ECHARM_Al2O3_0001_h
 
-#include "ECHARM_STAX111.hh"
+#include "ECHARM_Al2O3_0001.hh"
 #include "ECHARM_crystal_Si.hh"
 #include "ECHARM_EC_rec_pot_pl.hh"
 #include "ECHARM_EC_rec_atd_pl.hh"
@@ -20,18 +20,18 @@
 #include "ECHARM_EC_const.hh"
 #include "ECHARM_3vec.hh"
 
-ECHARM_STAX111::ECHARM_STAX111(){
+ECHARM_Al2O3_0001::ECHARM_Al2O3_0001(double length){
     //standard 420
     double Temp = 300.;
     
-    fCrystal = new ECHARM_crystal_Si();
+    fCrystal = new ECHARM_crystal_Al2O3();
     
     int nPoints = 512;
     
-    int vMillerX[3] = {2,-2,0};
-    int vMillerY[3] = {1,1,-2};
-    int vMillerZ[3] = {1,1,1};
-
+    int vMillerX[3] = {1,0,0};
+    int vMillerY[3] = {0,1,0};
+    int vMillerZ[3] = {0,0,1};
+    
     fCrystal->GetMiller()->SetX(vMillerX);
     fCrystal->GetMiller()->SetY(vMillerY);
     fCrystal->GetMiller()->SetZ(vMillerZ);
@@ -50,7 +50,7 @@ ECHARM_STAX111::ECHARM_STAX111(){
         
         std::ifstream fileIn;
         char filename[128];
-        sprintf(filename,"%s%d%d%dax_pot.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
+        sprintf(filename,"%s%d%d%dax_pot.txt",fCrystal->GetAtomName().c_str(),vMillerX[0],vMillerX[1],vMillerX[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -66,7 +66,7 @@ ECHARM_STAX111::ECHARM_STAX111(){
 #endif
         }
         
-        sprintf(filename,"%s%d%d%dax_atd.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
+        sprintf(filename,"%s%d%d%dax_atd.txt",fCrystal->GetAtomName().c_str(),vMillerX[0],vMillerX[1],vMillerX[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -79,7 +79,7 @@ ECHARM_STAX111::ECHARM_STAX111(){
             atd_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s%d%d%dax_eld.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
+        sprintf(filename,"%s%d%d%dax_eld.txt",fCrystal->GetAtomName().c_str(),vMillerX[0],vMillerX[1],vMillerX[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -92,7 +92,7 @@ ECHARM_STAX111::ECHARM_STAX111(){
             eld_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s%d%d%dax_efx.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
+        sprintf(filename,"%s%d%d%dax_efx.txt",fCrystal->GetAtomName().c_str(),vMillerX[0],vMillerX[1],vMillerX[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -105,7 +105,7 @@ ECHARM_STAX111::ECHARM_STAX111(){
             efx_intrp->PrintVecToFile(filename);
         }
         
-        sprintf(filename,"%s%d%d%dax_efy.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);
+        sprintf(filename,"%s%d%d%dax_efy.txt",fCrystal->GetAtomName().c_str(),vMillerX[0],vMillerX[1],vMillerX[2]);
         fileIn.open(filename);
         std::cout << filename << std::endl;
         if (fileIn.good()){
@@ -126,16 +126,16 @@ ECHARM_STAX111::ECHARM_STAX111(){
         SetEFY(efy_intrp);
         SetEFZ(efz);
     }
-        
-    fDim = new ECHARM_3vec(1.02 * millimeter,55. * millimeter,1.95 * millimeter);;
-    fBRconst = new ECHARM_3vec(31. * meter,0.,0.);
     
-    SetName("STAX111");
+    fDim = new ECHARM_3vec(55. * millimeter,55. * millimeter,length);;
+    fBRconst = new ECHARM_3vec(0. * meter,0.,0.);
+    
+    SetName("Al2O3_0001");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ECHARM_STAX111::~ECHARM_STAX111(){
+ECHARM_Al2O3_0001::~ECHARM_Al2O3_0001(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -267,6 +267,12 @@
 #include "ECHARM_crystal_LiNbO3.hh"
 #include "ECHARM_crystal_LiNbO3.cpp"
 
+#include "ECHARM_crystal_LiNbO3_supercell.hh"
+#include "ECHARM_crystal_LiNbO3_supercell.cpp"
+
+#include "ECHARM_crystal_LiNbO3_supercell_O.hh"
+#include "ECHARM_crystal_LiNbO3_supercell_O.cpp"
+
 #include "ECHARM_crystal_LiNbO3_cubic.hh"
 #include "ECHARM_crystal_LiNbO3_cubic.cpp"
 
@@ -282,8 +288,17 @@
 #include "ECHARM_crystal_InSb.hh"
 #include "ECHARM_crystal_InSb.cpp"
 
+#include "ECHARM_crystal_InP.hh"
+#include "ECHARM_crystal_InP.cpp"
+
+#include "ECHARM_crystal_InP_P.hh"
+#include "ECHARM_crystal_InP_P.cpp"
+
 #include "ECHARM_crystal_PbWO4.hh"
 #include "ECHARM_crystal_PbWO4.cpp"
+
+#include "ECHARM_crystal_PbWO4_O.hh"
+#include "ECHARM_crystal_PbWO4_O.cpp"
 
 #include "ECHARM_crystal_Al2O3.hh"
 #include "ECHARM_crystal_Al2O3.cpp"
@@ -291,8 +306,20 @@
 #include "ECHARM_crystal_Al2O3_O.hh"
 #include "ECHARM_crystal_Al2O3_O.cpp"
 
+#include "ECHARM_crystal_SiO2.hh"
+#include "ECHARM_crystal_SiO2.cpp"
+
+#include "ECHARM_crystal_SiO2_O.hh"
+#include "ECHARM_crystal_SiO2_O.cpp"
+
 #include "ECHARM_crystal_Vacuum.hh"
 #include "ECHARM_crystal_Vacuum.cpp"
+
+#include "ECHARM_crystal_Langasite.hh"
+#include "ECHARM_crystal_Langasite.cpp"
+
+#include "ECHARM_crystal_Langasite_O.hh"
+#include "ECHARM_crystal_Langasite_O.cpp"
 
 // strip database
 #include "ECHARM_Vacuum.hh"
@@ -378,6 +405,9 @@
 
 #include "ECHARM_STAX111.hh"
 #include "ECHARM_STAX111.cpp"
+
+#include "ECHARM_Al2O3_0001.hh"
+#include "ECHARM_Al2O3_0001.cpp"
 
 // beam database
 #include "ECHARM_beam_ee_discrimination.hh"

@@ -18,23 +18,8 @@
 ECHARM_crystal_Si::ECHARM_crystal_Si(){
     
     SetAtomName("Si");
-    double vSiExperimentalCoefficients[12];
-    
-    vSiExperimentalCoefficients[0] = 4.94976/14.;
-    vSiExperimentalCoefficients[1] = 3.25403/14.;
-    vSiExperimentalCoefficients[2] = 2.84957/14.;
-    vSiExperimentalCoefficients[3] = 1.66053/14.;
-    vSiExperimentalCoefficients[4] = 1.22949/14.;
-    vSiExperimentalCoefficients[5] = 0.05611/14.;
-    
-    vSiExperimentalCoefficients[6] = 2.70254*AA*AA;
-    vSiExperimentalCoefficients[7] = 34.45314*AA*AA;
-    vSiExperimentalCoefficients[8] = 1.24059*AA*AA;
-    vSiExperimentalCoefficients[9] = 0.07201*AA*AA;
-    vSiExperimentalCoefficients[10] = 84.53648*AA*AA;
-    vSiExperimentalCoefficients[11] = 56.34208*AA*AA;
-    
-    ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.,vSiExperimentalCoefficients);
+
+    ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.);
     ECHARM_lattice_diamond *lattice_diamond = new ECHARM_lattice_diamond();
     AddBase(atom_xray,lattice_diamond);
     

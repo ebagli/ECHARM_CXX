@@ -96,7 +96,7 @@ void ECHARM_process_ms::DoBeforeInteraction(ECHARM_strip* strip,ECHARM_particle*
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+#ifdef ROOT_
 void ECHARM_process_ms::PrintRMStoTH1(ECHARM_strip* strip,ECHARM_particle *particle){
     
     
@@ -142,7 +142,7 @@ void ECHARM_process_ms::PrintRMStoTH1(ECHARM_strip* strip,ECHARM_particle *parti
         }
     }
 }
-
+#endif
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif

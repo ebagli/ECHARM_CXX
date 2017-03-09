@@ -322,6 +322,56 @@ int ECHARM_kernel::DoStep(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+int ECHARM_kernel::DoStepOld(){
+    //http://www.physics.drexel.edu/~valliere/PHYS305/Diff_Eq_Integrators/Verlet_Methods/Verlet/
+    fMomHalf->Set(fPart->GetMom());
+    fPosHalf->Set(fPart->GetPos());
+    
+    double kPos = fTimeStep / fPart->GetMomMod();
+    double kMom = fTimeStep / fPart->GetBeta();
+    double kBR = fTimeStep * fPart->GetMomVel();
+    double Z = fPart->GetZ();
+    
+    fPosHalf->AddX(fPart->GetMom()->GetX() * kPos * 0.5);
+    fPosHalf->AddY(fPart->GetMom()->GetY() * kPos * 0.5);
+    fPosHalf->AddZ(fPart->GetMom()->GetZ() * kPos * 0.5);
+    
+    fMomHalf->AddX(Z * fStrip->GetEFX()->Get(fPart->GetPos()) * kMom * 0.5);
+    fMomHalf->AddY(Z * fStrip->GetEFY()->Get(fPart->GetPos()) * kMom * 0.5);
+    fMomHalf->AddZ(Z * fStrip->GetEFZ()->Get(fPart->GetPos()) * kMom * 0.5);
+    
+    if(fStrip->IsBentX()){
+        fMomHalf->SubtractX(kBR * 0.5 / fStrip->GetBR()->GetX());
+    }
+    if(fStrip->IsBentY()){
+        fMomHalf->SubtractY(kBR * 0.5 / fStrip->GetBR()->GetY());
+    }
+    
+    fPart->GetPos()->AddX(fMomHalf->GetX() * kPos );
+    fPart->GetPos()->AddY(fMomHalf->GetY() * kPos );
+    fPart->GetPos()->AddZ(fMomHalf->GetZ() * kPos );
+    
+    fPart->GetMom()->AddX(Z * fStrip->GetEFX()->Get(fPosHalf) * kMom );
+    fPart->GetMom()->AddY(Z * fStrip->GetEFY()->Get(fPosHalf) * kMom );
+    fPart->GetMom()->AddZ(Z * fStrip->GetEFZ()->Get(fPosHalf) * kMom );
+    
+    if(fStrip->IsBentX()){
+        fPart->GetMom()->SubtractX(kBR / fStrip->GetBR()->GetX());
+    }
+    if(fStrip->IsBentY()){
+        fPart->GetMom()->SubtractY(kBR / fStrip->GetBR()->GetY());
+    }
+    
+    fTimeStepTotal += fTimeStep;
+    
+    return 0;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 int ECHARM_kernel::UpdateStep(){
     if(fPart->GetMom()->GetX() != 0.0 || fPart->GetMom()->GetY() != 0.0){

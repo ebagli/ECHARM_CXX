@@ -24,6 +24,7 @@ public:
         
     int UpdateStep();
     int DoStep();
+    int DoStepOld();
     
     int DoOnStrip();
     int DoOnParticle();

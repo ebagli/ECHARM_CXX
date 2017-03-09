@@ -96,7 +96,7 @@ void ECHARM_file_save::Save(ECHARM_info_save* info){
 
     for(unsigned int i0=0;i0<info->GetAtD().size();i0++){
         UpdateInfoTraj(info,i0);
-        fFileOutTraj << partNum << " " << i0 << " " << chIn << " " << partStep.posz/micrometer << " " << pot/eV  << " " << kin/eV << std::endl;
+        fFileOutTraj << partNum << " " << i0 << " " << chIn << " " << partStep.posz << " " << partStep.posx << " " << partStep.posy << " " << partStep.angx << " " << partStep.angy << " " << pot/eV  << " " << kin/eV << std::endl;
    }
     
     fFileOut << partIn.angx << " " << partIn.angy << " " << partOut.angx  << " " << partOut.angy << std::endl;

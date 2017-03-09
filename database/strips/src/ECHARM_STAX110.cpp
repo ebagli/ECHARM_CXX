@@ -61,7 +61,9 @@ ECHARM_STAX110::ECHARM_STAX110(){
             ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_ax(fCrystal,128,128);
             pot_intrp->Store(pot);
             pot_intrp->PrintVecToFile(filename);
+#ifdef ROOT_
             pot_intrp->PrintToTH(filename);
+#endif
         }
         
         sprintf(filename,"%s%d%d%dax_atd.txt",fCrystal->GetAtomName().c_str(),vMillerZ[0],vMillerZ[1],vMillerZ[2]);

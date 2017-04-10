@@ -11,6 +11,7 @@
 
 #include "ECHARM_process_ms.hh"
 
+// Reference: Computer Physics Communications 141 (2001) 230-246
 class ECHARM_process_cpc141_2001: public ECHARM_process_ms
 {
 public:
@@ -20,7 +21,7 @@ public:
     virtual void DoBeforeInteraction(ECHARM_strip*,ECHARM_particle*,ECHARM_info_save*);
     virtual double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
 
-    double ComputeE(ECHARM_strip*,ECHARM_particle*,double);
+    virtual double ComputeE(ECHARM_strip*,ECHARM_particle*,double);
 
     double ComputeThetaSS(ECHARM_strip*,ECHARM_particle*);
 

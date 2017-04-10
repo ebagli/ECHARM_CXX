@@ -156,6 +156,9 @@
 #include "ECHARM_process_ms.hh"
 #include "ECHARM_process_ms.cpp"
 
+#include "ECHARM_process_ms_supergauss.hh"
+#include "ECHARM_process_ms_supergauss.cpp"
+
 #include "ECHARM_process_cpc141_2001.hh"
 #include "ECHARM_process_cpc141_2001.cpp"
 
@@ -300,6 +303,12 @@
 #include "ECHARM_crystal_PbWO4_O.hh"
 #include "ECHARM_crystal_PbWO4_O.cpp"
 
+#include "ECHARM_crystal_YVO4.hh"
+#include "ECHARM_crystal_YVO4.cpp"
+
+#include "ECHARM_crystal_YVO4_O.hh"
+#include "ECHARM_crystal_YVO4_O.cpp"
+
 #include "ECHARM_crystal_Al2O3.hh"
 #include "ECHARM_crystal_Al2O3.cpp"
 
@@ -397,6 +406,9 @@
 #include "ECHARM_PL02.hh"
 #include "ECHARM_PL02.cpp"
 
+#include "ECHARM_PL03.hh"
+#include "ECHARM_PL03.cpp"
+
 #include "ECHARM_StripPbWO4.hh"
 #include "ECHARM_StripPbWO4.cpp"
 
@@ -410,6 +422,9 @@
 #include "ECHARM_Al2O3_0001.cpp"
 
 // beam database
+#include "ECHARM_beam_general.hh"
+#include "ECHARM_beam_general.cpp"
+
 #include "ECHARM_beam_ee_discrimination.hh"
 #include "ECHARM_beam_ee_discrimination.cpp"
 

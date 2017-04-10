@@ -17,6 +17,7 @@ public:
     ECHARM_process_cpc141_2001_semigauss();
     virtual ~ECHARM_process_cpc141_2001_semigauss();
 
-    double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
+    virtual double ComputeE(ECHARM_strip*,ECHARM_particle*,double);
+    virtual double ComputeThetaScattering(ECHARM_strip*,ECHARM_particle*);
 };
 #endif

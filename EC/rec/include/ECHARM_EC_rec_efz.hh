@@ -17,13 +17,13 @@ public:
     ECHARM_EC_rec_efz(ECHARM_crystal*,int,int,int);
     ~ECHARM_EC_rec_efz();
     
-    std::vector<double> ComputeRecFF(int[3]);
+    std::vector<double> ComputeRecFF(int[3],double[3]);
     double GetFactorRe(double*);
-    inline double GetFactorIm(double* index) {return GetFactorRe(index);};
+    inline double GetFactorIm(double* index) {return -GetFactorRe(index);};
     double Get(double,double,double);
     
-    virtual bool GetIndexesSF(int*,int,int,int) = 0;
-    virtual bool GetIndexesEC(double*,int*,int,int,int) = 0;
+    virtual bool GetIndexesSF(int*,int,int,int);
+    virtual bool GetIndexesEC(double*,int*,int,int,int);
 };
 
 #endif

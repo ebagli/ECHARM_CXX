@@ -35,8 +35,8 @@ ECHARM_crystal_LiNbO3_supercell::ECHARM_crystal_LiNbO3_supercell(){
     latticeLi->Add(0.500005,0.499995,0.725);
     latticeLi->Add(0.0,0.66667,0.55833);
     latticeLi->Add(0.5,0.5,0.225);
-    latticeLi->Add(0.19286403085824494,0.111350100133,0.725);
-    latticeLi->Add(0.0,0.111350100133,0.725);
+    latticeLi->Add(1.0,1.0,0.725);
+    latticeLi->Add(0.0,1.0,0.725);
     latticeLi->Add(0.5,0.5,0.725);
     latticeLi->Add(0.500005,0.833335,0.89167);
     latticeLi->Add(0.500005,0.833335,0.39167);
@@ -92,12 +92,12 @@ ECHARM_crystal_LiNbO3_supercell::ECHARM_crystal_LiNbO3_supercell(){
     latticeO->Add(0.87436,0.83331,0.41663);
     latticeO->Add(0.81286,0.52052,0.41663);
     latticeO->Add(0.687195,0.646165,0.91663);
-    latticeO->Add(0.37434,0.111350100133,0.74997);
+    latticeO->Add(0.37434,1.0,0.74997);
     latticeO->Add(0.31284,0.68718,0.74997);
     latticeO->Add(0.812795,0.812835,0.74997);
     latticeO->Add(0.187205,0.812835,0.24997);
     latticeO->Add(0.68714,0.68718,0.24997);
-    latticeO->Add(0.62564,0.111350100133,0.24997);
+    latticeO->Add(0.62564,1.0,0.24997);
 
     AddBase(atomO,latticeO);
     fCell = new ECHARM_cell(5.185E-10,8.98068343724E-10,13.87E-10,90.,90.,90.);

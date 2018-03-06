@@ -145,4 +145,12 @@ void ECHARM_EC::PrintToFile(std::string vAddition = "",
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+double ECHARM_EC::Get(double x,
+                      double y,
+                      double z){
+    return 1.;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 #endif

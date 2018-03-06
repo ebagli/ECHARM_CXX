@@ -21,7 +21,7 @@ ECHARM_atom::ECHARM_atom(std::string  AtomName,
     fDebyeTemperature = DebyeTemperature;
     fAverageIonizationConstant = AverageIonizationConstant;
     
-    fTemperature = 273;
+    fTemperature = 273.;
     
     fThermalVibrationConstant = ComputeThermalVibration();
     fThomasFermiRadius = ComputeThomasFermiRadius();
@@ -64,6 +64,7 @@ void ECHARM_atom::Print()
     std::cout << "Z                              " << std::setw(10) << fZ << std::endl;
     std::cout << "Debye Temperature           [K]" << std::setw(10) << fDebyeTemperature << std::endl;
     std::cout << "Ionization Constant        [eV]" << std::setw(10) << fAverageIonizationConstant << std::endl;
+    std::cout << "TVA                        [AA]" << std::setw(10) << fThermalVibrationConstant/AA << std::endl;
 }
 
 

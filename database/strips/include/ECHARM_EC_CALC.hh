@@ -15,7 +15,10 @@
 
 class ECHARM_EC_CALC : public ECHARM_strip {
 public:
-    ECHARM_EC_CALC(ECHARM_crystal*,bool,int,int,int,bool);
+    ECHARM_EC_CALC(ECHARM_crystal*,bool,int,int,int,bool,std::string = "");
     virtual ~ECHARM_EC_CALC();
+    
+private:
+    std::string fType;
 };
 #endif

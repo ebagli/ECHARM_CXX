@@ -34,5 +34,8 @@ inline void SetTemperature(double Temperature) {fTemperature=Temperature;}     /
 inline double GetThermalVibrationConstant()      {return fThermalVibrationConstant;}     //!< Get Thermal Vibration Amplitude in meter.
 inline void SetThermalVibrationConstant(double ThermalVibrationConstant) {fThermalVibrationConstant=ThermalVibrationConstant;}     //!< Set Thermal Vibration Amplitude in meter.
 
+inline double GetTVA()      {return fThermalVibrationConstant;}     //!< Get Thermal Vibration Amplitude in meter.
+inline void SetTVA(double ThermalVibrationConstant) {fThermalVibrationConstant=ThermalVibrationConstant;}     //!< Set Thermal Vibration Amplitude in meter.
+
 inline double GetThomasFermiRadius()      {return fThomasFermiRadius;}     //!< Get Thomas Fermi Radius in meter.
 inline void SetThomasFermiRadius(double ThomasFermiRadius) {fThomasFermiRadius=ThomasFermiRadius;}     //!< Set Thomas Fermi Radius in meter.

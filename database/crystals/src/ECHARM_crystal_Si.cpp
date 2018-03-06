@@ -20,6 +20,7 @@ ECHARM_crystal_Si::ECHARM_crystal_Si(){
     SetAtomName("Si");
 
     ECHARM_atom_xray *atom_xray = new ECHARM_atom_xray("Si",14.,28.086 * amu,640.,173.);
+    atom_xray->SetThermalVibrationConstant(0.075 * AA);
     ECHARM_lattice_diamond *lattice_diamond = new ECHARM_lattice_diamond();
     AddBase(atom_xray,lattice_diamond);
     

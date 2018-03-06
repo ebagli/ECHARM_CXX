@@ -129,7 +129,9 @@ void ECHARM_crystal::ComputeParameters()
     if(GetTemperature()!=0.){
         for(unsigned int i=0;i<GetNumBases();i++){
             GetAtom(i)->SetTemperature(GetTemperature());
-            GetAtom(i)->ComputeThermalVibration();
+            if(GetAtom(i)->GetThermalVibrationConstant()==0.){
+                GetAtom(i)->ComputeThermalVibration();
+            }
         }
     }
 
@@ -154,15 +156,21 @@ void ECHARM_crystal::ComputeParameters()
     vAvIonConst /= fNumCoord;
     vTV /= fNumCoord;
         
-    if(GetTemperature()==0.){
+    if(GetTemperature()==-1.){
         SetTemperature(vTemp);
     }
     
     SetZ(vZ);
     SetA(vA);
-    SetDebyeTemperature(vDT);
-    SetAverageIonizationConstant(vAvIonConst);
-    SetThermalVibrationConstant(vTV);
+    if(GetDebyeTemperature()==-1){
+        SetDebyeTemperature(vDT);
+    }
+    if(GetAverageIonizationConstant()==-1){
+        SetAverageIonizationConstant(vAvIonConst);
+    }
+    if(GetThermalVibrationConstant()==-1){
+        SetThermalVibrationConstant(vTV);
+    }
     SetThomasFermiRadius(ComputeThomasFermiRadius());
     
     fPeriod[0] = fCell->ComputePeriod(fMiller->GetX());

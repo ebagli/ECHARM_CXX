@@ -110,6 +110,8 @@ int ECHARM_kernel::Interaction(){
         
         UpdateProcesses();
         
+        if(fPart->GetMom()->GetModule() == 0) bExit = true;
+        
         if(bStoreDensity){
             fInfo->AddAvgAtD(fStrip->GetAtD()->Get(fPart->GetPos()) * fTimeStep);
             fInfo->AddAvgElD(fStrip->GetElD()->Get(fPart->GetPos()) * fTimeStep);
@@ -281,11 +283,12 @@ int ECHARM_kernel::DoStep(){
     fMomHalf->Set(fPart->GetMom());
     fPosHalf->Set(fPart->GetPos());
     
-    double kPos = fTimeStep / fPart->GetMomMod();
+    double kMomModule = fPart->GetMomMod();
+    double kPos = fTimeStep / kMomModule;
     double kMom = fTimeStep / fPart->GetBeta();
     double kBR = fTimeStep * fPart->GetMomVel();
     double Z = fPart->GetZ();
-    
+
     fPosHalf->AddX(fPart->GetMom()->GetX() * kPos * 0.5);
     fPosHalf->AddY(fPart->GetMom()->GetY() * kPos * 0.5);
     fPosHalf->AddZ(fPart->GetMom()->GetZ() * kPos * 0.5);
@@ -317,7 +320,8 @@ int ECHARM_kernel::DoStep(){
     }
     
     fTimeStepTotal += fTimeStep;
-    
+    fPart->GetMom()->ScaleModule(kMomModule);
+
     return 0;
 }
 

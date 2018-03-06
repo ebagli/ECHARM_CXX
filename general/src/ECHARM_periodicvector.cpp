@@ -118,7 +118,7 @@ void ECHARM_periodicvector::PrintToFile(std::string FileOutName,std::string vOpt
         for(int i1=0;i1<fNumSteps[1];i1++){
             for(int i0=0;i0<fNumSteps[0];i0++){
                 if(FileOut.good()){
-                   FileOut << fVec.at(ComputeIndex(i0,i1,i2)) - vShift << std::endl;
+                    FileOut  << fVec.at(ComputeIndex(i0,i1,i2)) - vShift << std::endl;
                 }
             }
         }

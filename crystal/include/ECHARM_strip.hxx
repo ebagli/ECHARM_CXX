@@ -36,8 +36,8 @@ virtual inline ECHARM_crystal* GetCrystal() {return fCrystal;};
 inline void SetCrystal(ECHARM_crystal *crystal) {fCrystal = crystal;};
 
 virtual inline ECHARM_EC* GetPot() {return fPot;};
-virtual inline ECHARM_EC* GetElD() {return fAtD;};
-virtual inline ECHARM_EC* GetAtD() {return fElD;};
+virtual inline ECHARM_EC* GetElD() {return fElD;};
+virtual inline ECHARM_EC* GetAtD() {return fAtD;};
 virtual inline ECHARM_EC* GetEFX() {return fEFX;};
 virtual inline ECHARM_EC* GetEFY() {return fEFY;};
 virtual inline ECHARM_EC* GetEFZ() {return fEFZ;};

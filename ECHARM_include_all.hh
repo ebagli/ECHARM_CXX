@@ -207,6 +207,9 @@
 #include "ECHARM_process_bethe_bloch.hh"
 #include "ECHARM_process_bethe_bloch.cpp"
 
+#include "ECHARM_process_bethe_bloch_tables.hh"
+#include "ECHARM_process_bethe_bloch_tables.cpp"
+
 #include "ECHARM_torsion.hh"
 #include "ECHARM_torsion.cpp"
 
@@ -303,6 +306,9 @@
 #include "ECHARM_crystal_PbWO4_O.hh"
 #include "ECHARM_crystal_PbWO4_O.cpp"
 
+#include "ECHARM_crystal_Y.hh"
+#include "ECHARM_crystal_Y.cpp"
+
 #include "ECHARM_crystal_YVO4.hh"
 #include "ECHARM_crystal_YVO4.cpp"
 
@@ -314,6 +320,9 @@
 
 #include "ECHARM_crystal_Al2O3_O.hh"
 #include "ECHARM_crystal_Al2O3_O.cpp"
+
+#include "ECHARM_crystal_Al2O3_Al.hh"
+#include "ECHARM_crystal_Al2O3_Al.cpp"
 
 #include "ECHARM_crystal_SiO2.hh"
 #include "ECHARM_crystal_SiO2.cpp"
@@ -329,6 +338,10 @@
 
 #include "ECHARM_crystal_Langasite_O.hh"
 #include "ECHARM_crystal_Langasite_O.cpp"
+
+#include "ECHARM_crystal_W.hh"
+#include "ECHARM_crystal_W.cpp"
+
 
 // strip database
 #include "ECHARM_Vacuum.hh"
@@ -348,6 +361,9 @@
 
 #include "ECHARM_STtest.hh"
 #include "ECHARM_STtest.cpp"
+
+#include "ECHARM_STtestAxial.hh"
+#include "ECHARM_STtestAxial.cpp"
 
 #include "ECHARM_ST_InSb.hh"
 #include "ECHARM_ST_InSb.cpp"

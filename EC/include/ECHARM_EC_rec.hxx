@@ -14,3 +14,4 @@ public:
     inline void SetFourierTermNumberZ(int term) {fFTN[2] = term;};
 
 void SetRecFFCoeff(std::vector<double> vec) {fFFC = vec;};
+

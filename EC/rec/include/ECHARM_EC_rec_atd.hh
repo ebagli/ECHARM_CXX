@@ -17,13 +17,13 @@ public:
     ECHARM_EC_rec_atd(ECHARM_crystal*,int,int,int);
     ~ECHARM_EC_rec_atd();
     
-    std::vector<double> ComputeRecFF(int[3]);
+    std::vector<double> ComputeRecFF(int[3],double[3]);
     inline double GetFactorRe(double*) {return 1.;};
-    inline double GetFactorIm(double*) {return -1.;};
+    inline double GetFactorIm(double*) {return 1.;};
     double Get(double,double,double);
     
-    virtual bool GetIndexesSF(int*,int,int,int) = 0;
-    virtual bool GetIndexesEC(double*,int*,int,int,int) = 0;
+    virtual bool GetIndexesSF(int*,int,int,int);
+    virtual bool GetIndexesEC(double*,int*,int,int,int);
 };
 
 #endif

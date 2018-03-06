@@ -22,6 +22,10 @@ ECHARM_crystal_PbWO4::ECHARM_crystal_PbWO4(){
     ECHARM_atom_moliere *atomPb = new ECHARM_atom_moliere("Pb",82.,207.2 * amu,787.,42.2);
     ECHARM_atom_moliere *atomW = new ECHARM_atom_moliere("W",74.,183.84 * amu,735.,417.0);
     ECHARM_atom_moliere *atomO = new ECHARM_atom_moliere("O",8.,15.9994 * amu,237.,96.0);
+    
+    atomPb->SetThermalVibrationConstant(0.05 * AA);
+    atomW->SetThermalVibrationConstant(0.05 * AA);
+    atomO->SetThermalVibrationConstant(0.05 * AA);
 
     ECHARM_lattice *latticePb = new ECHARM_lattice();
     latticePb->Add(0.0000,0.2500,0.6250);
@@ -67,6 +71,7 @@ ECHARM_crystal_PbWO4::ECHARM_crystal_PbWO4(){
     
     fMiller = new ECHARM_miller_orto(vMillerX,vMillerY,vMillerZ);
 
+    SetThermalVibrationConstant(0.05 * AA);
     ComputeParameters();
 }
 

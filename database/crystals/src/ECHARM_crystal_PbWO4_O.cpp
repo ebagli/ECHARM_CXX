@@ -20,7 +20,8 @@ ECHARM_crystal_PbWO4_O::ECHARM_crystal_PbWO4_O(){
     SetAtomName("PbWO4_O");
     
     ECHARM_atom_moliere *atomO = new ECHARM_atom_moliere("O",8.,15.9994 * amu,237.,96.0);
-    
+    atomO->SetThermalVibrationConstant(0.05 * AA);
+
     ECHARM_lattice *latticeO = new ECHARM_lattice();
     latticeO->Add(0.2342,0.1084,0.0408);
     latticeO->Add(0.7342,0.6084,0.5408);
@@ -49,6 +50,7 @@ ECHARM_crystal_PbWO4_O::ECHARM_crystal_PbWO4_O(){
     
     fMiller = new ECHARM_miller_orto(vMillerX,vMillerY,vMillerZ);
 
+    SetThermalVibrationConstant(0.05 * AA);
     ComputeParameters();
 }
 

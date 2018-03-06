@@ -36,11 +36,30 @@ ECHARM_EC(name,
     fFTN[2] = recZ;
     fPhaseCos = 0.;
     fPhaseSin = 0.;
+    
+    double vPeriod[3];
+    int vNumStep[3];
+    
+    for(unsigned int i=0;i<3;i++){
+        vPeriod[i] = fCrystal->GetPeriod(i);
+        if(fFTN[i]==0) vNumStep[i]=1;
+        else vNumStep[i]=fFTN[i];
+    }
+    
+    fVec = new ECHARM_periodicvector(vNumStep,vPeriod);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ECHARM_EC_rec::~ECHARM_EC_rec(){
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+int ECHARM_EC_rec::GetIndex(int i0,int i1,int i2){
+    return ((+i0+fFTN[0])+
+            (i1+fFTN[1])*(fFTN[0]+1)+
+            (i2+fFTN[2])*(fFTN[1]+1)*(fFTN[0]+1));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -126,21 +145,23 @@ void ECHARM_EC_rec::StoreRecFF(){
             for(int i0=-fFTN[0];i0<=fFTN[0];i0++){
                 double cRe = 0.0;
                 double cIm = 0.0;
-                
                 int vIndex[3];
+                double vIndexEC[3];
                 if(GetIndexesSF(vIndex,i0,i1,i2)){
-                    std::vector<double> sfReIm = ComputeRecFF(vIndex);
-                    
-                    if((vIndex[0] != 0) ||
-                       (vIndex[1] != 0) ||
-                       (vIndex[2] != 0)){
-                        for(unsigned int j=0;j<fCrystal->GetNumBases();j++){
-                            cRe += sfReIm[2*j];
-                            cIm += sfReIm[2*j+1];
+                    if(GetIndexesEC(vIndexEC,vIndex,i0,i1,i2)){
+                        std::vector<double> sfReIm = ComputeRecFF(vIndex,vIndexEC);
+                        
+                        if((vIndex[0] != 0) ||
+                           (vIndex[1] != 0) ||
+                           (vIndex[2] != 0)){
+                            for(unsigned int j=0;j<fCrystal->GetNumBases();j++){
+                                cRe += sfReIm[2*j];
+                                cIm += sfReIm[2*j+1];
+                            }
                         }
                     }
                 }
-                                
+                
                 fFFC.push_back(cRe);
                 fFFC.push_back(cIm);
             }
@@ -149,20 +170,249 @@ void ECHARM_EC_rec::StoreRecFF(){
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void ECHARM_EC_rec::StoreValues(){
+#ifdef USE_FFWT3
+    if(fFTN[2]==0 and fFTN[1]==0){
+        std::cout << "1D" << std::endl;
+        int Nx = fFTN[0];
+        
+        fftw_complex in[Nx];
+        fftw_complex out[Nx];
+        fftw_plan p;
+        
+        p = fftw_plan_dft_1d(Nx, &in[0], &out[0], FFTW_BACKWARD, FFTW_MEASURE);
+        
+        for(int i0=0;i0<Nx;i0++){
+            in[i0][0] = fFFC.at(GetIndexRe(i0,0,0));
+            in[i0][1] = fFFC.at(GetIndexIm(i0,0,0));
+        }
+        
+        fftw_execute(p); /* repeat as needed */
+        
+        std::vector<double> vec;
+        for(int i0=0;i0<Nx;i0++){
+            vec.push_back(out[i0][0]*2.);
+        }
+        fVec->Set(vec);
+        fftw_destroy_plan(p);
+    }
+    else if(fFTN[2]==0){
+        std::cout << "2D" << std::endl;
+        int Nx  = fFTN[0];
+        int Ny  = fFTN[1];
+        int Nxh = Nx*0.5;
+        int Nyh = Ny*0.5;
+        
+        fftw_complex *in00,*out00;
+        fftw_complex *in01,*out01;
+        fftw_complex *in10,*out10;
+        fftw_complex *in11,*out11;
+
+        fftw_plan p00;
+        fftw_plan p01;
+        fftw_plan p10;
+        fftw_plan p11;
+
+        in00  = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+        out00 = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+
+        in01  = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+        out01 = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+
+        in10  = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+        out10 = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+
+        in11  = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+        out11 = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny );
+
+        
+        int vIndexSF[3];
+        double vIndexEC[3];
+        
+        int i0,i1;
+        std::cout << fFFC.size() << std::endl;
+
+        for(int j1=0;j1<Ny;j1++){
+            for(int j0=0;j0<Nx;j0++){
+                
+                i0 = j0;
+                i1 = j1;
+                //if(i0>Nxh) i0 = Nx - i0;
+                //if(i1>Nyh) i1 = Ny - i1;
+                
+                in00[j0*Ny+j1][0] = 0.;
+                in00[j0*Ny+j1][1] = 0.;
+                if(GetIndexesSF(vIndexSF,i0,i1,0)){
+                    if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,0)){
+                        in00[j0*Ny+j1][0] = fFFC.at(GetIndexRe(i0,i1,0));
+                        in00[j0*Ny+j1][1] = fFFC.at(GetIndexIm(i0,i1,0));
+                    }
+                }
+                
+                i0 = j0;
+                i1 = -j1;
+                in01[j0*Ny+j1][0] = 0.;
+                in01[j0*Ny+j1][1] = 0.;
+                if(GetIndexesSF(vIndexSF,i0,i1,0)){
+                    if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,0)){
+                        in01[j0*Ny+j1][0] = fFFC.at(GetIndexRe(i0,i1,0));
+                        in01[j0*Ny+j1][1] = fFFC.at(GetIndexIm(i0,i1,0));
+                    }
+                }
+                
+                i0 = -j0;
+                i1 = j1;
+                in10[j0*Ny+j1][0] = 0.;
+                in10[j0*Ny+j1][1] = 0.;
+                if(GetIndexesSF(vIndexSF,i0,i1,0)){
+                    if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,0)){
+                        in10[j0*Ny+j1][0] = fFFC.at(GetIndexRe(i0,i1,0));
+                        in10[j0*Ny+j1][1] = fFFC.at(GetIndexIm(i0,i1,0));
+                    }
+                }
+                
+                i0 = -j0;
+                i1 = -j1;
+                in11[j0*Ny+j1][0] = 0.;
+                in11[j0*Ny+j1][1] = 0.;
+                if(GetIndexesSF(vIndexSF,i0,i1,0)){
+                    if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,0)){
+                        in11[j0*Ny+j1][0] = fFFC.at(GetIndexRe(i0,i1,0));
+                        in11[j0*Ny+j1][1] = fFFC.at(GetIndexIm(i0,i1,0));
+                    }
+                }
+                
+            }
+        }
+        
+        in10[0][0] = 0;
+        in10[0][1] = 0;
+        in01[0][0] = 0;
+        in01[0][1] = 0;
+        in11[0][0] = 0;
+        in11[0][1] = 0;
+
+        p00 = fftw_plan_dft_2d(Nx, Ny, in00, out00, FFTW_BACKWARD, FFTW_ESTIMATE);
+        p01 = fftw_plan_dft_2d(Nx, Ny, in01, out01, FFTW_BACKWARD, FFTW_ESTIMATE);
+        p10 = fftw_plan_dft_2d(Nx, Ny, in10, out10, FFTW_BACKWARD, FFTW_ESTIMATE);
+        p11 = fftw_plan_dft_2d(Nx, Ny, in11, out11, FFTW_BACKWARD, FFTW_ESTIMATE);
+
+        fftw_execute(p00);
+        fftw_execute(p01);
+        fftw_execute(p10);
+        fftw_execute(p11);
+
+        std::vector<double> vec;
+        for(int i1=0;i1<Ny;i1++){
+            for(int i0=0;i0<Nx;i0++){
+                double res=0.;
+                res += out00[i0*Ny+i1][0];
+                
+                res += out01[i0*Ny+(Ny-i1)][0];
+                res += out10[(Nx-i0)*Ny+i1][0];
+                res += out11[(Nx-i0)*Ny+(Ny-i1)][0];
+                
+                vec.push_back(res);
+            }
+        }
+        fVec->Set(vec);
+        fftw_destroy_plan(p00);
+        fftw_destroy_plan(p01);
+        fftw_destroy_plan(p10);
+        fftw_destroy_plan(p11);
+    }
+    else{
+        std::cout << "3D" << std::endl;
+        int Nx  = fFTN[0]*2;
+        int Ny  = fFTN[1]*2;
+        int Nz  = fFTN[2]*2;
+        
+        int Nxh = Nx*0.5;
+        int Nyh = Ny*0.5;
+        int Nzh = Nz*0.5;
+
+        fftw_complex *in;
+        fftw_complex *out;
+
+        in = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny * Nz);
+        out = (fftw_complex*) fftw_malloc ( sizeof ( fftw_complex ) * Nx * Ny * Nz );
+
+        fftw_plan p;
+        
+        int vIndexSF[3];
+        double vIndexEC[3];
+        
+        int i0,i1,i2;
+        std::cout << fFFC.size() << std::endl;
+        std::cout << Nx * Ny * Nz << std::endl;
+
+        for(int j2=0;j2<Nz;j2++){
+            for(int j1=0;j1<Ny;j1++){
+                for(int j0=0;j0<Nx;j0++){
+                    i0 = j0;
+                    i1 = j1;
+                    i2 = j2;
+                    
+                    if(j0>=Nxh) i0 = -Nx+j0;
+                    if(j1>=Nyh) i1 = -Ny+j1;
+                    if(j2>=Nzh) i2 = -Nz+j2;
+                    /*
+                    std::cout << (j0*Ny+j1)*Nz+j2 << std::endl;
+                    std::cout << j0 << " " << j1 << " " << j2 << std::endl;
+                    std::cout << i0 << " " << i1 << " " << i2 << std::endl;
+                    */
+                    in[(j0*Ny+j1)*Nz+j2][0] = 0.;
+                    in[(j0*Ny+j1)*Nz+j2][1] = 0.;
+                    
+                    if(GetIndexesSF(vIndexSF,i0,i1,i2)){
+                        if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,i2))
+                        {
+                            /*
+                            std::cout << vIndexEC[0] << " " << vIndexEC[1] << " " << vIndexEC[2] << std::endl;
+                            std::cout << vIndexSF[0] << " " << vIndexSF[1] << " " << vIndexSF[2] << std::endl;
+                            std::cout << GetIndexRe(i0,i1,i2) << " " << GetIndexIm(i0,i1,i2) << std::endl;
+                            std::cout << std::endl;
+                            */
+                            in[(j0*Ny+j1)*Nz+j2][0] = fFFC.at(GetIndexRe(i0,i1,i2));
+                            in[(j0*Ny+j1)*Nz+j2][1] = fFFC.at(GetIndexIm(i0,i1,i2));
+                        }
+                    }
+                }
+            }
+        }
+        
+        p = fftw_plan_dft_3d(Nx, Ny, Nz, in,out, FFTW_BACKWARD, FFTW_ESTIMATE);
+        
+        fftw_execute(p); /* repeat as needed */
+        
+        std::vector<double> vec;
+        for(int j2=0;j2<Nz;j2++){
+            for(int j1=0;j1<Ny;j1++){
+                for(int j0=0;j0<Nx;j0++){
+                    vec.push_back(out[(j0*Ny+j1)*Nz+j2][0]);
+                }
+            }
+        }
+        fVec->Set(vec);
+        fftw_destroy_plan(p);
+    }
+    
+#endif
+    return;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 double ECHARM_EC_rec::GetFT(double x, double y, double z, std::vector<double>& fc){
+    
+#ifdef USE_FFWT3
+    return fVec->GetVal(x,y,z);
+#endif
     
     double vResult = 0;
     double vAngle = 0.;
     int vIndexSF[3];
     double vIndexEC[3];
-
-#ifdef CUDA_
-    if(fFTN[1]==0 &&
-       fFTN[2]==0){
-        return GetFT1D_CUDA(x,fc);
-    }
-#endif
     
     for(int i0 = -fFTN[0]; i0 <= fFTN[0];i0++){
         for(int i1 = -fFTN[1]; i1 <= fFTN[1];i1++){
@@ -170,8 +420,13 @@ double ECHARM_EC_rec::GetFT(double x, double y, double z, std::vector<double>& f
                 if(GetIndexesSF(vIndexSF,i0,i1,i2)){
                     
                     if(GetIndexesEC(vIndexEC,vIndexSF,i0,i1,i2)){
-                    
-                        
+                        /*
+                         std::cout << "OLD" << std::endl;
+                         std::cout << i0 << " " << i1 << std::endl;
+                         std::cout << GetIndexRe(i0,i1,i2) << " " << GetIndexIm(i0,i1,i2) << std::endl;
+                         std::cout << fc.at(GetIndexRe(i0,i1,i2)) << " " << fc.at(GetIndexIm(i0,i1,i2)) << std::endl;
+                         std::cout << "---" << std::endl;
+                         */
                         vAngle  = fCrystal->GetRecPeriodX() * x * vIndexEC[0];
                         if(fFTN[1] != 0) {
                             vAngle += fCrystal->GetRecPeriodY() * y * vIndexEC[1];
@@ -179,11 +434,11 @@ double ECHARM_EC_rec::GetFT(double x, double y, double z, std::vector<double>& f
                         if(fFTN[2] != 0) {
                             vAngle += fCrystal->GetRecPeriodZ() * z * vIndexEC[2];
                         }
-
-                        vResult += (GetFactorRe(vIndexEC) * fc.at(GetIndexRe(i0,i1,i2)) * cos(vAngle + fPhaseCos));
-                        vResult += (GetFactorIm(vIndexEC) * fc.at(GetIndexIm(i0,i1,i2)) * sin(vAngle + fPhaseSin));
-
-
+                        
+                        vResult += (+ (fc.at(GetIndexRe(i0,i1,i2))) * cos(vAngle + fPhaseCos));
+                        vResult += (- (fc.at(GetIndexIm(i0,i1,i2))) * sin(vAngle + fPhaseSin));
+                        
+                        
                     }
                 }
             }
@@ -191,13 +446,15 @@ double ECHARM_EC_rec::GetFT(double x, double y, double z, std::vector<double>& f
     }
     
     return vResult;
+    
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #ifdef CUDA_
 double ECHARM_EC_rec::GetFT1D_CUDA(double x, std::vector<double>& fc){
-
+    
 }
 #endif
 

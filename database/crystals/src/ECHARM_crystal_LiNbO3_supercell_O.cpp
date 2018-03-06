@@ -52,12 +52,12 @@ ECHARM_crystal_LiNbO3_supercell_O::ECHARM_crystal_LiNbO3_supercell_O(){
     latticeO->Add(0.87436,0.83331,0.41663);
     latticeO->Add(0.81286,0.52052,0.41663);
     latticeO->Add(0.687195,0.646165,0.91663);
-    latticeO->Add(0.37434,0.111350100133,0.74997);
+    latticeO->Add(0.37434,1.0,0.74997);
     latticeO->Add(0.31284,0.68718,0.74997);
     latticeO->Add(0.812795,0.812835,0.74997);
     latticeO->Add(0.187205,0.812835,0.24997);
     latticeO->Add(0.68714,0.68718,0.24997);
-    latticeO->Add(0.62564,0.111350100133,0.24997);
+    latticeO->Add(0.62564,1.0,0.24997);
 
     AddBase(atomO,latticeO);
     fCell = new ECHARM_cell(5.185E-10,8.98068343724E-10,13.87E-10,90.,90.,90.);

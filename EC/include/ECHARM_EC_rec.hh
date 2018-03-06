@@ -8,8 +8,15 @@
 
 #ifndef _ECHARM_EC_rec_h
 #define _ECHARM_EC_rec_h
+//#define USE_FFWT3
 
 #include "ECHARM_EC.hh"
+#include <iostream>
+#include <complex>
+
+#ifdef USE_FFWT3
+#include <fftw3.h>
+#endif
 
 class ECHARM_EC_rec: public ECHARM_EC
 {
@@ -25,6 +32,7 @@ public:
 #endif
     
     void StoreRecFF();
+    void StoreValues();
 
 #ifdef ROOT_
     void PrintSFtoTH(std::vector<double>,std::string);
@@ -32,8 +40,9 @@ public:
     void PrintSFtoTH2(std::vector<double>,std::string);
 #endif
 
-    virtual std::vector<double> ComputeRecFF(int[3]) = 0;
+    virtual std::vector<double> ComputeRecFF(int[3],double[3]) = 0;
 
+    int GetIndex(int,int,int);
     int GetIndexRe(int,int,int);
     int GetIndexIm(int,int,int);
 
@@ -43,6 +52,8 @@ public:
     virtual double GetFactorRe(double*) = 0;
     virtual double GetFactorIm(double*) = 0;
 
+    inline void PrintVecToFile(std::string filename,std::string opt = "") {fVec->PrintToFile(filename,opt);};
+
 protected:
     int fFTN[3]; //Fourier Term Number
 
@@ -50,6 +61,7 @@ protected:
     double fPhaseSin;
     
     std::vector<double> fFFC;
+    ECHARM_periodicvector* fVec;
     
 #include "ECHARM_EC_rec.hxx"
 };

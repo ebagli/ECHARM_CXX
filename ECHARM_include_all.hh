@@ -318,6 +318,9 @@
 #include "ECHARM_crystal_Al2O3.hh"
 #include "ECHARM_crystal_Al2O3.cpp"
 
+#include "ECHARM_crystal_Al2O3_hexagonal.hh"
+#include "ECHARM_crystal_Al2O3_hexagonal.cpp"
+
 #include "ECHARM_crystal_Al2O3_O.hh"
 #include "ECHARM_crystal_Al2O3_O.cpp"
 
@@ -342,6 +345,8 @@
 #include "ECHARM_crystal_W.hh"
 #include "ECHARM_crystal_W.cpp"
 
+#include "ECHARM_crystal_BaF2.hh"
+#include "ECHARM_crystal_BaF2.cpp"
 
 // strip database
 #include "ECHARM_Vacuum.hh"
@@ -415,6 +420,9 @@
 
 #include "ECHARM_EC_CALC.hh"
 #include "ECHARM_EC_CALC.cpp"
+
+#include "ECHARM_EC_Rec_Coeff.hh"
+#include "ECHARM_EC_Rec_Coeff.cpp"
 
 #include "ECHARM_PL01.hh"
 #include "ECHARM_PL01.cpp"

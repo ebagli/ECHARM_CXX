@@ -53,6 +53,7 @@ public:
     virtual double GetFactorIm(double*) = 0;
 
     inline void PrintVecToFile(std::string filename,std::string opt = "") {fVec->PrintToFile(filename,opt);};
+    inline void PrintCoeffToFile(std::string filename,bool invertReIm,std::string);
 
 protected:
     int fFTN[3]; //Fourier Term Number

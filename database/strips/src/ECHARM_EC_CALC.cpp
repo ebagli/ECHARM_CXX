@@ -15,6 +15,8 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
     fType = string;
     
     int nPoints = 512;
+    int fft_nx = 256;
+    int fft_ny = 256;
     if(fastON==true) nPoints = 32;
     
     fDim = new ECHARM_3vec(0.,0.,0.);
@@ -99,7 +101,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
                 pot_intrp->ReadVecFromFile(filename);
             }
             else{
-                ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_ax(fCrystal,128,128);
+                ECHARM_EC_rec* pot = new ECHARM_EC_rec_pot_ax(fCrystal,fft_nx,fft_ny);
                 pot_intrp->Store(pot);
                 pot_intrp->PrintVecToFile(filename);
 #ifdef ROOT_
@@ -119,7 +121,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
                 atd_intrp->ReadVecFromFile(filename);
             }
             else{
-                ECHARM_EC_rec* atd = new ECHARM_EC_rec_atd_ax(fCrystal,128,128);
+                ECHARM_EC_rec* atd = new ECHARM_EC_rec_atd_ax(fCrystal,fft_nx,fft_ny);
                 atd_intrp->Store(atd);
                 atd_intrp->PrintVecToFile(filename);
             }
@@ -136,7 +138,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
                 eld_intrp->ReadVecFromFile(filename);
             }
             else{
-                ECHARM_EC_rec* eld = new ECHARM_EC_rec_eld_ax(fCrystal,128,128);
+                ECHARM_EC_rec* eld = new ECHARM_EC_rec_eld_ax(fCrystal,fft_nx,fft_ny);
                 eld_intrp->Store(eld);
                 eld_intrp->PrintVecToFile(filename);
             }
@@ -153,7 +155,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
                 efx_intrp->ReadVecFromFile(filename);
             }
             else{
-                ECHARM_EC_rec* efx = new ECHARM_EC_rec_efx_ax(fCrystal,128,128);
+                ECHARM_EC_rec* efx = new ECHARM_EC_rec_efx_ax(fCrystal,fft_nx,fft_ny);
                 efx_intrp->Store(efx);
                 efx_intrp->PrintVecToFile(filename);
             }
@@ -170,7 +172,7 @@ ECHARM_EC_CALC::ECHARM_EC_CALC(ECHARM_crystal* fCrystal,bool planeOn,int millerX
                 efy_intrp->ReadVecFromFile(filename);
             }
             else{
-                ECHARM_EC_rec* efy = new ECHARM_EC_rec_efy_ax(fCrystal,128,128);
+                ECHARM_EC_rec* efy = new ECHARM_EC_rec_efy_ax(fCrystal,fft_nx,fft_ny);
                 efy_intrp->Store(efy);
                 efy_intrp->PrintVecToFile(filename);
             }

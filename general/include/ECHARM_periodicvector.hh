@@ -31,6 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include <cfloat>
+#include <algorithm>
 
 #include "ECHARM_intrp.hh"
 #include "ECHARM_3vec.hh"

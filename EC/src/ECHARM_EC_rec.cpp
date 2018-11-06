@@ -157,12 +157,12 @@ void ECHARM_EC_rec::StoreRecFF(){
                         for(unsigned int j=0;j<fCrystal->GetNumBases();j++){
                             cRe += sfReIm[2*j];
                             cIm += sfReIm[2*j+1];
+                            }
                         }
                     }
+                    fFFC.push_back(cRe);
+                    fFFC.push_back(cIm);
                 }
-                                
-                fFFC.push_back(cRe);
-                fFFC.push_back(cIm);
             }
         }
     }
